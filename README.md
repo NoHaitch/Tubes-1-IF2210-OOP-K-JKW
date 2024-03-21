@@ -4,7 +4,7 @@
 
 <br />
 <div align="center">
-  <h1 align="center">PROJECT NAME</h1>
+  <h1 align="center">Tugas Besar IFF2210 OOP</h1>
 
   <p align="center">
     <h3> Application Name {optional}</h3>
@@ -44,7 +44,7 @@
       </tr>
       <tr>
         <td>13522091</td>
-        <td>Raden Francisco Trianto B</td>
+        <td>Raden Francisco Trianto Bratadiningrat</td>
       </tr>
       <tr>
         <td>13522105</td>
