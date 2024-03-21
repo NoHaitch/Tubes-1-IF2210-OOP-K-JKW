@@ -4,8 +4,7 @@
 
 <br />
 <div align="center">
-  <h1 align="center">Tugas Besar IFF2210 OOP</h1>
-
+  <h1 align="center">Tugas Besar IF2210 OOP</h1>
   <p align="center">
     <h3> Application Name {optional}</h3>
     <h4> DESCRIPTION</h4>
@@ -29,6 +28,8 @@
 <div align="center" id="contributor">
   <strong>
     <h3>Made By:</h3>
+    <h3>Kelompok JKW</h3>
+    <h3>Nasi Cumi Hitam Madura Pak Bagas</h3>
     <table align="center">
       <tr>
         <td>NIM</td>
