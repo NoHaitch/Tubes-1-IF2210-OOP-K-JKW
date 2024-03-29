@@ -1,0 +1,5 @@
+1000 // Jumlah uang pemain untuk menang
+80 // Jumlah berat badan pemain untuk menang
+10 10 // Besaran penyimpanan
+5 7 // Besaran lahan
+8 9 // Besaran peternakan
