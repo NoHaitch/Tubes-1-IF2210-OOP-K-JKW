@@ -21,8 +21,7 @@ build: $(OBJ_FILES)
 	$(CC) $^ -o $(OUTPUT_FOLDER)/main
 
 clean:
-	rm -rf $(OUTPUT_FOLDER)
-
+	rm -rf $(filter-out $(OUTPUT_FOLDER), $(wildcard $(OUTPUT_FOLDER)/*))
 
 # Rule to compile object files
 $(OBJ_PATH)/%.o: $(SOURCE_FOLDER)/%.cpp $(HEADER_FILES)
