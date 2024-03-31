@@ -6,13 +6,24 @@
 #include <string>
 using namespace std;
 
-const string DEFAULTFOODTYPE = "any";
-const int DEFAULTWEIGHT = 0;
+/* Global Variables for Default Values */
+const string DefaultAnimalFoodType = "ANY";
+const string DefaultAnimalFoodTypeHerbivore = "HERBIVORE";
+const string DefaultAnimalFoodTypeCarnivore = "CARNIVORE";
+const string DefaultAnimalFoodTypeOmnivore = "OMNIVORE";
+const string DefaultAnimalNameCow = "COW";
+const string DefaultAnimalNameSheep = "SHEEP";
+const string DefaultAnimalNameHorse = "HORSE";
+const string DefaultAnimalNameRabbit = "RABBIT";
+const string DefaultAnimalNameSnake = "SNAKE";
+const string DefaultAnimalNameChicken = "CHICKEN";
+const string DefaultAnimalNameDuck = "DUCK";
+const int DefaultAnimalStartingWeight = 0;
 
 /**
- * Base Class Animal yang digunakan oleh Class Peternak 
+ * @brief Class Animal used by Peternak
  * 
- * Childrens : Herbivore, Carnivore, Omnivore
+ * \note  - Childrens : Herbivore, Carnivore, Omnivore
  *
 */
 class Animal{
@@ -23,7 +34,7 @@ class Animal{
         int currWeight;             // Animal current weight 
         const int weightToHarvest;  // Animal minimum weight for animal to be harvested
         const int price;            // Animal price
-        const string foodType;      // Food type
+        const string foodType;      // Animal Food type
         
     public:
         /**
@@ -36,7 +47,7 @@ class Animal{
          * @param _price            Price when sold/buy
          * @param _foodType         Food type
         */
-        Animal(int _id, string _code, string _name, int _weightToHarvest, int _price, string _foodType = DEFAULTFOODTYPE, int _currWeight = DEFAULTWEIGHT);
+        Animal(int _id, string _code, string _name, int _weightToHarvest, int _price, string _foodType = DefaultAnimalFoodType, int _currWeight = DefaultAnimalStartingWeight);
 
         /**
          * @brief dtor
@@ -96,6 +107,13 @@ class Animal{
         virtual void printInfo();
 };
 
+/**
+ * @brief Class Herbivore used by Peternak
+ * 
+ * \note - Parent: Animal
+ * \note - Childrens: Cow, Sheep, Horse, Rabbit
+ * 
+*/
 class Herbivore : public Animal{  
     public:
         /**
@@ -106,9 +124,9 @@ class Herbivore : public Animal{
          * @param _name             Herbivore name
          * @param _weightToHarvest  Minimum weight to be harvested
          * @param _price            Price when sold/buy
-         * @param _currWeight       Current Weight
+         * @param _currWeight       Starting Weight, default = 0
         */
-        Herbivore(int _id, string _code, string _name, int _weightToHarvest, int _price, int _currWeight = DEFAULTWEIGHT); 
+        Herbivore(int _id, string _code, string _name, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -132,6 +150,13 @@ class Herbivore : public Animal{
         virtual void printInfo() override;
 };
 
+/**
+ * @brief Class Carnivore used by Peternak
+ * 
+ * \note - Parent: Animal
+ * \note - Childrens: Snake
+ * 
+*/
 class Carnivore : public Animal{  
     public:
         /**
@@ -142,9 +167,9 @@ class Carnivore : public Animal{
          * @param _name             Carnivore name
          * @param _weightToHarvest  Minimum weight to be harvested
          * @param _price            Price when sold/buy
-         * @param _currWeight       Current Weight
+         * @param _currWeight       Starting Weight, default = 0
         */
-        Carnivore(int _id, string _code, string _name, int _weightToHarvest, int _price, int _currWeight = DEFAULTWEIGHT); 
+        Carnivore(int _id, string _code, string _name, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -168,6 +193,13 @@ class Carnivore : public Animal{
         virtual void printInfo() override;
 };
 
+/**
+ * @brief Class Omnivore used by Peternak
+ * 
+ * \note - Parent: Animal
+ * \note - Childrens: Chiken, Duck
+ * 
+*/
 class Omnivore : public Animal{  
     public:
         /**
@@ -178,9 +210,9 @@ class Omnivore : public Animal{
          * @param _name             Omnivore name
          * @param _weightToHarvest  Minimum weight to be harvested
          * @param _price            Price when sold/buy
-         * @param _currWeight       Current Weight
+         * @param _currWeight       Starting Weight, default = 0
         */
-        Omnivore(int _id, string _code, string _name, int _weightToHarvest, int _price, int _currWeight = DEFAULTWEIGHT); 
+        Omnivore(int _id, string _code, string _name, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -202,6 +234,293 @@ class Omnivore : public Animal{
          * 
         */
         virtual void printInfo() override;
+};
+
+/**
+ * @brief Class Cow used by Peternak
+ * 
+ * \note - Parent: Herbivore
+ * 
+*/
+class Cow : public Herbivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Cow id
+         * @param _code             Cow code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Cow(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Cow();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param cow   cow reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Cow& cow);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
+};
+
+/**
+ * @brief Class Sheep used by Peternak
+ * 
+ * \note - Parent: Herbivore
+ * 
+*/
+class Sheep : public Herbivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Sheep id
+         * @param _code             Sheep code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Sheep(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Sheep();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param sheep   sheep reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Sheep& sheep);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
+};
+
+/**
+ * @brief Class Horse used by Peternak
+ * 
+ * \note - Parent: Herbivore
+ * 
+*/
+class Horse : public Herbivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Horse id
+         * @param _code             Horse code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Horse(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Horse();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param horse   horse reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Horse& horse);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
+};
+
+/**
+ * @brief Class Rabbit used by Peternak
+ * 
+ * \note - Parent: Herbivore
+ * 
+*/
+class Rabbit : public Herbivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Rabbit id
+         * @param _code             Rabbit code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Rabbit(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Rabbit();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param rabbit   rabbit reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Rabbit& rabbit);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
+};
+
+/**
+ * @brief Class Snake used by Peternak
+ * 
+ * \note - Parent: Carnivore
+ * 
+*/
+class Snake : public Carnivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Snake id
+         * @param _code             Snake code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Snake(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Snake();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param snake   snake reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Snake& snake);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
+};
+
+/**
+ * @brief Class Chicken used by Peternak
+ * 
+ * \note - Parent: Carnivore
+ * 
+*/
+class Chicken : public Omnivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Chicken id
+         * @param _code             Chicken code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Chicken(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Chicken();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param chicken   chicken reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Chicken& chicken);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
+};
+
+/**
+ * @brief Class Duck used by Peternak
+ * 
+ * \note - Parent: Carnivore
+ * 
+*/
+class Duck : public Omnivore{
+    public:
+    /**
+         * @brief ctor user defined.
+         * 
+         * @param _id               Duck id
+         * @param _code             Duck code
+         * @param _weightToHarvest  Minimum weight to be harvested
+         * @param _price            Price when sold/buy
+         * @param _currWeight       Starting Weight, default = 0
+        */
+        Duck(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief dtor
+        */
+        ~Duck();   
+
+        /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os    output stream
+         * @param duck   duck reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& os, const Duck& duck);
+
+        /**
+         * @brief Debuging tool, shows all variables.
+         * 
+        */
+        void printInfo() override;
 };
 
 #endif
