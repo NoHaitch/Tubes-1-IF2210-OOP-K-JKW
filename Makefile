@@ -12,7 +12,7 @@ OBJ_FILES = $(patsubst $(SOURCE_FOLDER)/%.cpp,$(OBJ_PATH)/%.o,$(CPP_FILES))
 CPP_FILES = $(wildcard $(SOURCE_FOLDER)/**/*.cpp $(SOURCE_FOLDER)/*.cpp)
 
 # Main Commands
-all: clean build run
+all: build run
 
 run: 
 	./$(OUTPUT_FOLDER)/main
