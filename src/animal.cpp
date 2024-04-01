@@ -36,6 +36,17 @@ ostream& operator<<(ostream& stream, const Animal& animal){
     return stream;
 }
 
+void Animal::feedFood(Product& food){
+    if(isEdible(food)){
+        currWeight += food.getAddedWeight();
+    }
+    // TODO: Delete Food
+}
+
+void Animal::harvest(){
+    // TODO: Implement
+}
+
 void Animal::printInfo(){
     cout << "Animal :" << endl;
     cout << "  > id: " << this->id << endl;

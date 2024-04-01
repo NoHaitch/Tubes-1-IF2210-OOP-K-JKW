@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include "product.hpp"
 using namespace std;
 
 /* Global Variables for Default Values */
@@ -56,31 +57,43 @@ class Animal{
 
         /**
          * @brief Get animal id
+         * 
+         * @return int animal id 
         */
         int getId() const;
 
         /**
          * @brief Get animal code
+         * 
+         * @return string animal code
         */
         string getCode() const;
 
         /**
          * @brief Get animal name
+         * 
+         * @return string animal name
         */
         string getName() const;
         
         /**
          * @brief Get animal price when sold/buy
+         * 
+         * @return int animal price
         */
         int getPrice() const;
 
         /**
          * @brief Get animal minimum weight to be harvested
+         * 
+         * @return int animal weight to harvest
         */
         int getWeightToHarvest() const;
 
         /**
          * @brief Get animal current weight
+         * 
+         * @return int animal current weight
         */
         int getCurrWeight() const;
 
@@ -100,6 +113,18 @@ class Animal{
         */
         friend ostream& operator<<(ostream& stream, const Animal& animal);
         
+        /** TODO: Implement Delete Food
+         * @brief Feed the animal some food.
+         * 
+        */
+        virtual void feedFood(Product& food);
+
+        /** TODO: Implement Code
+         * @brief Harvest the animal.
+         * 
+        */
+        virtual void harvest();
+
         /**
          * @brief Debuging tool, shows all variables.
          * 
