@@ -1,4 +1,4 @@
-#include "product.hpp"
+#include "header/product.hpp"
 
 int Product::getAddedWeight() const{
     return addedWeight;

@@ -51,10 +51,10 @@
         <td>13522105</td>
         <td>Fabian Radenta Bangun</td>
       </tr>
-      <!-- <tr>
-        <td>ID 5</td>
-        <td>FULL NAME Person 5</td>
-      </tr> -->
+      <tr>
+        <td>10023359</td>
+        <td>Adam Dharma Sakti</td>
+      </tr>
     </table>
   </strong>
   <br>
@@ -82,7 +82,7 @@
             <li><a href="#1-feature-x">Features - 1</a></li>
             <li><a href="#2-feature-y">Features - 2</a></li>
             <li><a href="#3-feature-z">Features - 3</a></li>
-          <ol>
+          </ol>
         </details>
         </li>
       </ul>
