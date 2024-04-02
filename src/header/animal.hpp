@@ -27,7 +27,7 @@ class Animal{
         const string foodType;      // Animal Food type
         
         /* Configuration Variables */
-        static map<string, int> configID;           // Animal Configuration Key: Code, Value: Animal Id
+        static map<string, int> configID;           // Animal Configuration Key: Code, Value: Animal Id, Id starts from 1.
         static vector<string> configCode;           // Animal Configuration Codes
         static vector<string> configName;           // Animal Configuration Names
         static vector<string> configFoodType;       // Animal Configuration Food Types
@@ -321,7 +321,7 @@ class Cow : public Herbivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Cow(int _currWeight = DefaultAnimalStartingWeight); 
+        Cow(int _currWeight); 
 
         /**
          * @brief dtor
@@ -364,7 +364,7 @@ class Sheep : public Herbivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Sheep(int _currWeight = DefaultAnimalStartingWeight); 
+        Sheep(int _currWeight); 
 
         /**
          * @brief dtor
@@ -407,7 +407,7 @@ class Horse : public Herbivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Horse(int _currWeight = DefaultAnimalStartingWeight); 
+        Horse(int _currWeight); 
 
         /**
          * @brief dtor
@@ -450,7 +450,7 @@ class Rabbit : public Herbivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Rabbit(int _currWeight = DefaultAnimalStartingWeight); 
+        Rabbit(int _currWeight); 
 
         /**
          * @brief dtor
@@ -493,7 +493,7 @@ class Snake : public Carnivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Snake(int _currWeight = DefaultAnimalStartingWeight); 
+        Snake(int _currWeight); 
 
         /**
          * @brief dtor
@@ -536,7 +536,7 @@ class Chicken : public Omnivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Chicken(int _currWeight = DefaultAnimalStartingWeight); 
+        Chicken(int _currWeight); 
 
         /**
          * @brief dtor
@@ -579,7 +579,7 @@ class Duck : public Omnivore{
          * 
          * @param _currWeight       Starting Weight, default = 0
         */
-        Duck(int _currWeight = DefaultAnimalStartingWeight); 
+        Duck(int _currWeight); 
 
         /**
          * @brief dtor

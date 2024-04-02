@@ -14,5 +14,16 @@ int main(){
 
     Animal temp;
     temp.printConfig();
+    cout << endl;
+
+    Cow a;
+    Sheep b;
+    Horse c;
+    Rabbit d;
+    Snake e;
+    Chicken f;
+    Duck g;
+    cout << a << b << c << d << e << f << g;
+
     return 0;
 }

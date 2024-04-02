@@ -2,7 +2,7 @@
 #include "header/animal.hpp"
 
 /* Configuration Variables */
-map<string, int> Animal::configID;           // Animal Configuration Key: name, Value: id
+map<string, int> Animal::configID;           // Animal Configuration Key: name, Value: id. Id start from 0
 vector<string> Animal::configCode;           // Animal Configuration Codes
 vector<string> Animal::configName;           // Animal Configuration Names
 vector<string> Animal::configFoodType;       // Animal Configuration Food Types
@@ -61,7 +61,7 @@ ostream& operator<<(ostream& stream, const Animal& animal){
 }
 
 void Animal::AddAnimalConfig(int _id, string _code, string _name, string _foodtype, int _weightToHarvest, int _price){
-    configID[_name] = _id;
+    configID[_name] = _id - 1; // _id starts from 1, configID[] starts form 0
     configCode.push_back(_code);
     configName.push_back(_name);
     configFoodType.push_back(_foodtype);
@@ -97,7 +97,7 @@ void Animal::printConfig(){
     cout << setw(5) << "ID" << setw(10) << "Code" << setw(20) << "Name" << setw(15) << "Type" << setw(25) << "Weight to Harvest" << setw(10) << "Price" << endl;
     cout << "--------------------------------------------------------------------------------------" << endl;
     for(int i = 0; i < configID.size(); i++){
-        cout << setw(5) << i + 1 << setw(10) << configCode[i] << setw(20) << configName[i] 
+        cout << setw(5) << i << setw(10) << configCode[i] << setw(20) << configName[i] 
             << setw(15) << configFoodType[i] << setw(25) << configWeightToHarvest[i] 
             << setw(10) << configPrice[i] << endl;
     }
