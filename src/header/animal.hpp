@@ -3,23 +3,12 @@
 #define __ANIMAL_HPP__
 
 #include <iostream>
+#include <iomanip>
 #include <string>
+#include <map>
+#include <vector>
 #include "product.hpp"
 using namespace std;
-
-/* Global Variables for Default Values */
-const string DefaultAnimalFoodType = "ANY";
-const string DefaultAnimalFoodTypeHerbivore = "HERBIVORE";
-const string DefaultAnimalFoodTypeCarnivore = "CARNIVORE";
-const string DefaultAnimalFoodTypeOmnivore = "OMNIVORE";
-const string DefaultAnimalNameCow = "COW";
-const string DefaultAnimalNameSheep = "SHEEP";
-const string DefaultAnimalNameHorse = "HORSE";
-const string DefaultAnimalNameRabbit = "RABBIT";
-const string DefaultAnimalNameSnake = "SNAKE";
-const string DefaultAnimalNameChicken = "CHICKEN";
-const string DefaultAnimalNameDuck = "DUCK";
-const int DefaultAnimalStartingWeight = 0;
 
 /**
  * @brief Class Animal used by Peternak
@@ -37,7 +26,39 @@ class Animal{
         const int price;            // Animal price
         const string foodType;      // Animal Food type
         
+        /* Configuration Variables */
+        static map<string, int> configID;           // Animal Configuration Key: Code, Value: Animal Id
+        static vector<string> configCode;           // Animal Configuration Codes
+        static vector<string> configName;           // Animal Configuration Names
+        static vector<string> configFoodType;       // Animal Configuration Food Types
+        static vector<int> configWeightToHarvest;   // Animal Configuration Weights To Harvest
+        static vector<int> configPrice;             // Animal Configuration Prices
+
+        /* Default Values */
+        static string DefaultAnimalFoodType;
+        static string DefaultAnimalFoodTypeHerbivore;
+        static string DefaultAnimalFoodTypeCarnivore;
+        static string DefaultAnimalFoodTypeOmnivore;
+        static string DefaultAnimalNameCow;
+        static string DefaultAnimalNameSheep;
+        static string DefaultAnimalNameHorse;
+        static string DefaultAnimalNameRabbit;
+        static string DefaultAnimalNameSnake;
+        static string DefaultAnimalNameChicken;
+        static string DefaultAnimalNameDuck;
+        static int DefaultAnimalStartingWeight;
+        
     public:
+        /**
+         * @brief Animal ctor
+         * 
+         * \note For actual object dont use this ctor.
+         * \note This is for calling initial game function.
+         * \note e.g. reading config files.
+         * 
+         */
+        Animal();
+
         /**
          * @brief ctor user defined.
          * 
@@ -104,6 +125,18 @@ class Animal{
         void setCurrWeight(int _weight);
 
         /**
+         * @brief Add new Configuration for Animal
+         * 
+         * @param _id               Animal id
+         * @param _code             Animal code
+         * @param _name             Animal name
+         * @param _foodType         Food type 
+         * @param _weightToHarvest  Minimum weight for animal to be harvested
+         * @param _price            Price when sold/buy
+         */
+        void AddAnimalConfig(int _id, string _code, string _name, string _foodtype, int _weightToHarvest, int _price);
+
+        /**
          * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
          * 
          * @param os        output stream
@@ -113,15 +146,17 @@ class Animal{
         */
         friend ostream& operator<<(ostream& stream, const Animal& animal);
         
-        /** TODO: Implement Delete Food
+        static void setAnimalConfig();
+
+        /** 
          * @brief Feed the animal some food.
-         * 
+         * TODO: Implement Delete Food
         */
         virtual void feedFood(Product& food);
 
-        /** TODO: Implement Code
+        /** 
          * @brief Harvest the animal.
-         * 
+         * TODO: Implement Code
         */
         virtual void harvest();
 
@@ -130,6 +165,12 @@ class Animal{
          * 
         */
         virtual void printInfo();
+
+        /**
+         * @brief Debuging tool, shows all configuration variables
+         * 
+        */
+        void printConfig();
 };
 
 /**
@@ -269,16 +310,18 @@ class Omnivore : public Animal{
 */
 class Cow : public Herbivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Cow();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Cow id
-         * @param _code             Cow code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Cow(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Cow(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -310,16 +353,18 @@ class Cow : public Herbivore{
 */
 class Sheep : public Herbivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Sheep();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Sheep id
-         * @param _code             Sheep code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Sheep(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Sheep(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -351,16 +396,18 @@ class Sheep : public Herbivore{
 */
 class Horse : public Herbivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Horse();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Horse id
-         * @param _code             Horse code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Horse(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Horse(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -392,16 +439,18 @@ class Horse : public Herbivore{
 */
 class Rabbit : public Herbivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Rabbit();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Rabbit id
-         * @param _code             Rabbit code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Rabbit(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Rabbit(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -433,16 +482,18 @@ class Rabbit : public Herbivore{
 */
 class Snake : public Carnivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Snake();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Snake id
-         * @param _code             Snake code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Snake(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Snake(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -474,16 +525,18 @@ class Snake : public Carnivore{
 */
 class Chicken : public Omnivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Chicken();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Chicken id
-         * @param _code             Chicken code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Chicken(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Chicken(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -515,16 +568,18 @@ class Chicken : public Omnivore{
 */
 class Duck : public Omnivore{
     public:
-    /**
+        /**
+         * @brief ctor
+         * 
+        */
+        Duck();
+
+        /**
          * @brief ctor user defined.
          * 
-         * @param _id               Duck id
-         * @param _code             Duck code
-         * @param _weightToHarvest  Minimum weight to be harvested
-         * @param _price            Price when sold/buy
          * @param _currWeight       Starting Weight, default = 0
         */
-        Duck(int _id, string _code, int _weightToHarvest, int _price, int _currWeight = DefaultAnimalStartingWeight); 
+        Duck(int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
