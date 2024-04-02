@@ -1,7 +1,7 @@
-// File: game.cpp
 #include "header/game.hpp"
 #include "header/gameException.hpp"
 #include "header/animal.hpp"
+#include "header/printColor.hpp"
 
 using namespace std;
 
@@ -30,7 +30,7 @@ void Game::readConfigAnimal(){
 
         temp.AddAnimalConfig(id, code, name, foodType, weightToHarvest, price);
     }
-
+    startTextGreen();
     cout << "Finished Reading Animal Configuration" << endl;
     configFile.close();    
 }
@@ -57,6 +57,7 @@ void Game::readConfigPlant(){
         // TODO: STORE CONFIGURATION TO PLANT CLASS
     }
     
+    startTextGreen();
     cout << "Finished Reading Plant Configuration" << endl;
     configFile.close();    
 }
@@ -83,6 +84,7 @@ void Game::readConfigProduct(){
         // TODO: STORE CONFIGURATION TO PLANT CLASS
     }
     
+    startTextGreen();
     cout << "Finished Reading Product Configuration" << endl;
     configFile.close();    
 }
@@ -94,8 +96,10 @@ void Game::readConfigRecipe(){
     }
     
     // TODO: READ RECIPE CONFIGURATION 
+    startTextYellow();
     cout << "Warning: Recipe configuration is not been implemented" << endl;
 
+    startTextGreen();
     cout << "Finished Reading Recipe Configuration" << endl;
     configFile.close(); 
 }
@@ -135,6 +139,7 @@ void Game::readConfigMisc(){
 
     // TODO: Store Variables To Class
     
+    startTextGreen();
     cout << "Finished Reading Misc Configuration" << endl;
     configFile.close();    
 }
@@ -149,7 +154,9 @@ int Game::readConfig(){
         return 0;
         
     } catch (FileOpenFailedException e){
+        startTextRed();
         cout << e.what() << endl;
+        resetTextColor();
         return 1;
     }
 }

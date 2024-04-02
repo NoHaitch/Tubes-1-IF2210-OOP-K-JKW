@@ -1,4 +1,3 @@
-// File: animal.hpp
 #ifndef __ANIMAL_HPP__
 #define __ANIMAL_HPP__
 

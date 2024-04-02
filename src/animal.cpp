@@ -1,4 +1,3 @@
-// File: animal.cpp
 #include "header/animal.hpp"
 
 /* Configuration Variables */

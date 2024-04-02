@@ -1,4 +1,3 @@
-// File: product.hpp
 #ifndef __PRODUCT_HPP__
 #define __PRODUCT_HPP__
 

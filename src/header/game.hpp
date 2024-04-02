@@ -1,4 +1,3 @@
-// File: game.hpp
 #ifndef __GAME_HPP__
 #define __GAME_HPP__
 

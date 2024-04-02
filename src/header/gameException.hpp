@@ -1,4 +1,3 @@
-// File: gameExecption.hpp
 #ifndef __GAME_EXECPTION_HPP__
 #define __GAME_EXECPTION_HPP__
 
