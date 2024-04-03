@@ -15,6 +15,10 @@ void startTextYellow(){
     cout << "\033[1;33m";
 }
 
+void startTextBlue(){
+    cout << "\033[1;34m";
+}
+
 void resetTextColor(){
     cout << "\033[0m";
 }

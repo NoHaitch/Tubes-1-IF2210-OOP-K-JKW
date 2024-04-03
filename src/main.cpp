@@ -7,25 +7,22 @@
 using namespace std;
 
 int main(){
+    // Starting a Game
     Game game;
+
+    // Reading Configuration
+    startTextBlue();
+    cout << "Reading Configuration ..." << endl;
     if(game.readConfig() == 1){
         cerr << "Config Reading Failed" << endl;
         return 0;
     }
     resetTextColor();
 
-    Animal temp;
-    temp.printConfig();
-    cout << endl;
-
-    Cow a;
-    Sheep b;
-    Horse c;
-    Rabbit d;
-    Snake e;
-    Chicken f;
-    Duck g;
-    cout << a << b << c << d << e << f << g;
+    // Initialize Program State
+    if(game.getGameStateIO() == 1){
+        return 0;
+    }
 
     return 0;
 }
