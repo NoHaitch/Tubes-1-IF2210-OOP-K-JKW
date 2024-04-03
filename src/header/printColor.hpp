@@ -11,6 +11,8 @@ void startTextGreen();
 
 void startTextYellow();
 
+void startTextBlue();
+
 void resetTextColor();
 
 #endif

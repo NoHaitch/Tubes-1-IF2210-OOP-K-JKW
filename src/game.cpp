@@ -2,12 +2,27 @@
 #include "header/gameException.hpp"
 #include "header/animal.hpp"
 #include "header/printColor.hpp"
+#include "header/utils.hpp"
 
 using namespace std;
 
-Game::Game(){}
+Game::Game(){
+    cout << endl;
+    cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
+    startTextBlue();
+    cout << setw(32) << "Game Started" << endl;
+    resetTextColor();
+    cout << setfill('=') << setw(50)  << "" << endl << endl << setfill(' ');
+}
 
-Game::~Game(){}
+Game::~Game(){
+    cout << endl;
+    cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
+    startTextRed();
+    cout << setw(31) << "Game Exited" << endl;
+    resetTextColor();
+    cout << setfill('=') << setw(50)  << "" << endl << endl << setfill(' ');
+}
 
 void Game::readConfigAnimal(){
     ifstream configFile("config/animal.txt");
@@ -31,7 +46,7 @@ void Game::readConfigAnimal(){
         temp.AddAnimalConfig(id, code, name, foodType, weightToHarvest, price);
     }
     startTextGreen();
-    cout << "Finished Reading Animal Configuration" << endl;
+    cout << " > Finished Reading Animal Configuration" << endl;
     configFile.close();    
 }
 
@@ -45,20 +60,20 @@ void Game::readConfigPlant(){
     string code;            // Plant code
     string name;            // Plant name
     string type;            // Plant type
-    int weightToHarvest;    // Plant minimum weight for plant to be harvested
+    int durationToHarvest;  // Plant minimum weight for plant to be harvested
     int price;              // Plant price
 
     string line; 
     while (getline(configFile, line)) {
         istringstream iss(line);
-        iss >> id >> code >> name >> type >> weightToHarvest >> price;
+        iss >> id >> code >> name >> type >> durationToHarvest >> price;
         
         
         // TODO: STORE CONFIGURATION TO PLANT CLASS
     }
     
     startTextGreen();
-    cout << "Finished Reading Plant Configuration" << endl;
+    cout << " > Finished Reading Plant Configuration" << endl;
     configFile.close();    
 }
 
@@ -85,7 +100,7 @@ void Game::readConfigProduct(){
     }
     
     startTextGreen();
-    cout << "Finished Reading Product Configuration" << endl;
+    cout << " > Finished Reading Product Configuration" << endl;
     configFile.close();    
 }
 
@@ -96,11 +111,11 @@ void Game::readConfigRecipe(){
     }
     
     // TODO: READ RECIPE CONFIGURATION 
-    startTextYellow();
+    resetTextColor();
     cout << "Warning: Recipe configuration is not been implemented" << endl;
 
     startTextGreen();
-    cout << "Finished Reading Recipe Configuration" << endl;
+    cout << " > Finished Reading Recipe Configuration" << endl;
     configFile.close(); 
 }
 
@@ -140,7 +155,7 @@ void Game::readConfigMisc(){
     // TODO: Store Variables To Class
     
     startTextGreen();
-    cout << "Finished Reading Misc Configuration" << endl;
+    cout << " > Finished Reading Misc Configuration" << endl;
     configFile.close();    
 }
 
@@ -151,6 +166,7 @@ int Game::readConfig(){
         readConfigProduct();
         readConfigRecipe();
         readConfigMisc();
+        cout << endl;
         return 0;
         
     } catch (FileOpenFailedException e){
@@ -159,4 +175,44 @@ int Game::readConfig(){
         resetTextColor();
         return 1;
     }
+}
+
+int Game::getGameStateIO(){
+    string input;
+    int choice = 0;
+    while(1){
+        cout << setfill('=') << setw(21);
+        startTextBlue();
+        cout << " Menu "; 
+        resetTextColor();
+        cout << setw(15) << "" << endl << setfill(' ');
+        cout << "Choose the menu number:" << endl;
+        cout << "1. New Game" << endl;
+        cout << "2. Load Save" << endl;
+        cout << "3. Exit" << endl;
+        startTextGreen();
+        cout << "> ";
+        cin >> input;
+        resetTextColor();
+
+        if(isNumber(input)){
+            choice = stoi(input);
+        }
+
+        if(choice == 1 || choice == 2 || choice == 3){
+            break;
+        } else{
+            cout << "Please input a valid menu number\n" << endl;
+        }
+    }
+    
+    if(choice == 1){
+        // TODO: New Game
+    } else if(choice == 2){
+        // TODO: Load Save
+    } else{
+        return 1;
+    }
+
+    return 0;
 }

@@ -8,7 +8,7 @@ vector<string> Animal::configFoodType;       // Animal Configuration Food Types
 vector<int> Animal::configWeightToHarvest;   // Animal Configuration Weights To Harvest
 vector<int> Animal::configPrice;             // Animal Configuration Prices
 
-/* Global Variables for Default Values */
+/* Animal Default Values */
 string Animal::DefaultAnimalFoodType = "ANY";
 string Animal::DefaultAnimalFoodTypeHerbivore = "HERBIVORE";
 string Animal::DefaultAnimalFoodTypeCarnivore = "CARNIVORE";
