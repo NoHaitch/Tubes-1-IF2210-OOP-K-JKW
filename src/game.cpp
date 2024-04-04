@@ -45,7 +45,6 @@ void Game::readConfigAnimal(){
 
         temp.AddAnimalConfig(id, code, name, foodType, weightToHarvest, price);
     }
-    startTextGreen();
     cout << " > Finished Reading Animal Configuration" << endl;
     configFile.close();    
 }
@@ -72,7 +71,6 @@ void Game::readConfigPlant(){
         // TODO: STORE CONFIGURATION TO PLANT CLASS
     }
     
-    startTextGreen();
     cout << " > Finished Reading Plant Configuration" << endl;
     configFile.close();    
 }
@@ -99,7 +97,6 @@ void Game::readConfigProduct(){
         // TODO: STORE CONFIGURATION TO PLANT CLASS
     }
     
-    startTextGreen();
     cout << " > Finished Reading Product Configuration" << endl;
     configFile.close();    
 }
@@ -114,7 +111,6 @@ void Game::readConfigRecipe(){
     resetTextColor();
     cout << "Warning: Recipe configuration is not been implemented" << endl;
 
-    startTextGreen();
     cout << " > Finished Reading Recipe Configuration" << endl;
     configFile.close(); 
 }
@@ -154,19 +150,25 @@ void Game::readConfigMisc(){
 
     // TODO: Store Variables To Class
     
-    startTextGreen();
     cout << " > Finished Reading Misc Configuration" << endl;
     configFile.close();    
 }
 
 int Game::readConfig(){
+    startTextYellow();
+    cout << "Reading Configuration ..." << endl;
+    resetTextColor();
+
     try{
         readConfigPlant();
         readConfigAnimal();
         readConfigProduct();
         readConfigRecipe();
         readConfigMisc();
-        cout << endl;
+
+        startTextBlue();
+        cout << "Reading Configuration Succesfull\n" << endl;
+        resetTextColor();
         return 0;
         
     } catch (FileOpenFailedException e){
@@ -182,7 +184,7 @@ int Game::getGameStateIO(){
     int choice = 0;
     while(1){
         cout << setfill('=') << setw(21);
-        startTextBlue();
+
         cout << " Menu "; 
         resetTextColor();
         cout << setw(15) << "" << endl << setfill(' ');
@@ -215,4 +217,92 @@ int Game::getGameStateIO(){
     }
 
     return 0;
+}
+
+void Game::saveGame(string path){ 
+    if (path.find("//") != string::npos || path.find("//") == 0) {
+        throw FilePathException();
+    }
+
+    // Check if the path ends with ".txt"
+    if (path.size() < 4 || path.substr(path.size() - 4) != ".txt") {
+        throw FileFormatException("File must be in .txt format");
+    }
+
+    // Check if path contains direcotry
+    bool hasDirectory = (path.find("/") != string::npos || path.find("\\") != string::npos);
+
+    // Check if directory exists
+    if (hasDirectory) {
+        string directoryPath = path.substr(0, path.find_last_of("/\\"));
+        if (!filesystem::exists(directoryPath)) {
+            throw DirectoryNotFoundException("Lokasi berkas tidak ditemukan");
+        }
+    }
+
+    // Saving Game State
+    ofstream saveFile(path);
+
+    saveFile << "TEST SAVING";
+
+    saveFile.close();
+}
+
+void Game::saveGameIO(){ 
+    string path;
+    cout << "Masukkan lokasi berkas state: ";
+    startTextGreen();
+    cin >> path;
+    resetTextColor();
+
+    try{
+        saveGame(path);
+        cout << "State berhasil disimpan" << endl;
+    } catch (FilePathException e){
+        startTextRed();
+        cout << e.what() << endl;
+        resetTextColor();
+    } catch (FileFormatException e){
+        startTextRed();
+        cout << e.what() << endl;
+        resetTextColor();
+    } catch (DirectoryNotFoundException e){
+        startTextRed();
+        cout << e.what() << endl;
+        resetTextColor();
+
+        string input;
+        cout << "\nApakah Anda ingin membuat folder secara otomatis (y/n)? ";
+        startTextGreen();
+        cin >> input;
+        resetTextColor();
+        if(input == "y"){
+            try{
+                makeDirectory(path);
+                saveGame(path);
+                cout << "State berhasil disimpan" << endl;
+            } catch (DirectoryCreationFailedException e1){
+                startTextRed();
+                cout << e1.what() << endl;
+                resetTextColor();
+            }
+        } else{
+            cout << "Perintah Save Dibatalkan" << endl;
+        }
+    }
+
+
+}
+
+void Game::makeDirectory(string path){
+    string directoryPath = path.substr(0, path.find_last_of("/\\"));
+
+    try {
+        string directoryPath = path.substr(0, path.find_last_of("/\\"));
+        
+        filesystem::create_directories(directoryPath);
+
+    } catch (const exception& e) {
+        throw DirectoryCreationFailedException();
+    }
 }

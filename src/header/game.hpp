@@ -4,11 +4,13 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <fstream>
-#include <sstream>
 #include <vector>
 #include <stdlib.h>
 #include <ctype.h>
+
+#include <fstream>
+#include <sstream>
+#include <filesystem>
 
 using namespace std;
 
@@ -70,6 +72,30 @@ class Game{
          * 
         */
         int getGameStateIO();
+
+        /**
+         * @brief Save game state
+         * \note Doesn't check if the new save overwrite an older save
+         * 
+         * @param path 
+        */
+        void saveGame(string path);
+
+        /**
+         * @brief Save game state with Input Output
+         * \note will ask for file path
+         * 
+         * @param path 
+        */
+        void saveGameIO();
+
+    private:
+        /**
+         * @brief Create the directory, but not the file for the path
+         * 
+         * @param path 
+        */
+        void makeDirectory(string path);
 };
 
 #endif
