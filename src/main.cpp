@@ -11,18 +11,19 @@ int main(){
     Game game;
 
     // Reading Configuration
-    startTextBlue();
-    cout << "Reading Configuration ..." << endl;
     if(game.readConfig() == 1){
         cerr << "Config Reading Failed" << endl;
         return 0;
     }
     resetTextColor();
 
-    // Initialize Program State
-    if(game.getGameStateIO() == 1){
-        return 0;
-    }
+    // // Initialize Program State
+    // if(game.getGameStateIO() == 1){
+    //     return 0;
+    // }
+
+    
+    game.saveGameIO();
 
     return 0;
 }
