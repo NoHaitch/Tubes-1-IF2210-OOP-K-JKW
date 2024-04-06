@@ -5,25 +5,25 @@
 #include <string>
 using namespace std;
 
-class FileOpenFailedException : public exception {
+class FileNotFoundException : public exception {
     private:
         string message;
 
     public:
-        FileOpenFailedException() : message("Failed to open File") {}
-        FileOpenFailedException(string msg) : message(msg) {}
+        FileNotFoundException() : message("Failed to open File") {}
+        FileNotFoundException(string msg) : message(msg) {}
         string what () {
             return message;
         }
 };
 
-class FilePathException : public exception {
+class FileBadPathException : public exception {
     private:
         string message;
 
     public:
-        FilePathException() : message("File path is not valid") {}
-        FilePathException(string msg) : message(msg) {}
+        FileBadPathException() : message("File path is not valid") {}
+        FileBadPathException(string msg) : message(msg) {}
         string what () {
             return message;
         }
@@ -36,6 +36,18 @@ class FileFormatException : public exception {
     public:
         FileFormatException() : message("File format is not valid") {}
         FileFormatException(string msg) : message(msg) {}
+        string what () {
+            return message;
+        }
+};
+
+class FileReadingFailedException : public exception {
+    private:
+        string message;
+
+    public:
+        FileReadingFailedException() : message("File reading failed") {}
+        FileReadingFailedException(string msg) : message(msg) {}
         string what () {
             return message;
         }
@@ -58,7 +70,7 @@ class DirectoryCreationFailedException : public exception {
         string message;
 
     public:
-        DirectoryCreationFailedException() : message("Creating directory failed, make sure path is correct") {}
+        DirectoryCreationFailedException() : message("Creating directory failed, path is not correct") {}
         DirectoryCreationFailedException(string msg) : message(msg) {}
         string what () {
             return message;

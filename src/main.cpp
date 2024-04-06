@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace std;
-
+    
 int main(){
     // Starting a Game
     Game game;
@@ -17,13 +17,7 @@ int main(){
     }
     resetTextColor();
 
-    // // Initialize Program State
-    // if(game.getGameStateIO() == 1){
-    //     return 0;
-    // }
-
+    game.getGameStateIO();
     
-    game.saveGameIO();
-
     return 0;
 }
