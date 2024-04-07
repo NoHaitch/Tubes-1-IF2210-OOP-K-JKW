@@ -4,7 +4,7 @@
 #include "header/plant.hpp"
 #include "header/printColor.hpp"
 #include "header/utils.hpp"
-
+#include "header/product.hpp"
 using namespace std;
 
 Game::Game(){
@@ -357,7 +357,8 @@ void Game::readConfigPlant(){
     }
     
     cout << " > Finished Reading Plant Configuration" << endl;
-    configFile.close();    
+    configFile.close();
+    temp.~Plant();
 }
 
 void Game::readConfigProduct(){
@@ -379,7 +380,8 @@ void Game::readConfigProduct(){
         istringstream iss(line);
         iss >> id >> code >> name >> type >> origin >> addedWeight >> price;
         
-        // TODO: STORE CONFIGURATION TO PLANT CLASS
+        Product temp;
+        temp.addProductConfig(id, code, type, name, origin, addedWeight, price);
     }
     
     cout << " > Finished Reading Product Configuration" << endl;
@@ -392,7 +394,7 @@ void Game::readConfigRecipe(){
         throw FileNotFoundException("Failed to open recipe.txt");
     }
     
-    // TODO: READ RECIPE CONFIGURATION 
+    // TODO: READ RECIPE CONFIGURATION
     resetTextColor();
     cout << "Warning: Recipe configuration is not been implemented" << endl;
 

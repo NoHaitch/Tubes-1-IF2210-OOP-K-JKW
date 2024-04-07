@@ -12,6 +12,16 @@ const string DefaultProductTypeAnimal = "PRODUCT_ANIMAL";
 
 class Product {
     protected:
+        // Global variable, diambil dari file config
+        static vector <string> productCodeList; // Digunakan code 3 char karena parameter unik
+        static map <string, int> productIDMap; // <code, map>
+        static map <string, string> productTypeMap; // <code, productType>
+        static map <string, string> productNameMap; // <code, productName>
+        static map <string, string> productOriginMap; // <code, productOrigin>
+        static map <string, int> productAddedWeightMap; // <code, addedWeight>
+        static map <string, int> productPriceMap; // <code, price>
+
+
         int id;                 // Product id
         string code;            // Product code
         string name;            // Product name
@@ -21,7 +31,41 @@ class Product {
         const int price;        // Product price
     
     public:
+        /**
+         * @brief Add product configuration dari file
+         * @param _id
+         * @param _code
+         * @param _type
+         * @param _name
+         * @param _origin
+         * @param _addedWeight
+         * @param _price
+         */
+        static void addProductConfig(int _id, string _code, string _type, string _name, string _origin, int _addedWeight, int _price);
+
+
+        /**
+         * @brief Default ctor product
+         * @note hanya untuk inisialisasi parse config file
+         */
         Product();
+
+        /**
+         * @brief ctor product
+         * @param _id Product id
+         * @param _code 3 characters product code
+         * @param _type Product type
+         * @param _name Product name
+         * @param _origin Product origin
+         * @param _addedWeight Product added weight
+         * @param _price Product price
+         */
+        Product(int _id, string _code, string _type, string _name, string _origin, int _addedWeight, int _price);
+
+
+        /**
+         * @brief dtor produk
+         */
         ~Product();
 
         /**
