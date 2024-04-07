@@ -1,6 +1,7 @@
 #include "header/game.hpp"
 #include "header/gameException.hpp"
 #include "header/animal.hpp"
+#include "header/plant.hpp"
 #include "header/printColor.hpp"
 #include "header/utils.hpp"
 
@@ -344,14 +345,15 @@ void Game::readConfigPlant(){
     string type;            // Plant type
     int durationToHarvest;  // Plant minimum weight for plant to be harvested
     int price;              // Plant price
+    string line;
 
-    string line; 
+    Plant temp;
     while (getline(configFile, line)) {
         istringstream iss(line);
         iss >> id >> code >> name >> type >> durationToHarvest >> price;
         
-        
-        // TODO: STORE CONFIGURATION TO PLANT CLASS
+        temp.addPlantConfig(id, code, type, name, durationToHarvest, price);
+        // Tidak perlu try catch karena config pasti valid
     }
     
     cout << " > Finished Reading Plant Configuration" << endl;

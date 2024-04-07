@@ -2,21 +2,39 @@
 #define TANAMAN
 
 #include <string>
+#include <iostream>
+#include <map>
+#include <vector>
+using namespace std;
 
 class Plant {
 protected:
+    // Global variable, diambil dari file config
+    static vector <string> plantCodeList; // Digunakan code 3 char karena parameter unik
+    static map <string, int> plantIDMap; // <code, map>
+    static map <string, string> plantTypeMap; // <code, plantType>
+    static map <string, string> plantNameMap; // <code, plantName>
+    static map <string, int> plantHarvestDurationMap; // <code, harvestDuration>
+    static map <string, int> plantPriceMap; // <code, price>
+
     int id;                         // plant ID
     string code;                    // 3 characters plant code
     const string plantType;         // Plant type (Material Plant, Food Plant)
     string plantName;               // Plant name
-    int currentDuration = 0;            // Durasi saat ini sebelum bisa di-harvest, default 0
+    int currentDuration = 0;        // Durasi saat ini sebelum bisa di-harvest, default 0
     const int harvestDuration;      // Durasi yang dibutuhkan untuk bisa di-harvest
     const int price;                // Harga jual tanaman
 
 public:
     /**
+     * @brief default ctor plant
+     * @note hanya untuk inisialisasi parse config file
+     */
+    Plant();
+
+    /**
      * @brief ctor plant
-     * @param _id    Plant id, static, auto generated
+     * @param _id    Plant id
      * @param _code  3 characters plant code
      * @param _plantType Plant type
      * @param _plantName Plant name
@@ -85,12 +103,6 @@ public:
     void setCode(string _code);
 
     /**
-     * @brief Setter set plant type
-     * @param _plantType plant type (Material Plant, Food Plant)
-     */
-    void setPlantType(string _plantType);
-
-    /**
      * @brief Setter set plant name
      * @param _plantName plant name
      */
@@ -103,25 +115,29 @@ public:
     void setCurrentDuration(int _currentDuration);
 
     /**
-     * @brief Setter set harvest duration
-     * @param _harvestDuration time needed to harvest
+     * @brief print print semua informasi mengenai plant
      */
-    void setHarvestDuration(int _harvestDuration);
+    void printInfo();
 
     /**
-     * @brief Setter set price
-     * @param _price plant price
+     * @brief melakukan parsing config dari file, dan menyimpannya di static variabel kelas
      */
-    void setPrice(int _price);
+     void static addPlantConfig(int _id, string _code, string _plantType, string _plantName, int _harvestDuration, int _price);
 
-    /**
-     * @brief print all information about plant
-     */
-    virtual void printInfo();
+     /**
+      * @brief usia tanaman bertambah 1
+      */
+     void grow();
+
+     /**
+      * @brief Cek apakah tanaman sudah bisa di-harvest atau belum
+      * return true, currentDuration >= harvestDuration
+      */
+     bool isReadyToHarvest();
 };
 
 /**
- * @brief Class of Material Plant, type of Plant
+ * @brief Kelas dari Material Plant, type of Plant
  */
 class MaterialPlant : public Plant {
 public:
@@ -132,6 +148,7 @@ public:
      * @param _plantName Plant name
      * @param _harvestDuration Durasi yang dibutuhkan untuk bisa di-harvest
      * @param _price Harga jual tanaman
+     * Memiliki berat untuk digunakan di product
      */
     MaterialPlant(int _id, string _code, string _plantName, int _harvestDuration, int _price);
 
@@ -139,15 +156,10 @@ public:
      * @brief dtor Material Plant
      */
     ~MaterialPlant();
-
-    /**
-     * @brief print all information about material plant
-     */
-     virtual void printInfo() override;
 };
 
 /**
- * @brief Class of Food Plant, type of Plant
+ * @brief Kelas dari Food Plant, type of Plant
  */
 class FoodPlant : public Plant {
 public:
@@ -158,6 +170,7 @@ public:
      * @param _plantName Plant name
      * @param _harvestDuration Durasi yang dibutuhkan untuk bisa di-harvest
      * @param _price Harga jual tanaman
+     * Tidak memiliki berat. PlantType FoodPlant
      */
     FoodPlant(int _id, string _code, string _plantName, int _harvestDuration, int _price);
 
@@ -165,94 +178,6 @@ public:
      * @brief dtor Food Plant
      */
     ~FoodPlant();
-
-    /**
-     * @brief print all information about food plant
-     */
-    virtual void printInfo() override;
 };
 
-
-/**
- * @brief Class of Teak Tree, derived from Material Plant
- * */
-class TeakTree : public MaterialPlant {
-public:
-    /**
-     * @brief ctor Teak Tree
-     * @param _id    Plant id
-     * @param _code  3 characters plant code
-     * @param _plantName Plant name
-     * @param _harvestDuration Durasi yang dibutuhkan untuk bisa di-harvest
-     * @param _price Harga jual tanaman
-     */
-    TeakTree(int _id, string _code, string _plantName, int _harvestDuration, int _price);
-
-    /**
-     * @brief dtor Teak Tree
-     */
-    ~TeakTree();
-
-    /**
-     * @brief print all information about teak tree
-     */
-     void printInfo() override;
-};
-
-
-/**
- * @brief Class of Sandalwood Tree, derived from Material Plant
- */
-class SandalwoodTree : public MaterialPlant {
-public:
-    /**
-     * @brief ctor Sandalwood Tree
-     * @param _id    Plant id
-     * @param _code  3 characters plant code
-     * @param _plantName Plant name
-     * @param _harvestDuration Durasi yang dibutuhkan untuk bisa di-harvest
-     * @param _price Harga jual tanaman
-     */
-    SandalwoodTree(int _id, string _code, string _plantName, int _harvestDuration, int _price);
-
-    /**
-     * @brief dtor Sandalwood Tree
-     */
-    ~SandalwoodTree();
-
-    /**
-     * @brief print all information about sandalwood tree
-     */
-     void printInfo() override;
-};
-
-class AloeTree : public MaterialPlant {
-public:
-    /**
-     * @brief ctor Aloe Tree
-     * @param _id    Plant id
-     * @param _code  3 characters plant code
-     * @param _plantName Plant name
-     * @param _harvestDuration Durasi yang dibutuhkan untuk bisa di-harvest
-     * @param _price Harga jual tanaman
-     */
-    AloeTree(int _id, string _code, string _plantName, int _harvestDuration, int _price);
-
-    /**
-     * @brief dtor Aloe Tree
-     */
-    ~AloeTree();
-
-    /**
-     * @brief print all information about aloe tree
-     */
-    void printInfo() override;
-};
-
-/**
- * @brief Class of Ironwood Tree, derived from Material Plant
- */
-class IronwoodTree : public MaterialPlant {
-    
-};
 #endif

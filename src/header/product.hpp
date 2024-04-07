@@ -36,7 +36,7 @@ class Product {
          * 
          * @param Product 
          * @return true if product is edible
-         * @return false if product is not edible
+         * @return false if product is not edible (addedWeight = 0)
         */
         friend bool isEdible(Product& Product);
 
