@@ -91,7 +91,7 @@ map<string, int> Plant::getPlantPriceMap() {
     return plantPriceMap;
 }
 
-MaterialPlant::MaterialPlant(int _id, std::string _plantName, int _harvestDuration, int _price) :
+MaterialPlant::MaterialPlant(int _id, string _code, std::string _plantName, int _harvestDuration, int _price) :
     Plant(_id, _code, "MATERIAL_PLANT", _plantName, _harvestDuration, _price) {}
 
 MaterialPlant::~MaterialPlant() {}
