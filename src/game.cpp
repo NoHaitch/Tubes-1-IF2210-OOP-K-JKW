@@ -292,7 +292,6 @@ void Game::saveGameIO(){
         }
     }
 
-
 }
 
 void Game::makeDirectory(string path){
@@ -322,12 +321,11 @@ void Game::readConfigAnimal(){
     string foodType;      // Animal Food type
 
     string line; 
-    Animal temp; 
     while (getline(configFile, line)) {
         istringstream iss(line);
         iss >> id >> code >> name >> foodType >> weightToHarvest >> price;
 
-        temp.AddAnimalConfig(id, code, name, foodType, weightToHarvest, price);
+        Animal::AddAnimalConfig(id, code, name, foodType, weightToHarvest, price);
     }
     cout << " > Finished Reading Animal Configuration" << endl;
     configFile.close();    
@@ -345,20 +343,17 @@ void Game::readConfigPlant(){
     string type;            // Plant type
     int durationToHarvest;  // Plant minimum weight for plant to be harvested
     int price;              // Plant price
+    
     string line;
-
-    Plant temp;
     while (getline(configFile, line)) {
         istringstream iss(line);
         iss >> id >> code >> name >> type >> durationToHarvest >> price;
         
-        temp.addPlantConfig(id, code, type, name, durationToHarvest, price);
-        // Tidak perlu try catch karena config pasti valid
+        Plant::addPlantConfig(id, code, type, name, durationToHarvest, price);
     }
     
     cout << " > Finished Reading Plant Configuration" << endl;
     configFile.close();
-    temp.~Plant();
 }
 
 void Game::readConfigProduct(){
@@ -380,8 +375,7 @@ void Game::readConfigProduct(){
         istringstream iss(line);
         iss >> id >> code >> name >> type >> origin >> addedWeight >> price;
         
-        Product temp;
-        temp.addProductConfig(id, code, type, name, origin, addedWeight, price);
+        Product::addProductConfig(id, code, type, name, origin, addedWeight, price);
     }
     
     cout << " > Finished Reading Product Configuration" << endl;

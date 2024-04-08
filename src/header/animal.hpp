@@ -29,9 +29,9 @@ class Animal{
 
         
         /* Configuration Variables */
-        static vector<string> configName;               // Animal Configuration Names
-        static map<string, int> configID;               // Animal Configuration Key: Name, Value: Animal Id, Id starts from 1.
-        static map<string, string> configCode;          // Animal Configuration Codes
+        static vector<string> configCode;               // Animal Configuration Codes
+        static map<string, int> configID;               // Animal Configuration Key: Code, Value: Animal Id, Id starts from 1.
+        static map<string, string> configName;          // Animal Configuration Names
         static map<string, string> configFoodType;      // Animal Configuration Food Types
         static map<string, int> configWeightToHarvest;  // Animal Configuration Weights To Harvest
         static map<string, int> configPrice;            // Animal Configuration Prices
@@ -56,11 +56,11 @@ class Animal{
         /**
          * @brief ctor user defined.
          * 
-         * @param _name              Animal Name
+         * @param _code              Animal Name
          * @param _foodType          Animal Food Type
-         * @param _currWeight       Starting Weight, default = 0
+         * @param _currWeight        Starting Weight, default = 0
         */
-        Animal(string _name, string _foodType, int _currWeight = DefaultAnimalStartingWeight); 
+        Animal(string _code, string _foodType, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -148,7 +148,43 @@ class Animal{
          * @param _weightToHarvest  Minimum weight for animal to be harvested
          * @param _price            Price when sold/buy
          */
-        void AddAnimalConfig(int _id, string _code, string _name, string _foodtype, int _weightToHarvest, int _price);
+        static void AddAnimalConfig(int _id, string _code, string _name, string _foodtype, int _weightToHarvest, int _price);
+
+        /**
+         * @brief Get Animal Code Configuration 
+         * @return animal code configuration
+         */
+        static vector<string> getAnimalCodeConfig();
+
+        /**
+         * @brief Get Animal ID Configuration 
+         * @return animal ID configuration
+         */
+        static map<string, int> getAnimalIDConfig();
+
+        /**
+         * @brief Get Animal Name Configuration 
+         * @return animal Name configuration
+         */
+        static map<string, string> getAnimalNameConfig();
+
+        /**
+         * @brief Get Animal Food Type Configuration 
+         * @return animal Food Type configuration
+         */
+        static map<string, string> getAnimalFoodTypeConfig();
+
+        /**
+         * @brief Get Animal Weight To Harvest Configuration 
+         * @return animal Weight To Harvest configuration
+         */
+        static map<string, int> getAnimalWeightToHarvestConfig();
+
+        /**
+         * @brief Get Animal Price Configuration 
+         * @return animal Price configuration
+         */
+        static map<string, int> getAnimalPriceConfig();
 
         /**
          * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
@@ -185,10 +221,10 @@ class Herbivore : public Animal{
         /**
          * @brief ctor user defined.
          * 
-         * @param name              Animal Name
+         * @param code              Animal Code
          * @param _currWeight       Starting Weight, default = 0
         */
-        Herbivore(string name, int _currWeight = DefaultAnimalStartingWeight); 
+        Herbivore(string code, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -224,10 +260,10 @@ class Carnivore : public Animal{
         /**
          * @brief ctor user defined.
          * 
-         * @param name              Animal Name
+         * @param code              Animal Code
          * @param _currWeight       Starting Weight, default = 0
         */
-        Carnivore(string name, int _currWeight = DefaultAnimalStartingWeight); 
+        Carnivore(string code, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor
@@ -263,10 +299,10 @@ class Omnivore : public Animal{
         /**
          * @brief ctor user defined.
          * 
-         * @param name              Animal Name
+         * @param code              Animal Code
          * @param _currWeight       Starting Weight, default = 0
         */
-        Omnivore(string name, int _currWeight = DefaultAnimalStartingWeight); 
+        Omnivore(string code, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
          * @brief dtor

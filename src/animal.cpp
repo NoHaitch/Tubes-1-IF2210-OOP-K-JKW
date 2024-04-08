@@ -7,9 +7,9 @@ const string Animal::DefaultAnimalFoodTypeCarnivore = "CARNIVORE";
 const string Animal::DefaultAnimalFoodTypeOmnivore = "OMNIVORE";
 
 /* Configuration Variables */
-vector<string> Animal::configName;               // Animal Configuration Names
-map<string, int> Animal::configID;               // Animal Configuration Key: Name, Value: Animal Id, Id starts from 1.
-map<string, string> Animal::configCode;          // Animal Configuration Codes
+vector<string> Animal::configCode;               // Animal Configuration Codes
+map<string, int> Animal::configID;               // Animal Configuration Key: Code, Value: Animal Id, Id starts from 1.
+map<string, string> Animal::configName;          // Animal Configuration Names
 map<string, string> Animal::configFoodType;      // Animal Configuration Food Types
 map<string, int> Animal::configWeightToHarvest;  // Animal Configuration Weights To Harvest
 map<string, int> Animal::configPrice;            // Animal Configuration Prices
@@ -24,12 +24,12 @@ Animal::Animal()
     price(0),
     foodType(""){}
 
-Animal::Animal(string _name, string _foodType, int _currWeight)     
-    : id(configID[_name]),
-    code(configCode[_name]),
-    name(_name),
-    weightToHarvest(configWeightToHarvest[_name]), 
-    price(configPrice[_name]),
+Animal::Animal(string _code, string _foodType, int _currWeight)     
+    : id(configID[_code]),
+    code(_code),
+    name(configName[_code]),
+    weightToHarvest(configWeightToHarvest[_code]), 
+    price(configPrice[_code]),
     foodType(_foodType)
 {
     currWeight = _currWeight;
@@ -58,12 +58,36 @@ bool Animal::isReadyToHarvest(){
 }
 
 void Animal::AddAnimalConfig(int _id, string _code, string _name, string _foodtype, int _weightToHarvest, int _price){
-    configName.push_back(_name);
-    configID[_name] = _id - 1; // _id starts from 1, configID[] starts form 0
-    configCode[_name] = _code;
-    configFoodType[_name] = _foodtype;
-    configWeightToHarvest[_name] = _weightToHarvest;
-    configPrice[_name] = _price;
+    configCode.push_back(_code);
+    configID[_code] = _id - 1; // _id starts from 1, configID[] starts form 0
+    configName[_code] = _name;
+    configFoodType[_code] = _foodtype;
+    configWeightToHarvest[_code] = _weightToHarvest;
+    configPrice[_code] = _price;
+}
+
+vector<string> Animal::getAnimalCodeConfig(){
+    return configCode;
+}
+
+map<string, int> Animal::getAnimalIDConfig(){
+    return configID;
+}
+
+map<string, string> Animal::getAnimalNameConfig(){
+    return configName;
+}
+
+map<string, string> Animal::getAnimalFoodTypeConfig(){
+    return configFoodType;
+}
+
+map<string, int> Animal::getAnimalWeightToHarvestConfig(){
+    return configWeightToHarvest;
+}
+
+map<string, int> Animal::getAnimalPriceConfig(){
+    return configPrice;
 }
 
 ostream& operator<<(ostream& stream, const Animal& animal){
@@ -94,18 +118,18 @@ void Animal::printConfig(){
     cout << setw(5) << "ID" << setw(10) << "Code" << setw(20) << "Name" << setw(15) << "Type" << setw(25) << "Weight to Harvest" << setw(10) << "Price" << endl;
     cout << "--------------------------------------------------------------------------------------" << endl;
     for(int i = 0; i < configID.size(); i++){
-        string animalName = configName[i];
-        cout << setw(5) << i << setw(10) << configCode[animalName] << setw(20) << animalName 
-            << setw(15) << configFoodType[animalName] << setw(25) << configWeightToHarvest[animalName] 
-            << setw(10) << configPrice[animalName] << endl;
+        string animalCode = configCode[i];
+        cout << setw(5) << i << setw(10) << animalCode << setw(20) << configName[animalCode] 
+            << setw(15) << configFoodType[animalCode] << setw(25) << configWeightToHarvest[animalCode] 
+            << setw(10) << configPrice[animalCode] << endl;
     }
     cout << "--------------------------------------------------------------------------------------" << endl;
 }
 
 /* CLASS Herbivore */
 
-Herbivore::Herbivore(string name, int _currWeight) 
-    : Animal(name, DefaultAnimalFoodTypeHerbivore, currWeight){}
+Herbivore::Herbivore(string code, int _currWeight) 
+    : Animal(code, DefaultAnimalFoodTypeHerbivore, currWeight){}
 
 Herbivore::~Herbivore(){}
 
@@ -134,8 +158,8 @@ void Herbivore::printInfo(){
 
 /* CLASS Carnivore */
 
-Carnivore::Carnivore(string name, int _currWeight) 
-    : Animal(name, DefaultAnimalFoodTypeCarnivore, currWeight){}
+Carnivore::Carnivore(string code, int _currWeight) 
+    : Animal(code, DefaultAnimalFoodTypeCarnivore, currWeight){}
 
 Carnivore::~Carnivore(){}
 
@@ -164,8 +188,8 @@ void Carnivore::printInfo(){
 
 /* CLASS Omnivore */
 
-Omnivore::Omnivore(string name, int _currWeight) 
-    : Animal(name, DefaultAnimalFoodTypeOmnivore, currWeight){}
+Omnivore::Omnivore(string code, int _currWeight) 
+    : Animal(code, DefaultAnimalFoodTypeOmnivore, currWeight){}
 
 Omnivore::~Omnivore(){}
 
