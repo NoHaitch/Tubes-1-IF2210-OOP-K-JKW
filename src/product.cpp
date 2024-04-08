@@ -52,3 +52,33 @@ bool isPlantProduct(Product& product){
 bool isAnimalProduct(Product& product){
     return product.type == DefaultProductTypeAnimal;
 }
+
+vector<string> getProductCodeListConfig(){
+    return Product::productCodeList;
+}
+
+map<string, int> getProductIDMapConfig(){
+    return Product::productIDMap;
+}
+
+map<string, string> getProductTypeMapConfig(){
+    return Product::productTypeMap;
+}
+
+map<string, string> getProductNameMapConfig(){
+    return Product::productNameMap;
+}
+
+map<string, string> getProductOriginMapConfig(){
+    return Product::productOriginMap;
+}
+
+map<string, int> getProductAddedWeightMapConfig(){
+    return Product::productAddedWeightMap;
+}
+
+map<string, int> getProductPriceMapConfig(){
+    return Product::productPriceMap;
+}
+
+Product::~Product(){}

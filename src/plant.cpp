@@ -67,6 +67,30 @@ bool Plant::isReadyToHarvest() {
     return this->currentDuration >= this->harvestDuration;
 }
 
+vector <string> Plant::getPlantCodeList() {
+    return plantCodeList;
+}
+
+map<string, int> Plant::getPlantIDMap() {
+    return plantIDMap;
+}
+
+map<string, string> Plant::getPlantTypeMap() {
+    return plantTypeMap;
+}
+
+map<string, string> Plant::getPlantNameMap() {
+    return plantNameMap;
+}
+
+map<string, int> Plant::getPlantHarvestDurationMap() {
+    return plantHarvestDurationMap;
+}
+
+map<string, int> Plant::getPlantPriceMap() {
+    return plantPriceMap;
+}
+
 MaterialPlant::MaterialPlant(int _id, std::string _code, std::string _plantName, int _harvestDuration, int _price) :
     Plant(_id, _code, "MATERIAL_PLANT", _plantName, _harvestDuration, _price) {}
 

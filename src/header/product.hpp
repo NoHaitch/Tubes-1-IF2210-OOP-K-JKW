@@ -101,6 +101,48 @@ class Product {
          * @return false if product is not an animal product
         */
         friend bool isAnimalProduct(Product& Product);
+
+        /**
+         * @brief Get Config : Product Code List
+         * @return vector<string> productCodeList
+         */
+        friend vector <string> getProductCodeListConfig();
+
+         /**
+          * @brief Get Config : Product ID Map
+          * @return map<string, int> productIDMap, <code, id>
+          */
+        friend map <string, int> getProductIDMapConfig();
+
+        /**
+         * @brief Get Config : Product Type Map, <code, productType>
+         * @return map<string, string> productTypeMap
+         */
+        friend map <string, string> getProductTypeMapConfig();
+
+        /**
+         * @brief Get Config : Product Name Map, <code, productName>
+         * @return map<string, string> productNameMap
+         */
+        friend map <string, string> getProductNameMapConfig();
+
+        /**
+         * @brief Get Config : Product Origin Map, <code, productOrigin>
+         * @return map<string, string> productOriginMap
+         */
+        friend map <string, string> getProductOriginMapConfig();
+
+        /**
+         * @brief Get Config : Product Added Weight Map, <code, addedWeight>
+         * @return map<string, int> productAddedWeightMap
+         */
+        friend map <string, int> getProductAddedWeightMapConfig();
+
+        /**
+         * @brief Get Config : Product Price Map, <code, price>
+         * @return map<string, int> productPriceMap
+         */
+        friend map <string, int> getProductPriceMapConfig();
 };
 
 #endif

@@ -134,6 +134,42 @@ public:
       * return true, currentDuration >= harvestDuration
       */
      bool isReadyToHarvest();
+
+     /**
+      * @brief Get Config: vector of plant code (main key)
+      * @return vector of plant code (string)
+      */
+      friend vector<string> getPlantCodeListConfig();
+
+      /**
+       * @brief Get Config: map of plant ID, <code, id>
+       * @return map of plant ID
+       */
+       friend map<string, int> getPlantIDMapConfig();
+
+       /**
+        * @brief Get Config: map of plant type, <code, plantType>
+        * @return map of plant type
+        */
+        friend map<string, string> getPlantTypeMapConfig();
+
+/**
+         * @brief Get Config: map of plant name, <code, plantName>
+         * @return map of plant name
+         */
+         friend map<string, string> getPlantNameMapConfig();
+
+         /**
+          * @brief Get Config: map of plant harvest duration, <code, harvestDuration>
+          * @return map of plant harvest duration
+          */
+          friend map<string, int> getPlantHarvestDurationMapConfig();
+
+          /**
+           * @brief Get Config: map of plant price, <code, price>
+           * @return map of plant price
+           */
+           friend map<string, int> getPlantPriceMapConfig();
 };
 
 /**
