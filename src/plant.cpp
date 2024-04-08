@@ -67,28 +67,34 @@ bool Plant::isReadyToHarvest() {
     return this->currentDuration >= this->harvestDuration;
 }
 
-vector <string> Plant::getPlantCodeList() {
-    return plantCodeList;
+vector <string> Plant::getPlantCodeListConfig() {
+    return Plant::plantCodeList;
 }
 
-map<string, int> Plant::getPlantIDMap() {
+map<string, int> Plant::getPlantIDMapConfig() {
     return plantIDMap;
 }
 
-map<string, string> Plant::getPlantTypeMap() {
+map<string, string> Plant::getPlantTypeMapConfig() {
     return plantTypeMap;
 }
 
-map<string, string> Plant::getPlantNameMap() {
+map<string, string> Plant::getPlantNameMapConfig() {
     return plantNameMap;
 }
 
-map<string, int> Plant::getPlantHarvestDurationMap() {
+map<string, int> Plant::getPlantHarvestDurationMapConfig() {
     return plantHarvestDurationMap;
 }
 
-map<string, int> Plant::getPlantPriceMap() {
+map<string, int> Plant::getPlantPriceMapConfig() {
     return plantPriceMap;
+}
+
+void Plant::printParsedConfig() {
+    for (int i = 0; i < Plant::plantCodeList.size(); i++) {
+        cout << Plant::plantCodeList[i] << " ";
+    }
 }
 
 MaterialPlant::MaterialPlant(int _id, string _code, std::string _plantName, int _harvestDuration, int _price) :
@@ -96,7 +102,7 @@ MaterialPlant::MaterialPlant(int _id, string _code, std::string _plantName, int 
 
 MaterialPlant::~MaterialPlant() {}
 
-FoodPlant::FoodPlant(int _id, std::string _plantName, int _harvestDuration, int _price) :
+FoodPlant::FoodPlant(int _id, string _code, std::string _plantName, int _harvestDuration, int _price) :
     Plant(_id, _code, "FRUIT_PLANT", _plantName, _harvestDuration, _price){}
 
 FoodPlant::~FoodPlant() {}

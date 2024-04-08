@@ -351,7 +351,7 @@ void Game::readConfigPlant(){
         
         Plant::addPlantConfig(id, code, type, name, durationToHarvest, price);
     }
-    
+    // Plant::printParsedConfig();
     cout << " > Finished Reading Plant Configuration" << endl;
     configFile.close();
 }
@@ -377,7 +377,8 @@ void Game::readConfigProduct(){
         
         Product::addProductConfig(id, code, type, name, origin, addedWeight, price);
     }
-    
+    // Product::printParsedConfig();
+
     cout << " > Finished Reading Product Configuration" << endl;
     configFile.close();    
 }
