@@ -186,7 +186,7 @@ public:
      * @param _price Harga jual tanaman
      * Memiliki berat untuk digunakan di product
      */
-    MaterialPlant(int _id, string _code, string _plantName, int _harvestDuration, int _price);
+    MaterialPlant(int _id, string _plantName, int _harvestDuration, int _price);
 
     /**
      * @brief dtor Material Plant
