@@ -44,16 +44,6 @@ class Animal{
 
     public:
         /**
-         * @brief Animal ctor
-         * 
-         * \note For actual object dont use this ctor.
-         * \note This is for calling initial game function.
-         * \note e.g. reading config files.
-         * 
-         */
-        Animal();
-
-        /**
          * @brief ctor user defined.
          * 
          * @param _code              Animal Name
@@ -61,6 +51,11 @@ class Animal{
          * @param _currWeight        Starting Weight, default = 0
         */
         Animal(string _code, string _foodType, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief cctor
+         */
+        Animal(const Animal& other);
 
         /**
          * @brief dtor
@@ -227,6 +222,11 @@ class Herbivore : public Animal{
         Herbivore(string code, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
+         * @brief cctor
+         */
+        Herbivore(const Herbivore& other);
+
+        /**
          * @brief dtor
         */
         ~Herbivore();   
@@ -266,6 +266,11 @@ class Carnivore : public Animal{
         Carnivore(string code, int _currWeight = DefaultAnimalStartingWeight); 
 
         /**
+         * @brief cctor
+         */
+        Carnivore(const Carnivore& other);
+
+        /**
          * @brief dtor
         */
         ~Carnivore();   
@@ -303,6 +308,11 @@ class Omnivore : public Animal{
          * @param _currWeight       Starting Weight, default = 0
         */
         Omnivore(string code, int _currWeight = DefaultAnimalStartingWeight); 
+
+        /**
+         * @brief cctor
+         */
+        Omnivore(const Omnivore& other);
 
         /**
          * @brief dtor
