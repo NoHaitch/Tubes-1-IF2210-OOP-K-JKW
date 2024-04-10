@@ -4,11 +4,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "animal.hpp"
-#include "plant.hpp"
-#include "building.hpp"
-#include "product.hpp"
+#include "game.hpp"
 #include "player.hpp"
+#include <any>
+
+using namespace std;
 
 // #include "Yang ngurus inventori"
 // #include "Player"
@@ -55,32 +55,48 @@ public:
     ~Shop();
 
     
+    //**************** Quantity Modifier *****************//
+    /**
+     * @brief Modified the Qty of Item with ID = id 
+     * 
+     * @param int _id
+     * @param int change        
+     * @param Shop& shop        
+     * @param bool isAdd 
+     */
+
+    void item_Qty_Modifier(int _id, int change, Shop& shop, bool isAdd);
+
+    
 
     /**
-     * @brief Add Qty of a specific item
+     * @brief Get Data from a number selected by user 
      * 
-     * @param 
+     * @param int _id
+     */
+
+    any get_Data(int _id);
+
+    /**
+     * @brief Get Price of the item with ID = id
+     * 
+     * @param int _id
      * 
      */
 
-    void Add_item_Qty();
+    int get_Price(int _id);
 
     /**
-     * @brief Decrease Qty of a specific item. Check if Qty > 0
+     * @brief Get id from item code
      * 
-     * @param 
      */
-
-
-    void Dec_item_Qty();
+    int get_ID_from_code(string code);
 
     /**
-     * @brief Get Data from a number selected by user
+     * @brief 
      * 
-     * @param int index
      */
 
-    void get_Data();
 
     //*************** Show Inventory *******************//
 
@@ -93,7 +109,17 @@ public:
     void Show_Shop_Inventory(string Role) const;
 
 
+   
+
+private:
     /**
+     * @brief Set the initial Qty of every object, Where Product and Building init Qty = 0, else Qty = infinite 
+     * 
+     * @param _Qty 
+     */
+    void set_Qty(int _Qty);
+
+     /**
      * @brief Show the needed Animal's vector data
      * 
      * \note only show Num. Name - Price
@@ -130,13 +156,91 @@ public:
     void Show_Building_Inventory();
 
 
-private:
-    /**
-     * @brief Set the initial Qty of every object, Where Product and Building init Qty = 0, else Qty = infinite 
-     * 
-     * @param _Qty 
-     */
-    void set_Qty(int _Qty);
+
+/*
+player p
+
+>> BELI
+
+role = getRole(p) (?)
+
+Show_Shop_Inventory(role)
+***** Output
+// Selamat datang di toko !
+// Berikut adalah barang yg bisa diakses -> Pisah sesuai role sesuai spek
+***** Format: Nama - Harga Gulden - Qty jika ada. Misal sudah ada yg jual product
+// 1. Cow - 6 Gulden
+// 2. Sheep - 5 Gulden
+...
+// 8. Teak Tree - 5 Gulden
+...
+// 16. Teak Wood - 9 Gulden - 0 (Tidak bisa dibeli)
+// 17. Sandalwood Wood - 8 Gulden - 10
+...
+
+gulden_now = p -> getWealth()
+***** contoh Output
+Uang anda: 100 Gulden
+
+empty_slot_now = storage.getNumElmt()
+***** contoh Output
+Slot penyimpanan tersedia: 10 slot
+
+int itemNumber;
+int quantity;
+
+Validasi sekali/sampe bener ? 
+
+if (Validate_buy(itemNumber, quantity) ){
+    //Ubah Qty
+    item_Qty_Modifier(itemNumber, quantity, shop(?), False)
+
+    //Update uang player
+    gulden_update = gulden_now - (getPrice(itemNumber)*quantity)
+    setWealth(gulden_update)
+
+     //Ambil data dengan itemNumber itu 
+    T = get_Data(itemNumber).drop(ID).drop(Qty)
+
+    output_update(gulden_update, quantity, T)
+
+
+   
+    -> Insert Elmt T
+}
+*/
+
+/*
+
+Player p
+
+>> JUAL
+
+role = getRole(p) (?)
+
+p -> printItemStorage()
+
+gulden_now = getWealth()
+
+n = getNumElmt();
+
+if n != 0 {
+    Item coordinat = ...
+
+        Data = ambil data per koordinat -> Code = getCode(Data) 
+
+        item_id = get_id_from_code(Code)
+
+        total += getPrice(item_id)
+        item_Qty_Modifier(item_id, 1, shop(?), True)
+
+    cout << total
+
+    setWealth(gulden_now + total)
+
+}
+
+*/
 
 
 
