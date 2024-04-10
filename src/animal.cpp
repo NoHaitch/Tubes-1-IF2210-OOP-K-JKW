@@ -16,14 +16,6 @@ map<string, int> Animal::configPrice;            // Animal Configuration Prices
 
 /* CLASS Animal */
 
-Animal::Animal()
-    : id(0),
-    code(""),
-    name(""),
-    weightToHarvest(0), 
-    price(0),
-    foodType(""){}
-
 Animal::Animal(string _code, string _foodType, int _currWeight)     
     : id(configID[_code]),
     code(_code),
@@ -34,6 +26,14 @@ Animal::Animal(string _code, string _foodType, int _currWeight)
 {
     currWeight = _currWeight;
 }
+
+Animal::Animal(const Animal& other)
+    : id(other.id),
+    code(other.code),
+    name(other.name),
+    weightToHarvest(other.weightToHarvest), 
+    price(other.price),
+    foodType(other.foodType){}
 
 Animal::~Animal(){}
 
@@ -131,6 +131,9 @@ void Animal::printConfig(){
 Herbivore::Herbivore(string code, int _currWeight) 
     : Animal(code, DefaultAnimalFoodTypeHerbivore, currWeight){}
 
+Herbivore::Herbivore(const Herbivore& other) 
+    : Animal(other.code, other.foodType, other.currWeight){}
+
 Herbivore::~Herbivore(){}
 
 ostream& operator<<(ostream& stream, const Herbivore& herbivore){
@@ -161,6 +164,9 @@ void Herbivore::printInfo(){
 Carnivore::Carnivore(string code, int _currWeight) 
     : Animal(code, DefaultAnimalFoodTypeCarnivore, currWeight){}
 
+Carnivore::Carnivore(const Carnivore& other) 
+    : Animal(other.code, other.foodType, other.currWeight){}
+
 Carnivore::~Carnivore(){}
 
 ostream& operator<<(ostream& stream, const Carnivore& carnivore){
@@ -190,6 +196,9 @@ void Carnivore::printInfo(){
 
 Omnivore::Omnivore(string code, int _currWeight) 
     : Animal(code, DefaultAnimalFoodTypeOmnivore, currWeight){}
+
+Omnivore::Omnivore(const Omnivore& other) 
+    : Animal(other.code, other.foodType, other.currWeight){}
 
 Omnivore::~Omnivore(){}
 
