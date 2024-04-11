@@ -139,4 +139,4 @@ class Player{
         void sellItems(string positionCode);
 };
 
-#endif __PLAYER_HPP__
+#endif 
