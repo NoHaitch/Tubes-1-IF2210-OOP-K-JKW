@@ -161,7 +161,6 @@ _How to install and use your project_
 <!-- INSTURCTION -->
 ## Instruction
 Instruction to run/build/etc the program  
-example: 
 
 `make all` : Build and run the program  
 `make build` : Build object code to bin   
