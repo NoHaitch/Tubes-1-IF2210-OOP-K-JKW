@@ -15,12 +15,27 @@ Plant::Plant() : price(0), harvestDuration(0), plantType(""){
     this->currentDuration = 0;
 }
 
+Plant::Plant(string _code) : 
+    id(plantIDMap[_code]), 
+    plantType(plantTypeMap[_code]), 
+    plantName(plantNameMap[_code]), 
+    harvestDuration(plantHarvestDurationMap[_code]),
+    price(plantPriceMap[_code]),
+    currentDuration(0){}
+
 Plant::Plant(int _id, string _code, string _plantType, string _plantName, int _harvestDuration,
              int _price) : price(_price), harvestDuration(_harvestDuration), plantType(_plantType) {
     this->id = _id;
     this->code = _code;
     this->plantName = _plantName;
     this->currentDuration = 0;
+}
+
+Plant::Plant(Plant &other) : price(other.price), harvestDuration(other.harvestDuration), plantType(other.plantType) {
+    this->id = other.id;
+    this->code = other.code;
+    this->plantName = other.plantName;
+    this->currentDuration = other.currentDuration;
 }
 
 Plant::~Plant() {}
@@ -65,6 +80,10 @@ void Plant::grow() {
 
 bool Plant::isReadyToHarvest() {
     return this->currentDuration >= this->harvestDuration;
+}
+
+bool Plant::empty(){
+    return this->code==""; 
 }
 
 vector <string> Plant::getPlantCodeListConfig() {

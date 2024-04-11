@@ -2,7 +2,9 @@
 #include "header/game.hpp"
 #include "header/product.hpp"
 #include "header/printColor.hpp"
+#include "header/storage.hpp"
 #include <iostream>
+#include <string>
 
 using namespace std;
     

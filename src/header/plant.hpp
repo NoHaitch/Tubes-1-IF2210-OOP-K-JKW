@@ -33,6 +33,12 @@ public:
     Plant();
 
     /**
+     * @brief ctor plant based on code
+     * @param _code  3 characters plant code
+     */
+    Plant(string _code);
+
+    /**
      * @brief ctor plant
      * @param _id    Plant id
      * @param _code  3 characters plant code
@@ -42,6 +48,12 @@ public:
      * @param _price Harga jual tanaman
      */
     Plant(int _id, string _code, string _plantType, string _plantName, int _harvestDuration, int _price);
+
+    /**
+     * @brief cctor plant
+     * @param other the other plant to be copied
+    */
+    Plant(Plant &other);
 
     /**
      * @brief dtor plant
@@ -134,6 +146,12 @@ public:
       * return true, currentDuration >= harvestDuration
       */
      bool isReadyToHarvest();
+
+     /**
+      * @brief Cek apakah object plant kosong
+      * \note Definisi plant kosong adalah apabila code=""
+      */
+     bool empty();
 
     /**
     * @brief Get Config: vector of plant code (main key)

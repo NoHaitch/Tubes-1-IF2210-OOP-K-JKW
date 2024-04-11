@@ -16,6 +16,26 @@ map<string, int> Animal::configPrice;            // Animal Configuration Prices
 
 /* CLASS Animal */
 
+<<<<<<< Updated upstream
+=======
+Animal::Animal()
+    : id(0),
+    code(""),
+    name(""),
+    weightToHarvest(0), 
+    price(0),
+    foodType(""){}
+
+Animal::Animal(string _code)     
+    : id(configID[_code]),
+    code(_code),
+    name(configName[_code]),
+    weightToHarvest(configWeightToHarvest[_code]), 
+    price(configPrice[_code]),
+    foodType(configFoodType[_code]),
+    currWeight(0){}
+
+>>>>>>> Stashed changes
 Animal::Animal(string _code, string _foodType, int _currWeight)     
     : id(configID[_code]),
     code(_code),
@@ -27,13 +47,24 @@ Animal::Animal(string _code, string _foodType, int _currWeight)
     currWeight = _currWeight;
 }
 
+<<<<<<< Updated upstream
 Animal::Animal(const Animal& other)
     : id(other.id),
+=======
+Animal::Animal(Animal& other): id(other.id),
+>>>>>>> Stashed changes
     code(other.code),
     name(other.name),
     weightToHarvest(other.weightToHarvest), 
     price(other.price),
+<<<<<<< Updated upstream
     foodType(other.foodType){}
+=======
+    foodType(other.foodType)
+{
+    currWeight = other.currWeight;
+}
+>>>>>>> Stashed changes
 
 Animal::~Animal(){}
 
@@ -55,6 +86,10 @@ void Animal::addWeight(int weight){
 
 bool Animal::isReadyToHarvest(){
     return currWeight >= weightToHarvest;
+}
+
+bool Animal::empty(){
+    return this->code == "";
 }
 
 void Animal::AddAnimalConfig(int _id, string _code, string _name, string _foodtype, int _weightToHarvest, int _price){
