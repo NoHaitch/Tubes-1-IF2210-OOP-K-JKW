@@ -149,40 +149,8 @@ class Storage{
          */
         bool isEmpty(string idx);
 
-    /**
-     * @brief check item type in a specified index
-     *
-     * \note index input is in string parameter
-     * \note check whether index input is valid or not
-     *
-     * @param positionCode string signifies where is the postition of item to be checked
-     * @return string item type
-     */
-    string itemType(string positionCode);
 
 
-    /**
-     * @brief check item type in a specified index
-     *
-     * \note index input is in string parameter
-     * \note check whether index input is valid or not
-     *
-     * @param y int row position
-     * @param x int column position
-     * @return string item type
-     */
-    string itemType(int y, int x);
-
-    /**
-     * @brief get item code from specified index
-     *
-     * \note index input is in string parameter
-     * \note check whether index input is valid or not
-     *
-     * @param positionCode string signifies the position of checked item in inventory
-     * @return strigng item code
-     */
-    string itemCode(string positionCode);
 
 };
 

@@ -32,7 +32,7 @@ void Farmer::tanam() {
     for (int i = 0; i < this->ItemStorage.getNumRow(); i++) {
         for (int j = 0; j < this->ItemStorage.getNumCol(); j++) {
             string pos = to_string(i) + to_string(j);
-            if (this->ItemStorage.itemType(i, j) == "Plant") {
+            if (this->itemType(i, j) == "Plant") {
                 numPlant++;
             }
         }
@@ -58,10 +58,10 @@ void Farmer::tanam() {
         if (this->ItemStorage.isEmpty(positionCode)) {
             cout << "Item tidak ditemukan di penyimpanan" << endl;
         } else {
-            if (this->ItemStorage.itemType(positionCode) != "Plant") {
+            if (this->itemType(positionCode) != "Plant") {
                 cout << "Item yang dipilih bukan tanaman" << endl;
             } else {
-                Plant P = Plant(this->ItemStorage.itemCode(positionCode));
+                Plant P = Plant(this->ItemStorage.getElmt(positionCode));
                 cout << "Kamu memilih tanaman" << P.getPlantName() << endl;
                 // Ambil posisi pada ladang untuk ditanam
                 string positionLadang;

@@ -54,13 +54,8 @@ T Storage<T>::getElmt(string positionCode){
 
 template<class T>
 T Storage<T>::getElmt(int y, int x){
-    try{
-        return *matrix[y][x];
-    } catch (PositionCodeInvalidException e){
-        startTextRed();
-        cout << e.what() << endl;
-        resetTextColor();
-    }
+    T *elmt = matrix[y][x];
+    return *elmt;
 }
 
 template<class T>
@@ -283,62 +278,5 @@ bool Storage<T>::isEmpty(string idx) {
         startTextRed();
         cout << e.what() << endl;
         resetTextColor();
-    }
-}
-
-template <class T>
-string Storage<T>::itemCode(string positionCode) {
-    return this->matrix.getElmt(positionCode);
-}
-
-template <class T>
-string Storage<T>::itemType(string positionCode) {
-    string itemCode = this->matrix.getElmt(positionCode);
-    vector <string>::iterator it;
-
-    // Find in Plant
-    it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
-    if (it != Plant::Plant::getPlantCodeListConfig().end()) {
-        return "Plant";
-    } else {
-        // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::Animal::getAnimalCodeConfig().end()) {
-            return "Animal";
-        } else {
-            it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
-            if (it != Product::Product::getProductCodeListConfig().end()) {
-                return "Product";
-            } else {
-                // TODO : implement search building
-                return "";
-            }
-        }
-    }
-}
-
-template <class T>
-string Storage<T>::itemType(int y, int x) {
-    string itemCode = this->matrix.getElmt(y, x);
-    vector <string>::iterator it;
-
-    // Find in Plant
-    it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
-    if (it != Plant::Plant::getPlantCodeListConfig().end()) {
-        return "Plant";
-    } else {
-        // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::Animal::getAnimalCodeConfig().end()) {
-            return "Animal";
-        } else {
-            it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
-            if (it != Product::Product::getProductCodeListConfig().end()) {
-                return "Product";
-            } else {
-                // TODO : implement search building
-                return "";
-            }
-        }
     }
 }
