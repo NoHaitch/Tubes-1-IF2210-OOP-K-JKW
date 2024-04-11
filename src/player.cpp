@@ -51,3 +51,4 @@ void Player::setCurrWeight(int _currWeight){
 void Player::printItemStorage(){
     this->ItemStorage.printStorage();
 }
+

@@ -23,11 +23,6 @@ int main(){
     }
     resetTextColor();
 
-    Storage<string> s;
-    s.insertElmtAtEmptySlot("COW");
-    s.insertElmtAtEmptySlot("BNT");
-    s.printStorage();
-
     game.getGameStateIO();
     
     return 0;

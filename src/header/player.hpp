@@ -38,7 +38,7 @@ class Player{
          * 
          * @param _username        Player username
         */
-        Player(string _username);
+        Player(string _userName);
 
         /**
          * @brief Player ctor user defined.
@@ -135,6 +135,8 @@ class Player{
          * 
         */
         void sellItems(string positionCode);
+
+
 };
 
 #endif 

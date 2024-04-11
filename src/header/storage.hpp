@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "storageException.hpp"
 #include "printColor.hpp"
@@ -75,6 +76,17 @@ class Storage{
         */
         T getElmt(string positionCode);
 
+
+        /**
+         * @brief Get element at position as coded from matrix
+         *
+         * @param y int row position
+         * @param x int column position
+         *
+         * @return T element matrix[positionCode]
+        */
+        T getElmt(int y, int x);
+
         /**
          * @brief Check if the storage is full
          * 
@@ -130,6 +142,47 @@ class Storage{
          * @param size pair<int, int> the size of storage in height X width
         */
         static void readConfigDefaultSize(pair<int,int> size);
+
+        /**
+         * @brief cek apakah item pada slot index x, y kosong
+         * @return true jika kosong
+         */
+        bool isEmpty(string idx);
+
+    /**
+     * @brief check item type in a specified index
+     *
+     * \note index input is in string parameter
+     * \note check whether index input is valid or not
+     *
+     * @param positionCode string signifies where is the postition of item to be checked
+     * @return string item type
+     */
+    string itemType(string positionCode);
+
+
+    /**
+     * @brief check item type in a specified index
+     *
+     * \note index input is in string parameter
+     * \note check whether index input is valid or not
+     *
+     * @param y int row position
+     * @param x int column position
+     * @return string item type
+     */
+    string itemType(int y, int x);
+
+    /**
+     * @brief get item code from specified index
+     *
+     * \note index input is in string parameter
+     * \note check whether index input is valid or not
+     *
+     * @param positionCode string signifies the position of checked item in inventory
+     * @return strigng item code
+     */
+    string itemCode(string positionCode);
 
 };
 
