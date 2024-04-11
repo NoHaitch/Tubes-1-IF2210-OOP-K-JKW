@@ -52,3 +52,52 @@ void Player::printItemStorage(){
     this->ItemStorage.printStorage();
 }
 
+string Player::itemType(string positionCode) {
+    string itemCode = this->ItemStorage.getElmt(positionCode);
+    vector <string>::iterator it;
+
+    // Find in Plant
+    it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
+    if (it != Plant::Plant::getPlantCodeListConfig().end()) {
+        return "Plant";
+    } else {
+        // Find in Animal
+        it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
+        if (it != Animal::Animal::getAnimalCodeConfig().end()) {
+            return "Animal";
+        } else {
+            it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
+            if (it != Product::Product::getProductCodeListConfig().end()) {
+                return "Product";
+            } else {
+                // TODO : implement search building
+                return "";
+            }
+        }
+    }
+}
+
+string Player::itemType(int y, int x) {
+    string itemCode = this->ItemStorage.getElmt(y, x);
+    vector <string>::iterator it;
+
+    // Find in Plant
+    it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
+    if (it != Plant::Plant::getPlantCodeListConfig().end()) {
+        return "Plant";
+    } else {
+        // Find in Animal
+        it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
+        if (it != Animal::Animal::getAnimalCodeConfig().end()) {
+            return "Animal";
+        } else {
+            it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
+            if (it != Product::Product::getProductCodeListConfig().end()) {
+                return "Product";
+            } else {
+                // TODO : implement search building
+                return "";
+            }
+        }
+    }
+}
