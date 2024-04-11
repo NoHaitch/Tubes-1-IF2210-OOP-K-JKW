@@ -11,7 +11,10 @@
 using namespace std;
 
 template<class T>
-Storage<T>::Storage() : Storage(0,0) {}
+pair<int, int> Storage<T>::defaultStorageSize;
+
+template<class T>
+Storage<T>::Storage() : Storage(defaultStorageSize.first, defaultStorageSize.second) {}
 
 template<class T>
 Storage<T>::Storage(int _numRow, int _numCol) : numRow(_numRow), numCol(_numCol), numElmt(0){
@@ -117,6 +120,15 @@ void Storage<T>::deleteElmtAtPosition(string positionCode){
 template<class T>
 void Storage<T>::printStorage(){
     resetTextColor();
+    cout << "     ";
+    for (int i=0; i<max(0,(numCol*3)-7); i++){
+        cout << "=";
+    }
+    cout << "[ Penyimpanan ]";
+    for (int i=0; i<max(0,(numCol*3)-7); i++){
+        cout << "=";
+    }
+    cout << endl;
     cout << "      ";
     for (int i=65; i<65+numCol; i++){
         char c = static_cast<char>(i);
@@ -144,11 +156,21 @@ void Storage<T>::printStorage(){
         }
         cout << "+" << endl;
     }
+    cout << endl;
 }
 
 template<>
 void Storage<Animal>::printStorage(){
     resetTextColor();
+    cout << "     ";
+    for (int i=0; i<max(0,(numCol*3)-6); i++){
+        cout << "=";
+    }
+    cout << "[ Peternakan ]";
+    for (int i=0; i<max(0,(numCol*3)-6); i++){
+        cout << "=";
+    }
+    cout << endl;
     cout << "      ";
     for (int i=65; i<65+numCol; i++){
         char c = static_cast<char>(i);
@@ -183,11 +205,21 @@ void Storage<Animal>::printStorage(){
         }
         cout << "+" << endl;
     }
+    cout << endl;
 }
 
 template<>
 void Storage<Plant>::printStorage(){
     resetTextColor();
+    cout << "     ";
+    for (int i=0; i<max(0,(numCol*3)-5); i++){
+        cout << "=";
+    }
+    cout << "[ Ladang ]";
+    for (int i=0; i<max(0,(numCol*3)-4); i++){
+        cout << "=";
+    }
+    cout << endl;
     cout << "      ";
     for (int i=65; i<65+numCol; i++){
         char c = static_cast<char>(i);
@@ -222,4 +254,10 @@ void Storage<Plant>::printStorage(){
         }
         cout << "+" << endl;
     }
+    cout << endl;
+}
+
+template<class T>
+void Storage<T>::readConfigDefaultSize(pair<int,int> size){
+    Storage::defaultStorageSize = size;
 }

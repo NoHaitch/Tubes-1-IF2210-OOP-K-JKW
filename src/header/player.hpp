@@ -21,14 +21,12 @@ using namespace std;
 class Player{
     protected:
         /* Attributes */
+        static int numPlayer;
         const int id;
         const string username;
         int wealth;
         int currWeight;
         Storage<string> ItemStorage;
-
-        /* Configuration Variables */
-        /* -- TODO : HANDLE CONFIGURATION FROM STATE.TXT -- */
 
         /* Default Variables */
         static const int DefaultPlayerStartingWealth = 50;
@@ -89,7 +87,7 @@ class Player{
          * 
          * @param _wealth new wealth
         */
-        void setWealth();
+        void setWealth(int _wealth);
 
         /**
          * @brief Set Player current weight

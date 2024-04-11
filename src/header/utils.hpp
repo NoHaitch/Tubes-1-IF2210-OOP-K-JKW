@@ -3,8 +3,12 @@
 
 #include <string>
 
+#include "printColor.hpp"
+
 using namespace std;
 
 bool isNumber(const std::string& s);
+
+void printTitle();
 
 #endif

@@ -1,4 +1,5 @@
 #include "header/game.hpp"
+#include "header/storage.hpp"
 
 using namespace std;
 
@@ -441,7 +442,7 @@ void Game::readConfigMisc(){
 
     getline(configFile, line);
     iss = istringstream(line);
-    iss >> storageWidth >> storageHeight;
+    iss >> storageHeight >> storageWidth ;
 
     getline(configFile, line);
     iss = istringstream(line);
@@ -449,9 +450,11 @@ void Game::readConfigMisc(){
     
     getline(configFile, line);
     iss = istringstream(line);
-    iss >> animalStorageWidth >> animalStorageHeight;
+    iss >> animalStorageHeight >> animalStorageWidth;
 
-    // TODO: Store Variables To Class
+    Storage<string>::readConfigDefaultSize(make_pair(storageHeight, storageWidth));
+    Storage<Animal>::readConfigDefaultSize(make_pair(animalStorageHeight, animalStorageWidth));
+    Storage<Plant>::readConfigDefaultSize(make_pair(plantStorageHeight, plantStorageWidth));
     
     cout << " > Finished Reading Misc Configuration" << endl;
     configFile.close();    

@@ -19,6 +19,10 @@ void startTextBlue(){
     cout << "\033[1;34m";
 }
 
+void startTextCyan(){
+    cout << "\033[1;36m";
+}
+
 void resetTextColor(){
     cout << "\033[0m";
 }

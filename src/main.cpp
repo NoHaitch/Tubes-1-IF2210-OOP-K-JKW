@@ -3,12 +3,16 @@
 #include "header/product.hpp"
 #include "header/printColor.hpp"
 #include "header/storage.hpp"
+#include "header/utils.hpp"
 #include <iostream>
 #include <string>
 
 using namespace std;
     
 int main(){
+    // Print title
+    printTitle();
+
     // Starting a Game
     Game game;
 
@@ -18,6 +22,11 @@ int main(){
         return 0;
     }
     resetTextColor();
+
+    Storage<string> s;
+    s.insertElmtAtEmptySlot("COW");
+    s.insertElmtAtEmptySlot("BNT");
+    s.printStorage();
 
     game.getGameStateIO();
     

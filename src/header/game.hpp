@@ -21,6 +21,7 @@
 #include "product.hpp"
 #include "player.hpp"
 #include "shop.hpp"
+#include "storage.hpp"
 
 using namespace std;
 

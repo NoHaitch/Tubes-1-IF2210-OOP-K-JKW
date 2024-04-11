@@ -22,6 +22,9 @@ class Storage{
         int numElmt;
         vector<vector<T*>> matrix;
 
+        /* Configuration Variable */
+        static pair<int, int> defaultStorageSize;
+
     public:
         /**
          * @brief Default Storage ctor
@@ -120,6 +123,13 @@ class Storage{
          * @brief Print storage elements as formatted
         */
         void printStorage();
+
+        /**
+         * @brief Read config for default storage size
+         * 
+         * @param size pair<int, int> the size of storage in height X width
+        */
+        static void readConfigDefaultSize(pair<int,int> size);
 
 };
 
