@@ -4,8 +4,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "game.hpp"
 #include "player.hpp"
+#include "storage.hpp"
 #include <any>
 
 using namespace std;
@@ -40,11 +42,11 @@ public:
     Shop();
     //Ada inventori shop. 
     //Qty Tanaman dan Hewan = infinite
-    //Baca config tanaman -> ambil ALL kecuali ID -> Masukin array 
-    //Baca config hewan -> ambil ALL Kecuali ID -> append array 
+    //Baca config tanaman -> ambil ALL kecuali ID -> simpen di vektor
+    //Baca config hewan -> ambil ALL Kecuali ID -> simpen di vector
     //Qty bangunan and Product = 0
-    //Baca config product -> ambil ALL kecuali ID, Qty = 0 -> append array
-    //Baca config building -> ambil ALL kecuali ID, Qty = 0 -> append.a
+    //Baca config product -> ambil ALL kecuali ID, Qty = 0 -> simpen di vector
+    //Baca config building -> ambil ALL kecuali ID, Qty = 0 -> simpen di vector
     
 
     /**
@@ -53,6 +55,8 @@ public:
      * 
     */
     ~Shop();
+
+    
 
     
     //**************** Quantity Modifier *****************//
@@ -109,7 +113,21 @@ public:
     void Show_Shop_Inventory(string Role) const;
 
 
-   
+    /*************** GET Vector *************************/
+
+     /**
+     * @brief Get Animal Config from Game.hpp
+     * 
+     */
+    void AddAnimalConfig(string _code, string _name, string _foodtype, int _weighttoHarvest, int _price, float _Qty);
+
+    /**
+     * @brief Get Plant Config from Game.hpp
+     * 
+     */
+    void AddPlantConfig(string _code, string _name, string _foodtype, int _durationtoHarvest, int _price, float _Qty);
+
+ 
 
 private:
     /**
@@ -155,6 +173,7 @@ private:
      */
     void Show_Building_Inventory();
 
+      
 
 
 /*
@@ -162,7 +181,7 @@ player p
 
 >> BELI
 
-role = getRole(p) (?)
+role = getRole(p) (?)   // Game.hpp
 
 Show_Shop_Inventory(role)
 ***** Output

@@ -121,11 +121,9 @@ class Player{
          * \note Validize whether the amount of money enough and storage slot sufficient
          * \note Throw exception if needed
          * 
-         * @param itemNumber int which item to be bought from Shop list
-         * @param quantity int amount of item to be bought
          * 
         */
-        void buyItems(int itemNumber, int quantity);
+        void buyItems();
 
         /**
          * @brief sell specified items from storage into shops, players weight increase
