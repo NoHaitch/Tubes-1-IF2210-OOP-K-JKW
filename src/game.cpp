@@ -1,10 +1,5 @@
 #include "header/game.hpp"
-#include "header/gameException.hpp"
-#include "header/animal.hpp"
-#include "header/plant.hpp"
-#include "header/printColor.hpp"
-#include "header/utils.hpp"
-#include "header/product.hpp"
+
 using namespace std;
 
 Game::Game(){
@@ -388,10 +383,36 @@ void Game::readConfigRecipe(){
     if (!configFile.is_open()) {
         throw FileNotFoundException("Failed to open recipe.txt");
     }
-    
-    // TODO: READ RECIPE CONFIGURATION
-    resetTextColor();
-    cout << "Warning: Recipe configuration is not been implemented" << endl;
+     
+
+    string line; 
+    while (getline(configFile, line)) {
+        int id;
+        string code;
+        string name;
+        int price;
+        vector<string> material;
+        vector<int> materialAmount;
+
+        istringstream iss(line);
+        iss >> id >> code >> name >> price;
+        
+        string materialName;
+        int amount;
+        while(true){
+            materialName = "";
+            amount = -1;
+            iss >> materialName >> amount;
+            if(materialName == "" || amount < 0){
+                break;
+            } else{
+                material.push_back(materialName);
+                materialAmount.push_back(amount);
+            }
+        }
+
+        // Bangunan::addProductConfig(id, code, name, price, material, materialAmount);
+    }
 
     cout << " > Finished Reading Recipe Configuration" << endl;
     configFile.close(); 

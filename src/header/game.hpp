@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <map>
 #include <stdlib.h>
 #include <ctype.h>
 
@@ -12,9 +13,27 @@
 #include <sstream>
 #include <filesystem>
 
+#include "gameException.hpp"
+#include "animal.hpp"
+#include "plant.hpp"
+#include "printColor.hpp"
+#include "utils.hpp"
+#include "product.hpp"
+#include "player.hpp"
+#include "shop.hpp"
+
 using namespace std;
 
 class Game{
+    private:
+        Shop shop;
+        int currTurn;
+        vector<string> playerUsernames;
+        map<string, int> convertToId;
+        // Mayor mayor;
+        // vector<Farmer> farmers;
+        // vector<Cattleman> cattlemans;
+
     public:
         /**
          * @brief ctor
