@@ -29,4 +29,18 @@ class StorageFullException : public exception {
         }
 };
 
+class StorageSlotException : public exception {
+private:
+    string message;
+
+public:
+    StorageSlotException() : message("Storage slot is not available"){}
+    StorageSlotException(string msg) : message(msg) {}
+    string what (){
+        return message;
+    }
+};
+
+
+
 #endif
