@@ -4,10 +4,10 @@
 
 <br />
 <div align="center">
-  <h1 align="center">Tugas Besar IF2210 OOP</h1>
+  <h1 align="center">Tugas Besar 1 IF2210 OOP</h1>
   <p align="center">
-    <h3> Application Name {optional}</h3>
-    <h4> DESCRIPTION</h4>
+    <h3>DPR Kerajaan</h3>
+    <h4>Object-Oriented Based CLI Application</h4>
     <br/>
     <!-- IMAGE OR LOGO -->
     <!-- <img src="" alt="Project Logo // Team Picture // etc">
@@ -36,6 +36,10 @@
         <td>Nama</td>
       </tr>
       <tr>
+        <td>10023359</td>
+        <td>Adam Dharma Sakti</td>
+      </tr>
+      <tr>
         <td>13522037</td>
         <td>Farhan Nafis Rayhan</td>
       </tr>
@@ -50,10 +54,6 @@
       <tr>
         <td>13522105</td>
         <td>Fabian Radenta Bangun</td>
-      </tr>
-      <tr>
-        <td>10023359</td>
-        <td>Adam Dharma Sakti</td>
       </tr>
     </table>
   </strong>
@@ -95,6 +95,7 @@
 
 ## External Links
 
+- [OOP Terpusat](https://docs.google.com/spreadsheets/d/1hly7VjxXC-PRUI0mfJ4VQ-8vLoD-YTgQIJLWD_faFGc/edit#gid=979950684)
 - [Spesifikasi](https://docs.google.com/document/d/1gE2ovBWM_tM1vGqDE-SwkdymLVizFfn40q2ru6dKhwA/edit)
 - [Q & A](https://docs.google.com/spreadsheets/d/14NXvZLRUP9cBqQ6Pevrnx8OXSKGFGMd8wf7PCziSIqk/edit#gid=0)
 - [Teams](https://docs.google.com/spreadsheets/d/185aduUJIXUticrgKBo6GVCaUpqxhtxCuDwZQzJUpmkk/edit#gid=0)
@@ -130,10 +131,10 @@ example :
   # in Linux
   sudo apt install make
   ```
-* Python
+* g++
   ```sh
   # in Linux
-  sudo apt install python3
+  sudo apt install g++
   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -144,9 +145,15 @@ _How to install and use your project_
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/NoHaitch/Repository_Template
+   git clone https://github.com/NoHaitch/Tubes-1-IF2210-OOP-K-JKW
    ```
-2. Change the content
+
+2. Install [dependencies](#prerequisites)
+
+3. Run Makefile
+   ```sh
+   make all
+   ```
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -154,38 +161,83 @@ _How to install and use your project_
 <!-- INSTURCTION -->
 ## Instruction
 Instruction to run/build/etc the program  
-example: 
 
-`make build` : To build from source to binary into bin/main  
-`make all` : Run binary directly after building   
-`make clean` : Remove all build generated files  
-`make ADT.test` : Running test for ADT test file, for example ( `make time.test` )  
-`make test.all` : Running all test  
+`make all` : Build and run the program  
+`make build` : Build object code to bin   
+`make clean` : Remove object code   
+`make run` : Run the program  
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- FEATURES -->
-## Features
+## Features 
 
-### 1. Feature X
+### There are 3 Player Roles:
+#### 1. Mayor  
+- Jumlahya tepat 1.
+- Mayor dapat menagih pajak kepada para pemain.
+- Mayor dapat membangun bangunan.
+- Mayor dapat menambahkan akun Farmer atau Cattleman dengan jumlah uang bawaan 50 gulden dengan mengurangi uang Mayor.
+#### 2. Farmer  
+- Jumlahnya >= 0.
+- Farmer dapat menanam tanaman dan memanen tanaman yang telah ditanam.
+#### 3. Cattleman  
+- Jumlahnya >= 0.
+- Cattleman dapat menaruh hewan di ladang ternaknya.
+- Cattleman dapat memberi makan hewan di ladang ternaknya.
+- Cattleman dapat memanen hewan yang telah siap panen.
 
-this feature does X
+### Storage
 
-### 2. Feature Y
+Every player have a storage with the size n x m.   
+Some player role have spesifics storage.     
+Storage types: products, animals, plants.
 
-this feature does Y  
-sub-features:
-   1. function 1
-   2. function 2
-   3. function 3
+### Taxes
 
-### 3. Feature Z
+Mayor can collect taxes from player and use it as his own money (corruption).
 
-this feature does Z
-- `A`: print A.  
-- `B`: print B.  
-- `C`: print C.
+### Cattleing
+
+There 3 types of animals: Herbivore, Carnivore, and Omnivore.   
+A Cattleman can have a barn with the size n x m depending on the configuration
+
+### Farming
+
+There are 2 types of Plants: Material and Fruit Plants.   
+Material Plant produces product used for building.  
+Fruit Plant produces product used for eating for feeding animals.  
+
+### Shop
+
+Every player can buy or sell items to the shop. An item that is sold to the shop can be bough by other players. Player role cattleman and farmer can't sell buildings and Mayor can't buy buildings.
+
+### Build Buildings 
+
+Mayor can build buildings. Buildings can be sold to the shop. The amount of building affect the amoung of tax each player need to pay. Building has its type with each it's own value and recipe. 
+
+### Eat
+
+Every player can eat food that it has. It can be product from farming or cattleing. Every food will increase he player weight.
+
+## Commands and Operation:
+1. Next
+2. Print Storage
+3. Collect Tax
+4. Print Farm or Barn
+5. Plant
+6. Cattle
+7. Build Building
+8. Eat
+9. Feed Animal
+10. Buy
+11. Sell
+12. Harvest
+13. Load
+14. Save
+15. Add Player
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -195,9 +247,6 @@ this feature does Z
 
 If you want to contribute or further develop the program, please fork this repository using the branch feature.  
 Pull Request is **permited and warmly welcomed**
-<!-- In bahasa Indonesia: Jika Anda ingin berkontribusi atau melanjutkan perkembangan program, silahkan fork repository ini dan gunakan branch fitur.  
-
-Permintaan Pull __sangat diperbolehkan dan diterima dengan hangat__. -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -207,7 +256,6 @@ Permintaan Pull __sangat diperbolehkan dan diterima dengan hangat__. -->
 ## Licensing
 
 The code in this project is licensed under Apache-2.0 license.  
-<!-- Add other targeted langguage: Code dalam projek ini berada di bawah lisensi MIT. -->
 
 
 <!-- SPECIAL THANKS AND/OR CREDITS -->
@@ -220,7 +268,6 @@ The code in this project is licensed under Apache-2.0 license.
 <h3 align="center"> THANK YOU! </h3>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [issues-url]: https://github.com/NoHaitch/Tubes-IF2210-OOP-K-JKW/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/badge/License-Apache--2.0_license-yellow
 [license-url]: https://github.com/NoHaitch/Tubes-IF2210-OOP-K-JKW/blob/main/LICENSE

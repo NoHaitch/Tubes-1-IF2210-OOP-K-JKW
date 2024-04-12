@@ -2,11 +2,17 @@
 #include "header/game.hpp"
 #include "header/product.hpp"
 #include "header/printColor.hpp"
+#include "header/storage.hpp"
+#include "header/utils.hpp"
 #include <iostream>
+#include <string>
 
 using namespace std;
     
 int main(){
+    // Print title
+    printTitle();
+
     // Starting a Game
     Game game;
 
@@ -19,5 +25,9 @@ int main(){
 
     game.getGameStateIO();
     
+    game.printPlayerNames();
+    
+    game.saveGameIO();
+
     return 0;
 }

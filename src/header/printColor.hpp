@@ -13,6 +13,8 @@ void startTextYellow();
 
 void startTextBlue();
 
+void startTextCyan();
+
 void resetTextColor();
 
 #endif

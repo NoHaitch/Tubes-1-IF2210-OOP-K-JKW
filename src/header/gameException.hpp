@@ -77,4 +77,28 @@ class DirectoryCreationFailedException : public exception {
         }
 };
 
+class PlayerNameIsTakken : public exception{
+    private:
+        string message;
+
+    public:
+        PlayerNameIsTakken() : message("Player Name already exist") {}
+        PlayerNameIsTakken(string msg) : message(msg) {}
+        string what () {
+            return message;
+        }
+};
+
+class PlayerNotFound : public exception{
+    private:
+        string message;
+
+    public:
+        PlayerNotFound() : message("Player Not Found") {}
+        PlayerNotFound(string msg) : message(msg) {}
+        string what () {
+            return message;
+        }
+};
+
 #endif

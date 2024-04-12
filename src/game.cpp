@@ -1,13 +1,10 @@
 #include "header/game.hpp"
-#include "header/gameException.hpp"
-#include "header/animal.hpp"
-#include "header/plant.hpp"
-#include "header/printColor.hpp"
-#include "header/utils.hpp"
-#include "header/product.hpp"
+
 using namespace std;
 
 Game::Game(){
+    shop = new Shop();
+    mayor = nullptr;
     cout << endl;
     cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
     startTextBlue();
@@ -17,6 +14,12 @@ Game::Game(){
 }
 
 Game::~Game(){
+    if(mayor != nullptr){
+        delete mayor;
+    }
+
+    delete shop;
+
     cout << endl;
     cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
     startTextRed();
@@ -25,150 +28,56 @@ Game::~Game(){
     cout << setfill('=') << setw(50)  << "" << endl << endl << setfill(' ');
 }
 
-int Game::readConfig(){
-    startTextYellow();
-    cout << "Reading Configuration ..." << endl;
-    resetTextColor();
+int Game::getPlayerAmount(){
+    return playerNames.size();
+}
 
-    try{
-        readConfigPlant();
-        readConfigAnimal();
-        readConfigProduct();
-        readConfigRecipe();
-        readConfigMisc();
-
-        startTextBlue();
-        cout << "Reading Configuration Succesfull\n" << endl;
-        resetTextColor();
-        return 0;
-        
-    } catch (FileNotFoundException e){
-        startTextRed();
-        cout << e.what() << endl;
-        resetTextColor();
-        return 1;
+void Game::nextTurn(){
+    currTurn++;
+    if(currTurn == playerOrder.size()){
+        currTurn = 0;
     }
 }
 
-void Game::readGameState(string path){
-    ifstream saveFile(path);
-    if(!saveFile.is_open()){
-        throw FileNotFoundException();
-    }
-
-    int amountOfPlayer = -1;
-
-    string line; 
-    getline(saveFile, line);
-    istringstream iss(line);
-    iss >> amountOfPlayer;
-
-    if(amountOfPlayer < 3){
-        throw FileReadingFailedException();
-    }
-
-    for(int player = 0; player < amountOfPlayer; player++){
-        // cout << "PLAYER " << player + 1 << ": " << endl;
-        string playerUsername;
-        string playerRole;
-        int playerWeight = -1;
-        int playerMoney = -1;
-        
-        getline(saveFile, line);
-        iss = istringstream(line);
-        iss >> playerUsername >> playerRole >> playerWeight >> playerMoney;
-
-        if(playerWeight < 0 | playerMoney < 0){
-            throw FileReadingFailedException();
-        }
-
-
-        int playerItemCount = -1;
-        
-        getline(saveFile, line);
-        iss = istringstream(line);
-        iss >> playerItemCount;
-
-        if(playerItemCount < 0){
-            throw FileReadingFailedException();
-        }
-
-        // cout << "> Player Username: " << playerUsername << endl;
-        // cout << "> Player Role: " << playerRole << endl;
-        // cout << "> Player Weight: " << playerWeight << endl;
-        // cout << "> Player Money: " << playerMoney << endl;
-        // cout << "> Items (" << playerItemCount << "): "<< endl;
-
-        for(int item = 0; item < playerItemCount; item++){
-            string itemName = "";
-            getline(saveFile, line);
-            iss = istringstream(line);
-            iss >> itemName;
-
-            if(itemName == ""){
-                throw FileReadingFailedException();
-            }
-
-            // cout << "  - " << itemName << endl;
-        }
-
-        int playerRoleStorage = -1;
-        
-        getline(saveFile, line);
-        iss = istringstream(line);
-        iss >> playerRoleStorage;
-
-        if(playerRoleStorage < 0){
-            throw FileReadingFailedException();
-        }
-
-        // cout << "> Content in Role Storage (" << playerRoleStorage << "): " << endl;
-
-        if(player < amountOfPlayer - 1){
-            for(int item = 0; item < playerRoleStorage; item++){
-                string location = "";
-                string itemName = "";
-                int progress = -1;
-
-                getline(saveFile, line);
-                iss = istringstream(line);
-                iss >> location >> itemName >> progress;
-
-                if(location == "" || itemName == "" || progress < 0){
-                    throw FileReadingFailedException();
-                }
-
-                // cout << "  - " << location << ": " << itemName << ", progress: " << progress << endl;
-            }
-
-        } else{
-            for(int item = 0; item < playerRoleStorage; item++){
-                // For Mayor
-                string itemName = "";
-                int itemAmount = -1;
-
-                getline(saveFile, line);
-                iss = istringstream(line);
-                iss >> itemName >> itemAmount;
-
-                if(itemName == "" || itemAmount < 1){
-                    throw FileReadingFailedException();
-                }
-
-                // cout << "  - " << itemName << ": " << itemAmount << endl;
+Player* Game::getPlayer(int playerId){
+    int currPlayerId = playerOrder[currTurn];
+    if(mayor->getId() == currPlayerId){
+        return mayor;
+    } else {
+        for(int i = 0; i < farmers.size(); i++){
+            if(farmers[i].getId() == currPlayerId){
+                return &farmers[i];
             }
         }
-    }
 
-    saveFile.close();    
+        for(int i = 0; i < cattlemans.size(); i++){
+            if(cattlemans[i].getId() == currTurn){
+                return &cattlemans[i];
+            }
+        }
+
+        throw PlayerNotFound();
+    }
 }
 
-// TODO initialize Game
+Player* Game::getCurrentPlayer(){
+    return getPlayer(playerOrder[currTurn]);
+}
+
 void Game::initGameState(){
+    mayor = new Mayor("Walikota", 50, 40);
+
+    farmers = vector<Farmer>();
+    farmers.push_back(Farmer("Petani1", 50, 40));
     
+    cattlemans = vector<Cattleman>();
+    cattlemans.push_back(Cattleman("Peternak1", 50, 40));
+
+    addPlayerToTurnOrder("Walikota", (*mayor).getId());
+    addPlayerToTurnOrder("Petani1", farmers.back().getId());
+    addPlayerToTurnOrder("Peternak1", cattlemans.back().getId());
 }
 
-// TODO initilize Players
 void Game::getGameStateIO(){
     string input;
     int choice = 0;
@@ -220,8 +129,153 @@ void Game::getGameStateIO(){
             cout << "Please input a valid menu number\n" << endl;
         }
     }
+
 }
 
+// TODO: Read Items
+void Game::readGameState(string path){
+    ifstream saveFile(path);
+    if(!saveFile.is_open()){
+        throw FileNotFoundException();
+    }
+
+    int amountOfPlayer = -1;
+
+    string line; 
+    getline(saveFile, line);
+    istringstream iss(line);
+    iss >> amountOfPlayer;
+
+    if(amountOfPlayer < 3){
+        throw FileReadingFailedException();
+    }
+
+    farmers = vector<Farmer>();
+    cattlemans = vector<Cattleman>();
+
+    for(int player = 0; player < amountOfPlayer; player++){
+        string playerUsername;
+        string playerRole;
+        int playerWeight = -1;
+        int playerMoney = -1;
+        
+        getline(saveFile, line);
+        iss = istringstream(line);
+        iss >> playerUsername >> playerRole >> playerWeight >> playerMoney;
+
+        if(playerWeight < 0 | playerMoney < 0){
+            throw FileReadingFailedException();
+        }
+
+        if(playerRole == "Walikota"){
+            mayor = new Mayor(playerUsername, playerMoney, playerWeight);
+            addPlayerToTurnOrder(playerUsername, (*mayor).getId());
+
+        } else if(playerRole == "Petani"){
+            farmers.push_back(Farmer(playerUsername, playerMoney, playerWeight));
+            addPlayerToTurnOrder(playerUsername, farmers.back().getId());
+
+        } else{ // Peternak
+            cattlemans.push_back(Cattleman(playerUsername, playerMoney, playerWeight));
+            addPlayerToTurnOrder(playerUsername, cattlemans.back().getId());
+        }
+
+        int playerItemCount = -1;
+        
+        getline(saveFile, line);
+        iss = istringstream(line);
+        iss >> playerItemCount;
+
+        if(playerItemCount < 0){
+            throw FileReadingFailedException();
+        }
+
+        // TODO: Player Items
+
+        for(int item = 0; item < playerItemCount; item++){
+            string itemName = "";
+            getline(saveFile, line);
+            iss = istringstream(line);
+            iss >> itemName;
+
+            if(itemName == ""){
+                throw FileReadingFailedException();
+            }
+        }
+
+        int playerRoleStorage = -1;
+        
+        getline(saveFile, line);
+        iss = istringstream(line);
+        iss >> playerRoleStorage;
+
+        if(playerRoleStorage < 0){
+            throw FileReadingFailedException();
+        }
+
+        if(player < amountOfPlayer - 1){
+            for(int item = 0; item < playerRoleStorage; item++){
+                string location = "";
+                string itemName = "";
+                int progress = -1;
+
+                getline(saveFile, line);
+                iss = istringstream(line);
+                iss >> location >> itemName >> progress;
+
+                if(location == "" || itemName == "" || progress < 0){
+                    throw FileReadingFailedException();
+                }
+
+            }
+
+        } else{
+            for(int item = 0; item < playerRoleStorage; item++){
+                // For Mayor
+                string itemName = "";
+                int itemAmount = -1;
+
+                getline(saveFile, line);
+                iss = istringstream(line);
+                iss >> itemName >> itemAmount;
+
+                if(itemName == "" || itemAmount < 1){
+                    throw FileReadingFailedException();
+                }
+
+            }
+        }
+    }
+
+    saveFile.close();    
+}
+
+int Game::readConfig(){
+    startTextYellow();
+    cout << "Reading Configuration ..." << endl;
+    resetTextColor();
+
+    try{
+        readConfigPlant();
+        readConfigAnimal();
+        readConfigProduct();
+        readConfigRecipe();
+        readConfigMisc();
+
+        startTextBlue();
+        cout << "Reading Configuration Succesfull\n" << endl;
+        resetTextColor();
+        return 0;
+        
+    } catch (FileNotFoundException e){
+        startTextRed();
+        cout << e.what() << endl;
+        resetTextColor();
+        return 1;
+    }
+}
+
+// TODO: Save Items
 void Game::saveGame(string path){ 
     if (path.find("//") != string::npos || path.find("//") == 0) {
         throw FileBadPathException();
@@ -244,8 +298,21 @@ void Game::saveGame(string path){
     // Saving Game State
     ofstream saveFile(path);
 
-    saveFile << "TEST SAVING";
-    
+    saveFile << getPlayerAmount() << endl;
+
+    // Save Cattlemans
+    for(int i = 0; i < cattlemans.size(); i++){
+        saveFile << cattlemans[i].getUsername() << " Peternak "<< cattlemans[i].getCurrWeight() << " " << cattlemans[i].getWealth() << endl;
+    }
+
+    // Save Farmers
+    for(int i = 0; i < farmers.size(); i++){
+        saveFile << farmers[i].getUsername() << " Petani "<< farmers[i].getCurrWeight() << " " << farmers[i].getWealth() << endl;
+    }
+
+    // Save Mayor
+    saveFile << mayor->getUsername() << " Walikota " << mayor->getCurrWeight() << " " << mayor->getWealth() << endl;
+
     saveFile.close();
 }
 
@@ -292,6 +359,31 @@ void Game::saveGameIO(){
         }
     }
 
+}
+
+void Game::addPlayerToTurnOrder(string playerName, int id){
+    if(playerNames.empty()){
+        playerOrder.push_back(id);
+        playerNames.push_back(playerName);
+    } else{
+        int i = 0;
+        int size = playerNames.size();
+        for(; i < size; i++){
+            if(playerName == playerNames[i] ){
+                throw PlayerNameIsTakken();
+                break;
+            } else if(playerName < playerNames[i]){
+                playerNames.insert(playerNames.begin() + i, playerName);
+                playerOrder.insert(playerOrder.begin() + i, id);
+                break;
+            }
+        }
+
+        if(i == size){
+            playerOrder.push_back(id);
+            playerNames.push_back(playerName);
+        }
+    }
 }
 
 void Game::makeDirectory(string path){
@@ -388,10 +480,36 @@ void Game::readConfigRecipe(){
     if (!configFile.is_open()) {
         throw FileNotFoundException("Failed to open recipe.txt");
     }
-    
-    // TODO: READ RECIPE CONFIGURATION
-    resetTextColor();
-    cout << "Warning: Recipe configuration is not been implemented" << endl;
+     
+
+    string line; 
+    while (getline(configFile, line)) {
+        int id;
+        string code;
+        string name;
+        int price;
+        vector<string> material;
+        vector<int> materialAmount;
+
+        istringstream iss(line);
+        iss >> id >> code >> name >> price;
+        
+        string materialName;
+        int amount;
+        while(true){
+            materialName = "";
+            amount = -1;
+            iss >> materialName >> amount;
+            if(materialName == "" || amount < 0){
+                break;
+            } else{
+                material.push_back(materialName);
+                materialAmount.push_back(amount);
+            }
+        }
+
+        // Bangunan::addProductConfig(id, code, name, price, material, materialAmount);
+    }
 
     cout << " > Finished Reading Recipe Configuration" << endl;
     configFile.close(); 
@@ -420,7 +538,7 @@ void Game::readConfigMisc(){
 
     getline(configFile, line);
     iss = istringstream(line);
-    iss >> storageWidth >> storageHeight;
+    iss >> storageHeight >> storageWidth ;
 
     getline(configFile, line);
     iss = istringstream(line);
@@ -428,10 +546,26 @@ void Game::readConfigMisc(){
     
     getline(configFile, line);
     iss = istringstream(line);
-    iss >> animalStorageWidth >> animalStorageHeight;
+    iss >> animalStorageHeight >> animalStorageWidth;
 
-    // TODO: Store Variables To Class
+    Storage<string>::readConfigDefaultSize(make_pair(storageHeight, storageWidth));
+    Storage<Animal>::readConfigDefaultSize(make_pair(animalStorageHeight, animalStorageWidth));
+    Storage<Plant>::readConfigDefaultSize(make_pair(plantStorageHeight, plantStorageWidth));
     
     cout << " > Finished Reading Misc Configuration" << endl;
     configFile.close();    
+}
+
+void Game::printPlayerNames(){
+    cout << "Player Names: " << endl;
+    for(int i = 0; i < playerNames.size(); i++){
+        cout << i + 1 << " " << playerNames[i] << endl;
+    }
+}
+
+void Game::printPlayerTurnOrder(){
+    cout << "Player Order: " << endl;
+    for(int i = 0; i < playerOrder.size(); i++){
+        cout << i + 1 << " " << getPlayer(playerOrder[i])->getUsername() << endl;
+    }
 }

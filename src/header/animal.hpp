@@ -44,6 +44,18 @@ class Animal{
 
     public:
         /**
+         * @brief ctor user defined
+        */
+        Animal();
+
+        /**
+         * @brief ctor user defined
+         * 
+         * @param _code 
+        */
+        Animal(string _code);
+
+        /**
          * @brief ctor user defined.
          * 
          * @param _code              Animal Name
@@ -132,6 +144,14 @@ class Animal{
          * @return false if not ready to be harvest
          */
         bool isReadyToHarvest();
+
+        /**
+         * @brief check if animal is empty
+         * 
+         * @return true 
+         * @return false 
+        */
+        bool empty();
 
         /**
          * @brief Add new Configuration for Animal

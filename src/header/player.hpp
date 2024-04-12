@@ -21,14 +21,12 @@ using namespace std;
 class Player{
     protected:
         /* Attributes */
+        static int numPlayer;
         const int id;
         const string username;
         int wealth;
         int currWeight;
         Storage<string> ItemStorage;
-
-        /* Configuration Variables */
-        /* -- TODO : HANDLE CONFIGURATION FROM STATE.TXT -- */
 
         /* Default Variables */
         static const int DefaultPlayerStartingWealth = 50;
@@ -40,7 +38,7 @@ class Player{
          * 
          * @param _username        Player username
         */
-        Player(string _username);
+        Player(string _userName);
 
         /**
          * @brief Player ctor user defined.
@@ -89,7 +87,7 @@ class Player{
          * 
          * @param _wealth new wealth
         */
-        void setWealth();
+        void setWealth(int _wealth);
 
         /**
          * @brief Set Player current weight
@@ -135,6 +133,31 @@ class Player{
          * 
         */
         void sellItems(string positionCode);
+
+        /**
+        * @brief check item type in a specified index
+        *
+        * \note index input is in string parameter
+        * \note check whether index input is valid or not
+        *
+        * @param positionCode string signifies where is the postition of item to be checked
+        * @return string item type
+        */
+        string itemType(string positionCode);
+
+
+        /**
+         * @brief check item type in a specified index
+         *
+         * \note index input is in string parameter
+         * \note check whether index input is valid or not
+         *
+         * @param y int row position
+         * @param x int column position
+     * @return string item type
+     */
+    string itemType(int y, int x);
+
 };
 
-#endif __PLAYER_HPP__
+#endif 
