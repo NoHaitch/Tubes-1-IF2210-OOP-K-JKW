@@ -31,6 +31,15 @@ Product::Product() : addedWeight(0), price(0){
     origin = "";
 }
 
+Product::Product(string _code) :
+    id(productIDMap[_code]),
+    code(_code),
+    name(productNameMap[_code]),
+    type(productTypeMap[_code]),
+    origin(productOriginMap[_code]),
+    addedWeight(productAddedWeightMap[_code]),
+    price(productPriceMap[_code]){}
+
 Product::Product(int _id, string _code, string _type, string _name, string _origin, int _addedWeight, int _price) : addedWeight(_addedWeight), price(_price){
     id = _id;
     code = _code;

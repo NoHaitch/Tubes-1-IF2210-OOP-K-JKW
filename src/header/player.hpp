@@ -103,38 +103,36 @@ class Player{
         void printItemStorage();
 
         /**
-         * @brief Eat the requested food from storage, player weight increased
+         * @brief Eat the requested food from storage, food eaten inputted by player, player weight increased
          * 
-         * \note Food isn't guaranteed to be valid
+         * \note Food input isn't guaranteed to be valid
          * \note Throw exception if needed
          * 
-         * @param positionCode string signifies where is the food to be eaten from storage
          * 
         */
-        void eatFromStorage(string positionCode);
+        void eatFromStorage();
 
         /**
          * @brief buy specified items with exact amount from the shop item list, then store in itemStorage
          * 
          * \note Validize whether the amount of money enough and storage slot sufficient
+         * \note called from buy command
          * \note Throw exception if needed
          * 
-         * @param itemNumber int which item to be bought from Shop list
-         * @param quantity int amount of item to be bought
          * 
         */
-        void buyItems(int itemNumber, int quantity);
+        virtual void buy() = 0;
 
         /**
          * @brief sell specified items from storage into shops, players weight increase
          * 
          * \note Validize whether the item is available
+         * \note called from sell command
          * \note Throw exception if needed
          * 
-         * @param positionCode string signifies where is the postition of item to be sold
          * 
         */
-        void sellItems(string positionCode);
+        virtual void sell() = 0;
 
         /**
         * @brief check item type in a specified index
@@ -149,16 +147,30 @@ class Player{
 
 
         /**
-         * @brief check item type in a specified index
-         *
-         * \note index input is in string parameter
-         * \note check whether index input is valid or not
-         *
-         * @param y int row position
-         * @param x int column position
-     * @return string item type
-     */
-    string itemType(int y, int x);
+        * @brief check item type in a specified index
+        *
+        * \note index input is in string parameter
+        * \note check whether index input is valid or not
+        *
+        * @param y int row position
+        * @param x int column position
+        * @return string item type
+        */
+        string itemType(int y, int x);
+
+        /**
+         * @brief calculate tax need to be paid by player
+         * 
+         * \note Mayor will return 0
+        */
+        virtual int calculateTax() = 0;
+
+        /**
+         * @brief pay the tax owed by player, wealth decreases by calculated tax
+         * 
+         * \note Mayor wealth increased, farmer/cattleman wealth decreased
+        */
+        virtual void payTax() = 0;
 
 };
 

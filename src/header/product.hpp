@@ -65,6 +65,11 @@ class Product {
     Product();
 
     /**
+     * @brief ctor berdasarkan code
+     */
+    Product(string _code);
+
+    /**
      * @brief ctor product
      * @param _id Product id
      * @param _code 3 characters product code
