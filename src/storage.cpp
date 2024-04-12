@@ -70,7 +70,7 @@ pair<int, int> Storage<T>::translatePositionCode(string positionCode){
     if (row >= 0 && row < numRow && col >= 0 && col <numCol){
         return make_pair(row, col);
     } else {
-        throw PositionCodeInvalidException("Position Code is out of bounds for this storage");
+        throw PositionCodeInvalidException("Kode posisi melampaui ukuran penyimpanan");
     }
 }
 
@@ -78,7 +78,7 @@ template<class T>
 void Storage<T>::insertElmtAtPosition(string positionCode, string codeElmt){
     try {
         if (isStorageFull()){
-            throw StorageFullException("No slot available since storage is full");
+            throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
         } else {
             pair<int, int> position = translatePositionCode(positionCode);
             delete matrix[position.first][position.second];
@@ -95,7 +95,7 @@ void Storage<T>::insertElmtAtPosition(string positionCode, string codeElmt){
 template<class T>
 void Storage<T>::insertElmtAtEmptySlot(string codeElmt){
     if (isStorageFull()){
-        throw StorageFullException("No slot available since storage is full");
+        throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
     } else {
         for (int i=0; i<numRow; i++){
             for (int j=0; j<numCol; j++){
@@ -115,7 +115,7 @@ void Storage<T>::deleteElmtAtPosition(string positionCode){
     try {
         pair<int, int> position = translatePositionCode(positionCode);
         if (isEmpty(positionCode)){
-            throw StorageSlotException("Nothing deleted since slot is empty");
+            throw StorageSlotException("Item tidak dapat dihapus karena slot kosong");
         } else {
             delete matrix[position.first][position.second];
             matrix[position.first][position.second] = nullptr;

@@ -54,7 +54,7 @@ void Player::printItemStorage(){
 }
 
 void Player::eatFromStorage(){
-    cout << "Select a food from storage" << endl;
+    cout << "Pilih makanan dari penyimpanan" << endl;
     cout << endl;
     printItemStorage();
     bool valid = false;
@@ -64,7 +64,7 @@ void Player::eatFromStorage(){
             cout << "Slot: ";
             cin >> inputCode;
             if (ItemStorage.isEmpty(inputCode)){
-                throw StorageSlotException("Selected slot is Empty! Input a filed slot instead");
+                throw StorageSlotException("Kamu mengambil harapan kosong dari penyimpanan. \n Silahkan masukan slot yang berisi makanan. \n"); 
             } else {
                 selectedItem = ItemStorage.getElmt(inputCode);
                 if (itemType(inputCode)=="Product"){
@@ -73,11 +73,12 @@ void Player::eatFromStorage(){
                         ItemStorage.deleteElmtAtPosition(inputCode);
                         currWeight += selectedProduct.getAddedWeight();
                         valid = true;
+                        cout << "Dengan lahapnya, kamu memakanan hidangan itu \n Alhasil, berat badan kamu naik menjadi 61 \n";
                     } else {
-                        throw InedibleProductException("Selected product is Indedible! Input a slot with food instead");
+                        throw InedibleProductException("Apa yang kamu lakukan??!! Kamu mencoba untuk memakan itu?!! \n Silahkan masukan slot yang berisi makanan. \n");
                     }
                 } else {
-                    throw NotProductException("Selected Item is not a product! Input a slot with food product");
+                    throw NotProductException("Benda tersebut bukan produk!! Bagaimana bisa kamu makan?? !! \n Silahkan masukan slot yang berisi makanan. \n");
                 }
             }
         } catch (exception e){
