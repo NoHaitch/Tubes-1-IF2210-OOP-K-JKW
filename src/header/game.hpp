@@ -3,37 +3,43 @@
 
 #include <iostream>
 #include <iomanip>
+#include <stdlib.h>
+#include <ctype.h>
+
 #include <string>
 #include <vector>
 #include <map>
-#include <stdlib.h>
-#include <ctype.h>
+#include <algorithm>
 
 #include <fstream>
 #include <sstream>
 #include <filesystem>
 
-#include "gameException.hpp"
+#include "player.hpp"
+#include "mayor.hpp"
+#include "farmer.hpp"
+#include "cattleman.hpp"
+#include "product.hpp"
+#include "shop.hpp"
 #include "animal.hpp"
 #include "plant.hpp"
+#include "storage.hpp"
+#include "gameException.hpp"
 #include "printColor.hpp"
 #include "utils.hpp"
-#include "product.hpp"
-#include "player.hpp"
-#include "shop.hpp"
-#include "storage.hpp"
+
 
 using namespace std;
 
 class Game{
     private:
-        Shop shop;
-        int currTurn;
-        vector<string> playerUsernames;
-        map<string, int> convertToId;
-        // Mayor mayor;
-        // vector<Farmer> farmers;
-        // vector<Cattleman> cattlemans;
+        Shop *shop;
+        int currTurn = 0;
+        vector<int> playerOrder;
+        vector<string> playerNames;
+        Mayor *mayor;
+        vector<Farmer> farmers;
+        vector<Cattleman> cattlemans;
 
     public:
         /**
@@ -50,17 +56,22 @@ class Game{
         ~Game();
 
         /**
-         * @brief Read all configuration
+         * @brief Change player turn 
          * 
         */
-        int readConfig();
+        void nextTurn();
 
         /**
-         * @brief Read/Load a Game state
+         * @brief Get Player object pointer
          * 
-         * @param path to a save file
-        */
-        void readGameState(string path);
+         */
+        Player* getCurrentPlayer();
+
+        /**
+         * @brief Get Player object pointer
+         * 
+         */
+        Player* getPlayer(int playerId);
 
         /**
          * @brief Initilize new Game State
@@ -76,7 +87,20 @@ class Game{
          * \note 3. Exit
          * 
         */
-        void getGameStateIO();
+        void getGameStateIO();       
+
+        /**
+         * @brief Read/Load a Game state
+         * 
+         * @param path to a save file
+        */
+        void readGameState(string path);
+
+        /**
+         * @brief Read all configuration
+         * 
+        */
+        int readConfig();
 
         /**
          * @brief Save game state
@@ -93,8 +117,27 @@ class Game{
          * @param path 
         */
         void saveGameIO();
+    
+        /**
+         * @brief debugging
+         * 
+        */
+       void printPlayerNames();
+
+        /**
+         * @brief debugging
+         * 
+        */
+        void printPlayerTurnOrder();
 
     private:
+        /**
+         * @brief Add Player to The Turn Order
+         * 
+         * @param playerName 
+        */
+        void addPlayerToTurnOrder(string playerName, int id);
+
         /**
          * @brief Create the directory, but not the file for the path
          * 
@@ -102,7 +145,7 @@ class Game{
         */
         void makeDirectory(string path);
 
-                /**
+        /**
          * @brief Read plant configuration
          * 
         */
@@ -131,6 +174,7 @@ class Game{
          * 
         */
         void readConfigMisc();
+
 };
 
 #endif
