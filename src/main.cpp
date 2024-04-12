@@ -26,7 +26,8 @@ int main(){
     game.getGameStateIO();
     
     game.printPlayerNames();
-    game.printPlayerTurnOrder();
+    
+    game.saveGameIO();
 
     return 0;
 }

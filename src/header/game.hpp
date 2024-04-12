@@ -28,7 +28,6 @@
 #include "printColor.hpp"
 #include "utils.hpp"
 
-
 using namespace std;
 
 class Game{
@@ -54,6 +53,13 @@ class Game{
          * 
         */
         ~Game();
+
+        /**
+         * @brief Get the amount of current player 
+         * 
+         * @return int amount of current player
+         */
+        int getPlayerAmount();
 
         /**
          * @brief Change player turn 

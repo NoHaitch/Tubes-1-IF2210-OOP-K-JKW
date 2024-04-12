@@ -28,6 +28,10 @@ Game::~Game(){
     cout << setfill('=') << setw(50)  << "" << endl << endl << setfill(' ');
 }
 
+int Game::getPlayerAmount(){
+    return playerNames.size();
+}
+
 void Game::nextTurn(){
     currTurn++;
     if(currTurn == playerOrder.size()){
@@ -125,6 +129,7 @@ void Game::getGameStateIO(){
             cout << "Please input a valid menu number\n" << endl;
         }
     }
+
 }
 
 // TODO: Read Items
@@ -145,6 +150,9 @@ void Game::readGameState(string path){
         throw FileReadingFailedException();
     }
 
+    farmers = vector<Farmer>();
+    cattlemans = vector<Cattleman>();
+
     for(int player = 0; player < amountOfPlayer; player++){
         string playerUsername;
         string playerRole;
@@ -164,12 +172,10 @@ void Game::readGameState(string path){
             addPlayerToTurnOrder(playerUsername, (*mayor).getId());
 
         } else if(playerRole == "Petani"){
-            farmers = vector<Farmer>();
             farmers.push_back(Farmer(playerUsername, playerMoney, playerWeight));
             addPlayerToTurnOrder(playerUsername, farmers.back().getId());
 
         } else{ // Peternak
-            cattlemans = vector<Cattleman>();
             cattlemans.push_back(Cattleman(playerUsername, playerMoney, playerWeight));
             addPlayerToTurnOrder(playerUsername, cattlemans.back().getId());
         }
@@ -269,6 +275,7 @@ int Game::readConfig(){
     }
 }
 
+// TODO: Save Items
 void Game::saveGame(string path){ 
     if (path.find("//") != string::npos || path.find("//") == 0) {
         throw FileBadPathException();
@@ -291,8 +298,21 @@ void Game::saveGame(string path){
     // Saving Game State
     ofstream saveFile(path);
 
-    saveFile << "TEST SAVING";
-    
+    saveFile << getPlayerAmount() << endl;
+
+    // Save Cattlemans
+    for(int i = 0; i < cattlemans.size(); i++){
+        saveFile << cattlemans[i].getUsername() << " Peternak "<< cattlemans[i].getCurrWeight() << " " << cattlemans[i].getWealth() << endl;
+    }
+
+    // Save Farmers
+    for(int i = 0; i < farmers.size(); i++){
+        saveFile << farmers[i].getUsername() << " Petani "<< farmers[i].getCurrWeight() << " " << farmers[i].getWealth() << endl;
+    }
+
+    // Save Mayor
+    saveFile << mayor->getUsername() << " Walikota " << mayor->getCurrWeight() << " " << mayor->getWealth() << endl;
+
     saveFile.close();
 }
 
