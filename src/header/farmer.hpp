@@ -13,6 +13,7 @@ using namespace std;
 class Farmer : public Player {
 private:
     Storage<Plant> *Ladang;
+    map<string, int> numberOfHarvestablePlant;
 
 public:
     /**
@@ -60,8 +61,35 @@ public:
      * @brief override getItem() untuk mengambil tanaman dari penyimpanan ladang
      * @return tanaman yang diambil
      */
-    Plant* getItem(string idx);
+    Plant getItem(string idx);
 
+
+    /**
+     * @brief print khusus ladang
+     * \note - hanya menampilkan kode tanaman
+     * \note - warna hijau menandakan tanaman yang sudah siap panen
+     * \note - warna merah menandakan tanaman yang belum siap panen
+     */
+    void printLadang();
+
+    /**
+     * @brief menghitung pajak yang harus dibayarkan
+     * @return pajak int yang harus dibayarkan
+     */
+    int countTax();
+
+    /**
+     * @brief fungsi untuk membayar pajak
+     * \note mengambil nilai besar pajak yang dibutuhkan dari fungsi counTax()
+     */
+    void payTax();
+
+    /**
+     * @brief menghitung total kekayaan
+     * @return total kekayaan
+     * \note
+     */
+    int countWealth();
 };
 
 #endif
