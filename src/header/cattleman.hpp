@@ -5,7 +5,7 @@
 
 class Cattleman : public Player{
     private:
-        Storage<Animal> farm;
+        Storage<Animal> Farm;
 
     public:
         /**
@@ -24,24 +24,12 @@ class Cattleman : public Player{
         ~Cattleman();
 
         /**
-        * @brief calculates tax to be paid
-        * @return int Tax to be paid
-        */
-        int calculateTax() override;
-
-        /**
-        * @brief function of paying tax, cattlemans's wealth decrease
-        * \note uses calculateTax() for the needed value
-        */
-        void payTax() override;
-
-        /**
-        * @brief calculates total wealth including profession storage
-        * @return total wealth
+        * @brief calculates KKP using total wealth including profession storage
+        * @return KKP
         * 
         * \note calling parent's calculate wealth and adds the total from profession storage
         */
-        int calculateWealth();
+        int calculateKKP() override;
 
         /**
         * @brief buy specified items with exact amount from the shop item list, then store in itemStorage

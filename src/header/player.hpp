@@ -159,18 +159,16 @@ class Player{
         string itemType(int y, int x);
 
         /**
-         * @brief calculate tax need to be paid by player
-         * 
-         * \note Mayor will return 0
+         * @brief calculate tax need to be paid by player according to KKP
         */
-        virtual int calculateTax() = 0;
+        int calculateTax(int KKP);
 
         /**
          * @brief pay the tax owed by player, wealth decreases by calculated tax
          * 
          * \note Mayor wealth increased, farmer/cattleman wealth decreased
         */
-        virtual void payTax() = 0;
+        void payTax();
 
         /**
          * @brief calculate wealth owned by player from current wealth and total of storage
@@ -178,6 +176,13 @@ class Player{
          * \note will be used by farmer and cattleman to calculate their total wealth (including profession storage)
         */
         int calculateWealth();
+
+        /**
+         * @brief calculate KKP based on wealth
+         * 
+         * \note Mayor will return 0
+        */
+        virtual int calculateKKP() = 0;
 };
 
 #endif 

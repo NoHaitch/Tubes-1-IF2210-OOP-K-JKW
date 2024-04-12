@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <cmath>
 
 #include "header/player.hpp"
 #include "header/storage.hpp"
@@ -141,14 +142,41 @@ string Player::itemType(int y, int x) {
     }
 }
 
-int Player::calculateTax(){}
+int Player::calculateTax(int KKP){
+    if (KKP <= 0){ //KKP = 0 hasil pajaknya juga 0
+        return 0;
+    } else {
+        double div;
+        int pajak;
+        if (KKP <= 6){
+            div = (double) KKP * 5 / 100;
+        } else if (KKP > 6 && KKP <= 25){
+            div = (double) KKP * 15 / 100;
+        } else if (KKP > 25 && KKP <= 50){
+            div = (double) KKP * 25 / 100;
+        } else if (KKP > 50 && KKP <= 500){
+            div = (double) KKP * 30 / 100;
+        } else {
+            div = (double) KKP * 35 / 100;
+        }
+        pajak = (int) ceil(div);
+        return pajak;
+    }
+}
 
-void Player::payTax(){}
+void Player::payTax(){
+    int KKP = calculateKKP();
+    int pajak = calculateTax(KKP);
+    wealth = max(0, wealth - pajak);
+}
 
 int Player::calculateWealth(){
     int ans = wealth;
     for (int i=0; i<ItemStorage.getNumRow(); i++){
         for (int j=0; j<ItemStorage.getNumCol(); j++){
+            if (ItemStorage.isEmpty(i, j)){
+                continue;
+            }
             string itemCode = ItemStorage.getElmt(i, j);
             if (itemType(i, j) == "Plant"){
                 ans += Plant::getPlantPriceMapConfig()[itemCode];
@@ -163,3 +191,5 @@ int Player::calculateWealth(){
     }
     return ans;
 }
+
+int Player::calculateKKP(){}

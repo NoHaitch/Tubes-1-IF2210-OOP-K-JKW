@@ -287,3 +287,12 @@ bool Storage<T>::isEmpty(string idx) {
         resetTextColor();
     }
 }
+
+template <class T>
+bool Storage<T>::isEmpty(int y, int x) {
+    if (y >= 0 && y < numRow && x >= 0 && x < numCol){
+        return matrix[y][x] == nullptr;
+    } else {
+        throw PositionCodeInvalidException("Indeks diluar ukuran storage")
+    }
+}

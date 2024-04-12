@@ -144,14 +144,16 @@ class Storage{
         static void readConfigDefaultSize(pair<int,int> size);
 
         /**
-         * @brief cek apakah item pada slot index x, y kosong
+         * @brief cek apakah item pada slot positionCode kosong
          * @return true jika kosong
          */
         bool isEmpty(string idx);
 
-
-
-
+        /**
+         * @brief cek apakah item pada slot index x, y kosong
+         * @return true jika kosong
+         */
+        bool isEmpty(int y, int x)
 };
 
 template class Storage<string>;
