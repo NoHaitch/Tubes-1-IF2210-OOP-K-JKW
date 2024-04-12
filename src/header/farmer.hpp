@@ -12,7 +12,7 @@ using namespace std;
 
 class Farmer : public Player {
 private:
-    Storage<Plant> *Ladang;
+    Storage<Plant> Ladang;
     map<string, int> numberOfHarvestablePlant;
 
 public:
@@ -39,7 +39,7 @@ public:
     /**
      * @brief Get Ladang
      */
-    Storage<Plant> *getLadang();
+    Storage<Plant> getLadang();
 
     /**
      * @brief menanam tanaman di ladang
@@ -76,7 +76,7 @@ public:
      * @brief menghitung pajak yang harus dibayarkan
      * @return pajak int yang harus dibayarkan
      */
-    int countTax();
+    int calculateTax();
 
     /**
      * @brief fungsi untuk membayar pajak
@@ -90,6 +90,10 @@ public:
      * \note
      */
     int countWealth();
+
+    void buy() override;
+
+    void sell() override;
 };
 
 #endif

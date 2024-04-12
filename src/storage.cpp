@@ -70,7 +70,7 @@ pair<int, int> Storage<T>::translatePositionCode(string positionCode){
     if (row >= 0 && row < numRow && col >= 0 && col <numCol){
         return make_pair(row, col);
     } else {
-        throw PositionCodeInvalidException("Position Code is out of bounds for this storage");
+        throw PositionCodeInvalidException("Kode posisi melampaui ukuran penyimpanan");
     }
 }
 
@@ -78,7 +78,7 @@ template<class T>
 void Storage<T>::insertElmtAtPosition(string positionCode, string codeElmt){
     try {
         if (isStorageFull()){
-            throw StorageFullException("No slot available since storage is full");
+            throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
         } else {
             pair<int, int> position = translatePositionCode(positionCode);
             delete matrix[position.first][position.second];
@@ -95,7 +95,7 @@ void Storage<T>::insertElmtAtPosition(string positionCode, string codeElmt){
 template<class T>
 void Storage<T>::insertElmtAtEmptySlot(string codeElmt){
     if (isStorageFull()){
-        throw StorageFullException("No slot available since storage is full");
+        throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
     } else {
         for (int i=0; i<numRow; i++){
             for (int j=0; j<numCol; j++){
@@ -114,9 +114,13 @@ template<class T>
 void Storage<T>::deleteElmtAtPosition(string positionCode){
     try {
         pair<int, int> position = translatePositionCode(positionCode);
-        delete matrix[position.first][position.second];
-        matrix[position.first][position.second] = nullptr;
-        numElmt--;
+        if (isEmpty(positionCode)){
+            throw StorageSlotException("Item tidak dapat dihapus karena slot kosong");
+        } else {
+            delete matrix[position.first][position.second];
+            matrix[position.first][position.second] = nullptr;
+            numElmt--;
+        }
     } catch (PositionCodeInvalidException e){
         startTextRed();
         cout << e.what() << endl;
@@ -135,6 +139,7 @@ void Storage<T>::printStorage(){
     for (int i=0; i<max(0,(numCol*3)-7); i++){
         cout << "=";
     }
+    cout << endl;
     cout << endl;
     cout << "      ";
     for (int i=65; i<65+numCol; i++){
@@ -177,6 +182,7 @@ void Storage<Animal>::printStorage(){
     for (int i=0; i<max(0,(numCol*3)-6); i++){
         cout << "=";
     }
+    cout << endl;
     cout << endl;
     cout << "      ";
     for (int i=65; i<65+numCol; i++){
@@ -226,6 +232,7 @@ void Storage<Plant>::printStorage(){
     for (int i=0; i<max(0,(numCol*3)-4); i++){
         cout << "=";
     }
+    cout << endl;
     cout << endl;
     cout << "      ";
     for (int i=65; i<65+numCol; i++){

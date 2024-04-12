@@ -5,6 +5,7 @@
 #include "header/player.hpp"
 #include "header/storage.hpp"
 #include "header/product.hpp"
+#include "header/playerException.hpp"
 
 using namespace std;
 
@@ -51,6 +52,44 @@ void Player::setCurrWeight(int _currWeight){
 void Player::printItemStorage(){
     this->ItemStorage.printStorage();
 }
+
+void Player::eatFromStorage(){
+    cout << "Pilih makanan dari penyimpanan" << endl;
+    cout << endl;
+    printItemStorage();
+    bool valid = false;
+    string inputCode, selectedItem;
+    while (!valid){
+        try {
+            cout << "Slot: ";
+            cin >> inputCode;
+            if (ItemStorage.isEmpty(inputCode)){
+                throw StorageSlotException("Kamu mengambil harapan kosong dari penyimpanan. \n Silahkan masukan slot yang berisi makanan. \n"); 
+            } else {
+                selectedItem = ItemStorage.getElmt(inputCode);
+                if (itemType(inputCode)=="Product"){
+                    Product selectedProduct(selectedItem);
+                    if (isEdible(selectedProduct)){
+                        ItemStorage.deleteElmtAtPosition(inputCode);
+                        currWeight += selectedProduct.getAddedWeight();
+                        valid = true;
+                        cout << "Dengan lahapnya, kamu memakanan hidangan itu \n Alhasil, berat badan kamu naik menjadi 61 \n";
+                    } else {
+                        throw InedibleProductException("Apa yang kamu lakukan??!! Kamu mencoba untuk memakan itu?!! \n Silahkan masukan slot yang berisi makanan. \n");
+                    }
+                } else {
+                    throw NotProductException("Benda tersebut bukan produk!! Bagaimana bisa kamu makan?? !! \n Silahkan masukan slot yang berisi makanan. \n");
+                }
+            }
+        } catch (exception e){
+            cout << e.what() << endl;
+        }
+    }
+}
+
+void Player::buy(){}
+
+void Player::sell(){}
 
 string Player::itemType(string positionCode) {
     string itemCode = this->ItemStorage.getElmt(positionCode);
@@ -101,3 +140,7 @@ string Player::itemType(int y, int x) {
         }
     }
 }
+
+int Player::calculateTax(){}
+
+void Player::payTax(){}
