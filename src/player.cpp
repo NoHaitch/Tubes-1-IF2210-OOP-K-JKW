@@ -144,3 +144,22 @@ string Player::itemType(int y, int x) {
 int Player::calculateTax(){}
 
 void Player::payTax(){}
+
+int Player::calculateWealth(){
+    int ans = wealth;
+    for (int i=0; i<ItemStorage.getNumRow(); i++){
+        for (int j=0; j<ItemStorage.getNumCol(); j++){
+            string itemCode = ItemStorage.getElmt(i, j);
+            if (itemType(i, j) == "Plant"){
+                ans += Plant::getPlantPriceMapConfig()[itemCode];
+            } else if (itemType(i, j) == "Animal"){
+                ans += Animal::getAnimalPriceConfig()[itemCode];
+            } else if (itemType(i, j) == "Product"){
+                ans += Product::getProductPriceMapConfig()[itemCode];
+            } else if (itemType(i, j) == "Building"){
+                // TODO : implement case for building
+            }
+        }
+    }
+    return ans;
+}

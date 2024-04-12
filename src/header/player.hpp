@@ -121,11 +121,7 @@ class Player{
          * 
          * 
         */
-<<<<<<< HEAD
-        void buyItems();
-=======
         virtual void buy() = 0;
->>>>>>> 3b450cacce56933fd3b5a0025b56dd4fa3fad8cb
 
         /**
          * @brief sell specified items from storage into shops, players weight increase
@@ -176,6 +172,12 @@ class Player{
         */
         virtual void payTax() = 0;
 
+        /**
+         * @brief calculate wealth owned by player from current wealth and total of storage
+         * 
+         * \note will be used by farmer and cattleman to calculate their total wealth (including profession storage)
+        */
+        int calculateWealth();
 };
 
 #endif 
