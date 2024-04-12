@@ -281,3 +281,13 @@ void Farmer::buy() {
 void Farmer::sell() {
     // TODO implement sell
 }
+
+void Farmer::incrementPlantDuration() {
+    for (int i = 0; i < this->Ladang.getNumRow(); i++) {
+        for (int j = 0; j < this->Ladang.getNumCol(); j++) {
+            if (!this->Ladang.isEmpty(to_string(i) + to_string(j))) {
+                this->Ladang.getElmt(i, j).incrementCurrentDuration();
+            }
+        }
+    }
+}

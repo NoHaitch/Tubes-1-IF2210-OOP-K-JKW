@@ -194,6 +194,11 @@ public:
      * \note For debugging only
     */
    static void printParsedConfig();
+
+   /**
+    * @brief increment currentDuration by one
+    */
+   void incrementCurrentDuration();
 };
 
 /**

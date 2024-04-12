@@ -37,6 +37,9 @@ void Game::nextTurn(){
     if(currTurn == playerOrder.size()){
         currTurn = 0;
     }
+    for (int i = 0; i < farmers.size(); i++) {
+        farmers[i].incrementPlantDuration();
+    }
 }
 
 Player* Game::getPlayer(int playerId){

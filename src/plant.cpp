@@ -116,6 +116,10 @@ void Plant::printParsedConfig() {
     }
 }
 
+void Plant::incrementCurrentDuration() {
+    this->currentDuration++;
+}
+
 MaterialPlant::MaterialPlant(int _id, string _code, std::string _plantName, int _harvestDuration, int _price) :
     Plant(_id, _code, "MATERIAL_PLANT", _plantName, _harvestDuration, _price) {}
 

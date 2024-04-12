@@ -91,9 +91,15 @@ public:
      */
     int countWealth();
 
-    void buy() override;
+    void buy() ;
 
     void sell() override;
+
+    /**
+     * @brief menambahkan durasi tanaman pada ladang pada setiap turn
+     * \note dipanggil dari kelas Game pada setiap nextTurn
+     */
+    void incrementPlantDuration();
 };
 
 #endif
