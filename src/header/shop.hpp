@@ -24,6 +24,7 @@ protected:
 
     int item_number;         // Item's item_number number / Item number
     string code;    // Item's Code
+    string name;    // Item's Name
     int Price;      // Item's Price
     bool isQtyInf;  // Bool Checker for Qty
     float Qty;      // Qty Float to facilitate INFINITY
@@ -43,7 +44,7 @@ public:
      * @brief 
      * 
      */
-    Shop(int _id, string _code, int _Price, bool isQtyInf, float _Qty);
+    Shop(int _id, string _code, string _name,int _Price, bool isQtyInf, float _Qty);
     
 
     /**
@@ -81,6 +82,40 @@ public:
      */
     string getName(string code);
 
+     /**
+     * @brief Get Qty of the item with Code = code from Shop
+     * 
+     * @param code
+     * 
+     * @return 
+     * 
+     */
+    int Shop::getQty(string _code);
+
+    /**
+     * @brief Get isQtyInf of the item with Code = code from Shop
+     * 
+     * @param code
+     * 
+     * @return bool
+     * 
+     */
+    bool Shop::getIsQtyInf(string _code);
+
+    /**
+     * @brief Set Qty of the item with Code = code with Qty = _Qty
+     * 
+     * \note Only Access if isQtyInf = false
+     * 
+     * @param code
+     * @param _Qty
+     */
+    void Shop::setQty(string _code, int _Qty){
+        if(this->code == _code){
+            this->Qty = _Qty;
+        }
+    }
+
     /**
      * @brief Update the Qty of the items with code = code
      * 
@@ -94,12 +129,20 @@ public:
     //*************** Show Shop Inventory *******************//
 
     /**
-     * @brief Show Shop Inventory Based on Role
+     * @brief Show Shop Inventory for Non Mayor Role
      * 
-     * @param string Role
+     * \note Show inventory for Cattleman and Farmer
      * 
      */
-    void Show_Shop_Inventory(string Role) const;
+    void Shop::Show_Shop_Inventory_NonMayor() const;
+
+    /**
+     * @brief Show Shop Inventory for Mayor Role
+     * 
+     * \note Show inventory for Mayor
+     * 
+     */
+    void Shop::Show_Shop_Inventory_Mayor() const;
 
 
 
@@ -110,22 +153,35 @@ public:
      * 
      * @param item_number 
      * @param Quantity 
+     * @param nEmptySlot        // Amount of Player's Empty Slot
+     * @param player_money
      * 
      * @return true if enough
      * @return false otherwise
      */
-    bool isBuyValid (int item_number, int Quantity);
+    bool isBuyValid (int item_number, int Quantity, int nEmptySlot, int player_money);
+
+    /**
+     * @brief Check if the item that player want to buy is Legal
+     * 
+     * @param item code 
+     * 
+     * \note Only Can Be Access by Mayor
+     * 
+     * @return true if Legal
+     * @return false if not Legal (Mayor want to buy buildings)
+     */
+    bool isBuyLegal (string code);
 
     /**
      * @brief Check if the item that player sell is valid according to their role
      * 
      * @param item code 
-     * @param player role 
      * 
      * @return true if valid 
      * @return false if not valid (Non Mayor want to sell buildings)
      */
-    bool isSalevalid (string code, string role);
+    bool isSaleLegal (string code);
 
     
     
@@ -159,7 +215,7 @@ private:
      * @param int current item_number
      * 
      */
-    void set_ID(int _id);
+    void set_ItemNumber(int _itemNumber);
 
     /**
      * @brief Set the Code into the ctor ?
