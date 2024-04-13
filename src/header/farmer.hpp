@@ -6,6 +6,7 @@
 #include <string>
 #include "plant.hpp"
 #include "player.hpp"
+#include "shop.hpp"
 #include "product.hpp"
 #include "storage.hpp"
 using namespace std;

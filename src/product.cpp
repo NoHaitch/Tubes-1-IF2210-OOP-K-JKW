@@ -48,7 +48,11 @@ Product::Product(int _id, string _code, string _type, string _name, string _orig
     origin = _origin;
 }
 
-Product convertToProduct(string _origin) {
+string Product::getCode() {
+    return this->code;
+}
+
+Product Product::convertToProduct(string _origin) {
     string productCode = Product::productOriginToCode[_origin];
     return Product(Product::productIDMap[productCode], productCode, Product::productNameMap[productCode], Product::productTypeMap[productCode], _origin, Product::productAddedWeightMap[productCode], Product::productPriceMap[productCode]);
 }
@@ -61,15 +65,15 @@ string Product::getType() const {
     return type;
 }
 
-string getOriginCode(Product& product) {
+string Product::getOriginCode(Product& product) {
     return product.origin;
 }
 
-bool isEdible(Product& product){
+bool Product::isEdible(Product& product){
     return product.addedWeight != 0;
 }
 
-bool isPlantProduct(Product& product){
+bool Product::isPlantProduct(Product& product){
     for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
         if (product.origin == Plant::getPlantCodeListConfig()[i]) {
             return true;
@@ -78,7 +82,7 @@ bool isPlantProduct(Product& product){
     return false;
 }
 
-bool isAnimalProduct(Product& product){
+bool Product::isAnimalProduct(Product& product){
     for (int i = 0; i < Animal::getAnimalCodeConfig().size(); i++) {
         if (product.origin == Animal::getAnimalCodeConfig()[i]) {
             return true;

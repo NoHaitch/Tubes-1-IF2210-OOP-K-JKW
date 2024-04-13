@@ -101,17 +101,23 @@ class Product {
     string getType() const;
 
     /**
+     * @brief return code of product
+     * @return code string of product
+     */
+    string getCode();
+
+    /**
      * @brief ctor product dengan input code origin (code bahan pembuat product)
      * @param _origin origin of product maker
     */
-    friend Product convertToProduct(string _origin);
+    static Product convertToProduct(string _origin);
 
     /**
      * @brief Get product origin code
      * @param product
      * @return product origin's code
     */
-    friend string getOriginCode(Product& product);
+    static string getOriginCode(Product& product);
 
     /**
      * @brief Check if product is edible or not
@@ -120,7 +126,7 @@ class Product {
      * @return true if product is edible
      * @return false if product is not edible (addedWeight = 0)
     */
-    friend bool isEdible(Product& Product);
+    static bool isEdible(Product& Product);
 
     /**
      * @brief Check if product is an plant product
@@ -129,7 +135,7 @@ class Product {
      * @return true if product is an plant product
      * @return false if product is not an plant product
     */
-    friend bool isPlantProduct(Product& Product);
+    static bool isPlantProduct(Product& Product);
     
     /**
      * @brief Check if product is an animal product
@@ -138,7 +144,7 @@ class Product {
      * @return true if product is an animal product
      * @return false if product is not an animal product
     */
-    friend bool isAnimalProduct(Product& Product);
+    static bool isAnimalProduct(Product& Product);
 
     /**
      * @brief Get Config : Product Code List
