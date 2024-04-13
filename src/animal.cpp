@@ -77,12 +77,12 @@ bool Animal::isReadyToHarvest(){
     return currWeight >= weightToHarvest;
 }
 
-bool Animal::canEat(Product& food){
+bool Animal::canEat(string productType){
     if(foodType == DefaultAnimalFoodTypeOmnivore){
         return true;
-    } else if(foodType == DefaultAnimalFoodTypeCarnivore && food.getType() == "PRODUCT_ANIMAL"){
+    } else if(foodType == DefaultAnimalFoodTypeCarnivore && productType == "PRODUCT_ANIMAL"){
         return true;
-    } else if(foodType == DefaultAnimalFoodTypeHerbivore && food.getType() == "PRODUCT_FRUIT_PLANT"){
+    } else if(foodType == DefaultAnimalFoodTypeHerbivore && productType == "PRODUCT_FRUIT_PLANT"){
         return true;
     }
 

@@ -33,12 +33,15 @@ using namespace std;
 class Game{
     private:
         Shop *shop;
-        int currTurn = 0;
-        vector<int> playerOrder;
-        vector<string> playerNames;
+        int currTurn = -1;
+        vector<string> playerOrder;
         Mayor *mayor;
         vector<Farmer> farmers;
         vector<Cattleman> cattlemans;
+
+        int winWealth;
+        int winWeight;
+        bool wonned;
 
     public:
         /**
@@ -68,6 +71,27 @@ class Game{
         void nextTurn();
 
         /**
+         * @brief Change player turn with Input Output 
+         * 
+        */
+        void nextTurnIO();
+        
+        /**
+         * @brief Print all Commands  
+         * 
+        */
+        void printCommands();
+
+        /**
+         * @brief Player Command 
+         * 
+         * \note return 1, for exit 
+         * \note return 2, for next 
+         * \note return 0, for other commands
+        */
+        int playerCommandIO();
+
+        /**
          * @brief Get Player object pointer
          * 
          */
@@ -77,7 +101,13 @@ class Game{
          * @brief Get Player object pointer
          * 
          */
-        Player* getPlayer(int playerId);
+        Player* getPlayer(string playerUsername);
+
+        /**
+         * @brief Check Current Player for Winning Condition 
+         * 
+        */
+        bool checkWinningCondition();
 
         /**
          * @brief Initilize new Game State
@@ -125,10 +155,10 @@ class Game{
         void saveGameIO();
     
         /**
-         * @brief debugging
+         * @brief print the game winner
          * 
         */
-       void printPlayerNames();
+        void printWinner();
 
         /**
          * @brief debugging
@@ -142,7 +172,7 @@ class Game{
          * 
          * @param playerName 
         */
-        void addPlayerToTurnOrder(string playerName, int id);
+        void addPlayerToTurnOrder(string playerName);
 
         /**
          * @brief Create the directory, but not the file for the path

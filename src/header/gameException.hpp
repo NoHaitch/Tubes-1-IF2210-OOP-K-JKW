@@ -101,4 +101,16 @@ class PlayerNotFound : public exception{
         }
 };
 
+class CommandWrongRole : public exception{
+    private:
+        string message;
+
+    public:
+        CommandWrongRole() : message("Perintah tidak dapat dilakukan.") {}
+        CommandWrongRole(string msg) : message("Perintah tidak dapat dilakukan." + msg) {}
+        string what () {
+            return message;
+        }
+};
+
 #endif

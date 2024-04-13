@@ -23,11 +23,33 @@ int main(){
     }
     resetTextColor();
 
+    // Load or Initilize New Game State
     game.getGameStateIO();
-    
-    game.printPlayerNames();
-    
-    game.saveGameIO();
+
+    // Player Turns
+    while(true){
+        game.nextTurnIO();
+
+        // Player Commands
+        int command = 0;
+        while(true){
+            command = game.playerCommandIO();
+            if(command == 1 || command == 2) {
+                break;
+            }
+
+            // Win Condition
+            if(game.checkWinningCondition()){            
+                game.printWinner();
+                break;
+            }
+        }
+        
+        // Exit Game
+        if(command == 1 || game.checkWinningCondition()){
+            break;
+        }
+    }
 
     return 0;
 }

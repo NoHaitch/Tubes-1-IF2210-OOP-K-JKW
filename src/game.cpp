@@ -5,6 +5,10 @@ using namespace std;
 Game::Game(){
     shop = new Shop();
     mayor = nullptr;
+    wonned = false;
+    winWealth = -1;
+    winWeight = -1;
+
     cout << endl;
     cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
     startTextBlue();
@@ -29,7 +33,7 @@ Game::~Game(){
 }
 
 int Game::getPlayerAmount(){
-    return playerNames.size();
+    return playerOrder.size();
 }
 
 void Game::nextTurn(){
@@ -42,25 +46,124 @@ void Game::nextTurn(){
     }
 }
 
-Player* Game::getPlayer(int playerId){
-    int currPlayerId = playerOrder[currTurn];
-    if(mayor->getId() == currPlayerId){
+void Game::nextTurnIO(){
+    if(currTurn != -1){
+        cout << "Giliran " << getCurrentPlayer()->getUsername() << " berakhir." << endl;
+    }
+    nextTurn();
+    cout << "\nGiliran " << getCurrentPlayer()->getUsername() << " dimulai ." << endl;
+}
+
+int Game::playerCommandIO(){
+    string input;
+    startTextGreen();
+    cout << "> ";
+    cin >> input;
+    resetTextColor();   
+    try{
+        if(input == "NEXT" ){
+            return 1;
+            
+        } else if(input == "EXIT"){
+            return 2;
+
+        } else if(input == "HELP" ){
+            printCommands();
+
+        } else if(input == "SIMPAN" ){
+            saveGameIO();
+
+        } else if(input == "CETAK_PENYIMPANAN" ){
+            getCurrentPlayer()->printItemStorage();
+        
+        } else if(input == "PUNGUT_PAJAK" ){
+            // TODO
+        
+        } else if(input == "CETAK_LADANG" ){
+            // TODO
+        
+        } else if(input == "CETAK_PETERNAKAN" ){
+            // TODO
+        
+        } else if(input == "TANAM" ){
+            // TODO
+        
+        } else if(input == "TERNAK" ){
+            // TODO
+        
+        } else if(input == "BANGUN" ){
+            // TODO
+        
+        } else if(input == "MAKAN" ){
+            // TODO
+
+        } else if(input == "KASIH_MAKAN" ){
+            // TODO
+
+        } else if(input == "BELI" ){
+            // TODO
+        
+        } else if(input == "JUAL" ){
+            // TODO
+        
+        } else if(input == "PANEN" ){
+            // TODO
+        
+        } else{
+            startTextRed();
+            cout << "Command: " << input << " tidak dikenal." << endl;
+            resetTextColor();
+        }
+    } catch (CommandWrongRole e){
+        cout << e.what() << endl << endl;
+    }
+
+    return 0;
+}
+
+void Game::printCommands(){
+    cout << "Semua Perintah: " << endl;
+    cout << " - NEXT" << endl;
+    cout << " - EXIT" << endl;
+    cout << " - HELP" << endl;
+    cout << " - SIMPAN" << endl;
+    cout << " - CETAK_PENYIMPANAN" << endl;
+    cout << " - PUNGUT_PAJAK" << endl;
+    cout << " - CETAK_LADANG" << endl;
+    cout << " - CETAK_PETERNAKAN" << endl;
+    cout << " - TANAM" << endl;
+    cout << " - TERNAK" << endl;
+    cout << " - BANGUN" << endl;
+    cout << " - MAKAN" << endl;
+    cout << " - KASIH_MAKAN" << endl;
+    cout << " - BELI" << endl;
+    cout << " - JUAL" << endl;
+    cout << " - PANEN" << endl;
+}
+
+Player* Game::getPlayer(string playerUsername){
+    if(mayor->getUsername() == playerUsername){
         return mayor;
     } else {
         for(int i = 0; i < farmers.size(); i++){
-            if(farmers[i].getId() == currPlayerId){
+            if(farmers[i].getUsername() == playerUsername){
                 return &farmers[i];
             }
         }
 
         for(int i = 0; i < cattlemans.size(); i++){
-            if(cattlemans[i].getId() == currTurn){
+            if(cattlemans[i].getUsername() == playerUsername){
                 return &cattlemans[i];
             }
         }
 
         throw PlayerNotFound();
     }
+}
+
+bool Game::checkWinningCondition(){
+    Player* player = getCurrentPlayer();
+    return player->getWealth() >= winWealth && player->getCurrWeight() >= winWeight;
 }
 
 Player* Game::getCurrentPlayer(){
@@ -76,9 +179,9 @@ void Game::initGameState(){
     cattlemans = vector<Cattleman>();
     cattlemans.push_back(Cattleman("Peternak1", 50, 40));
 
-    addPlayerToTurnOrder("Walikota", (*mayor).getId());
-    addPlayerToTurnOrder("Petani1", farmers.back().getId());
-    addPlayerToTurnOrder("Peternak1", cattlemans.back().getId());
+    addPlayerToTurnOrder("Walikota");
+    addPlayerToTurnOrder("Petani1");
+    addPlayerToTurnOrder("Peternak1");
 }
 
 void Game::getGameStateIO(){
@@ -160,27 +263,27 @@ void Game::readGameState(string path){
         string playerUsername;
         string playerRole;
         int playerWeight = -1;
-        int playerMoney = -1;
+        int playerWealth = -1;
         
         getline(saveFile, line);
         iss = istringstream(line);
-        iss >> playerUsername >> playerRole >> playerWeight >> playerMoney;
+        iss >> playerUsername >> playerRole >> playerWeight >> playerWealth;
 
-        if(playerWeight < 0 | playerMoney < 0){
+        if(playerWeight < 0 | playerWealth < 0){
             throw FileReadingFailedException();
         }
 
         if(playerRole == "Walikota"){
-            mayor = new Mayor(playerUsername, playerMoney, playerWeight);
-            addPlayerToTurnOrder(playerUsername, (*mayor).getId());
+            mayor = new Mayor(playerUsername, playerWealth, playerWeight);
+            addPlayerToTurnOrder(playerUsername);
 
         } else if(playerRole == "Petani"){
-            farmers.push_back(Farmer(playerUsername, playerMoney, playerWeight));
-            addPlayerToTurnOrder(playerUsername, farmers.back().getId());
+            farmers.push_back(Farmer(playerUsername, playerWealth, playerWeight));
+            addPlayerToTurnOrder(playerUsername);
 
         } else{ // Peternak
-            cattlemans.push_back(Cattleman(playerUsername, playerMoney, playerWeight));
-            addPlayerToTurnOrder(playerUsername, cattlemans.back().getId());
+            cattlemans.push_back(Cattleman(playerUsername, playerWealth, playerWeight));
+            addPlayerToTurnOrder(playerUsername);
         }
 
         int playerItemCount = -1;
@@ -364,27 +467,24 @@ void Game::saveGameIO(){
 
 }
 
-void Game::addPlayerToTurnOrder(string playerName, int id){
-    if(playerNames.empty()){
-        playerOrder.push_back(id);
-        playerNames.push_back(playerName);
+void Game::addPlayerToTurnOrder(string playerName){
+    if(playerOrder.empty()){
+        playerOrder.push_back(playerName);
     } else{
         int i = 0;
-        int size = playerNames.size();
+        int size = playerOrder.size();
         for(; i < size; i++){
-            if(playerName == playerNames[i] ){
+            if(playerName == playerOrder[i] ){
                 throw PlayerNameIsTakken();
                 break;
-            } else if(playerName < playerNames[i]){
-                playerNames.insert(playerNames.begin() + i, playerName);
-                playerOrder.insert(playerOrder.begin() + i, id);
+            } else if(playerName < playerOrder[i]){
+                playerOrder.insert(playerOrder.begin() + i, playerName);
                 break;
             }
         }
 
         if(i == size){
-            playerOrder.push_back(id);
-            playerNames.push_back(playerName);
+            playerOrder.push_back(playerName);
         }
     }
 }
@@ -524,7 +624,7 @@ void Game::readConfigMisc(){
         throw FileNotFoundException("Failed to open misc.txt");
     }
     
-    int winningLimit;                               // Jumlah uang pemain untuk menang
+    int winningWealth;                               // Jumlah uang pemain untuk menang
     int winningWeight;                              // Jumlah berat badan pemain untuk menang
     int storageWidth, storageHeight;                // Besaran penyimpanan
     int plantStorageWidth, plantStorageHeight;      // Besaran lahan
@@ -533,7 +633,7 @@ void Game::readConfigMisc(){
     string line; 
     getline(configFile, line);
     istringstream iss(line);
-    iss >> winningLimit;
+    iss >> winningWealth;
 
     getline(configFile, line);
     iss = istringstream(line);
@@ -554,21 +654,24 @@ void Game::readConfigMisc(){
     Storage<string>::readConfigDefaultSize(make_pair(storageHeight, storageWidth));
     Storage<Animal>::readConfigDefaultSize(make_pair(animalStorageHeight, animalStorageWidth));
     Storage<Plant>::readConfigDefaultSize(make_pair(plantStorageHeight, plantStorageWidth));
-    
+    winWealth = winningWealth;
+    winWeight = winningWeight;
+
     cout << " > Finished Reading Misc Configuration" << endl;
     configFile.close();    
 }
 
-void Game::printPlayerNames(){
-    cout << "Player Names: " << endl;
-    for(int i = 0; i < playerNames.size(); i++){
-        cout << i + 1 << " " << playerNames[i] << endl;
-    }
+void Game::printWinner(){
+    Player* player = getCurrentPlayer();
+    cout << "Permainan telah dimenangkan!" << endl;
+    startTextGreen();
+    cout << player->getUsername() << " menang!" << endl;
+    resetTextColor();
 }
 
 void Game::printPlayerTurnOrder(){
     cout << "Player Order: " << endl;
     for(int i = 0; i < playerOrder.size(); i++){
-        cout << i + 1 << " " << getPlayer(playerOrder[i])->getUsername() << endl;
+        cout << i + 1 << " " << playerOrder[i] << endl;
     }
 }

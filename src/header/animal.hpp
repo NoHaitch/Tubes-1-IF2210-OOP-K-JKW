@@ -148,9 +148,9 @@ class Animal{
         /**
          * @brief Check if food can be eaten
          * 
-         * @param Product food 
+         * @param string product type 
         */
-        bool canEat(Product& food);
+        bool canEat(string productType);
 
         /**
          * @brief check if animal is empty
