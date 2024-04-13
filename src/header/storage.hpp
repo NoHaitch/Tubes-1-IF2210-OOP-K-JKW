@@ -104,6 +104,15 @@ class Storage{
         pair<int, int> translatePositionCode(string positionCode);
 
         /**
+         * @brief convert indexes of storage into position code
+         * 
+         * \note Throw exception if position code is invalid
+         * 
+         * @return Position code string
+        */
+        string translatePositionCode(int row, int col);
+
+        /**
          * @brief Insert element elmt at a certain postion coded by positionCode
          * 
          * \note Throw exception if storage is full or code invalid

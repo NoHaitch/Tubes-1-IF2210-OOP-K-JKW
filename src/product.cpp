@@ -50,8 +50,7 @@ Product::Product(int _id, string _code, string _type, string _name, string _orig
 
 Product convertToProduct(string _origin) {
     string productCode = Product::productOriginToCode[_origin];
-    return Product(Product::productIDMap[productCode], productCode, Product::productNameMap[productCode],
-    Product::productTypeMap[productCode], _origin, Product::productAddedWeightMap[productCode], Product::productPriceMap[productCode]);
+    return Product(Product::productIDMap[productCode], productCode, Product::productNameMap[productCode], Product::productTypeMap[productCode], _origin, Product::productAddedWeightMap[productCode], Product::productPriceMap[productCode]);
 }
 
 int Product::getAddedWeight() const{
@@ -114,6 +113,10 @@ map<string, int> Product::getProductAddedWeightMapConfig(){
 
 map<string, int> Product::getProductPriceMapConfig(){
     return Product::productPriceMap;
+}
+
+map <string, string> Product::getProductOriginToCode(){
+    return Product::productOriginToCode;
 }
 
 Product::~Product(){}

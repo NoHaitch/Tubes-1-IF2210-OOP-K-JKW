@@ -83,6 +83,13 @@ class Cattleman : public Player{
         map<string, pair<int,int>> countAnimalsAndHarvestable();
 
         /**
+         * @brief print the postionCode along with the animal name for every slot of the farm
+         * 
+         * \note called by print farm command along with Farm.printStorage()
+        */
+        void printLegend();
+
+        /**
          * @brief Harvest animal into a product stored in storage
          * \note Called from harvest command
          * \note Validate if needed (Ask to reinput)

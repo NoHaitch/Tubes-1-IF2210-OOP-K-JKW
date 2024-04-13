@@ -82,12 +82,6 @@ class Product {
     Product(int _id, string _code, string _type, string _name, string _origin, int _addedWeight, int _price);
 
     /**
-     * @brief ctor product dengan input code origin (code bahan pembuat product)
-     * @param _origin origin of product maker
-    */
-    friend Product convertToProduct(string _origin);
-
-    /**
      * @brief dtor produk
      */
     ~Product();
@@ -107,11 +101,17 @@ class Product {
     string getType() const;
 
     /**
+     * @brief ctor product dengan input code origin (code bahan pembuat product)
+     * @param _origin origin of product maker
+    */
+    friend Product convertToProduct(string _origin);
+
+    /**
      * @brief Get product origin code
      * @param product
      * @return product origin's code
     */
-   friend string getOriginCode(Product& product);
+    friend string getOriginCode(Product& product);
 
     /**
      * @brief Check if product is edible or not
@@ -181,6 +181,8 @@ class Product {
      * @return map<string, int> productPriceMap
      */
     static map <string, int> getProductPriceMapConfig();
+
+    static map <string, string> getProductOriginToCode();
 
     /** 
      * @brief Checker apakah product sudah di-parse semuanya

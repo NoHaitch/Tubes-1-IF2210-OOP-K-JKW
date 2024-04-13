@@ -74,7 +74,8 @@ void Player::eatFromStorage(){
                         ItemStorage.deleteElmtAtPosition(inputCode);
                         currWeight += selectedProduct.getAddedWeight();
                         valid = true;
-                        cout << "Dengan lahapnya, kamu memakanan hidangan itu \n Alhasil, berat badan kamu naik menjadi 61 \n";
+                        cout << "Dengan lahapnya, kamu memakanan hidangan itu" << endl;
+                        cout << "Alhasil, berat badan kamu naik menjadi " << currWeight << endl;
                     } else {
                         throw InedibleProductException("Apa yang kamu lakukan??!! Kamu mencoba untuk memakan itu?!! \n Silahkan masukan slot yang berisi makanan. \n");
                     }

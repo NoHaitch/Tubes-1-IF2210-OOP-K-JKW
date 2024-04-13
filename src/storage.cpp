@@ -75,6 +75,19 @@ pair<int, int> Storage<T>::translatePositionCode(string positionCode){
 }
 
 template<class T>
+string Storage<T>::translatePositionCode(int row, int col){
+    char firstChar =  col + 'A';
+    row++;
+    string nextChars;
+    if (row < 10){
+        nextChars = '0' + to_string(row);
+    } else {
+        nextChars = to_string(row);
+    }
+    return firstChar + nextChars;
+}
+
+template<class T>
 void Storage<T>::insertElmtAtPosition(string positionCode, string codeElmt){
     try {
         if (isStorageFull()){

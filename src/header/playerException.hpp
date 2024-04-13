@@ -41,6 +41,42 @@ class NotAnimalException : public exception {
         }
 };
 
+class InputInvalidException : public exception {
+    private:
+        string message;
+    
+    public:
+        InputInvalidException() : message("Input yang kamu berikan tidak sesuai"){}
+        InputInvalidException(string msg) : message(msg) {}
+        string what (){
+            return message;
+        }
+};
+
+class NotEnoughSlotException : public exception {
+    private:
+        string message;
+    
+    public:
+        NotEnoughSlotException() : message("Banyaknya slot yang dibutuhkan untuk command ini tidak cukup"){}
+        NotEnoughSlotException(string msg) : message(msg) {}
+        string what (){
+            return message;
+        }
+};
+
+class NotHarvestableException : public exception {
+    private:
+        string message;
+    
+    public:
+        NotHarvestableException() : message("Petak ini belum bisa dipanen"){}
+        NotHarvestableException(string msg) : message(msg) {}
+        string what (){
+            return message;
+        }
+};
+
 class CommandCannotBeDoneException : public exception {
     private:
         string message;
