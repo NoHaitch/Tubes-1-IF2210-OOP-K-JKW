@@ -5,7 +5,6 @@ using namespace std;
 Game::Game(){
     shop = new Shop();
     mayor = nullptr;
-    wonned = false;
     winWealth = -1;
     winWeight = -1;
 
@@ -77,37 +76,74 @@ int Game::playerCommandIO(){
             getCurrentPlayer()->printItemStorage();
         
         } else if(input == "PUNGUT_PAJAK" ){
-            // TODO
+            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                // TODO: Pungut Pajak
+            } else{
+                throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
+            }
         
         } else if(input == "CETAK_LADANG" ){
-            // TODO
+            Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+            if (farmerPtr) {
+                farmerPtr->getLadang().printStorage();
+            } else {
+                throw CommandWrongRole("CETAK_LADANG hanya dapat dilakukan oleh Petani.");
+            }
         
         } else if(input == "CETAK_PETERNAKAN" ){
-            // TODO
+            Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+            if (cattlemanPtr) {
+                // TODO: cetak Peternakan
+            } else {
+                throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
+            }
         
         } else if(input == "TANAM" ){
-            // TODO
+            Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+            if (farmerPtr) {
+                farmerPtr->tanam();
+            } else {
+                throw CommandWrongRole("TANAM hanya dapat dilakukan oleh Petani.");
+            }
         
         } else if(input == "TERNAK" ){
-            // TODO
+            Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+            if (cattlemanPtr) {
+                // TODO: Ternak
+            } else {
+                throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
+            }
         
         } else if(input == "BANGUN" ){
-            // TODO
+            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                // TODO: Bangun
+            } else{
+                throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
+            }
         
         } else if(input == "MAKAN" ){
-            // TODO
+            getCurrentPlayer()->eatFromStorage();
 
         } else if(input == "KASIH_MAKAN" ){
-            // TODO
+            Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+            if (cattlemanPtr) {
+                // TODO: Kasih Makanan Hewan
+            } else {
+                throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
+            }
 
         } else if(input == "BELI" ){
-            // TODO
+            // getCurrentPlayer()->buy();
         
         } else if(input == "JUAL" ){
-            // TODO
+            // getCurrentPlayer()->sell();
         
         } else if(input == "PANEN" ){
-            // TODO
+            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
+            } else{
+                // TODO PANEN
+            }
         
         } else{
             startTextRed();

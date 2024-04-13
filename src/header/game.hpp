@@ -32,16 +32,16 @@ using namespace std;
 
 class Game{
     private:
-        Shop *shop;
-        int currTurn = -1;
-        vector<string> playerOrder;
-        Mayor *mayor;
-        vector<Farmer> farmers;
-        vector<Cattleman> cattlemans;
+        Shop *shop;                     // Shop
+        int currTurn = -1;              // current Turn, -1 means the game just started
+        vector<string> playerOrder;     // Player Username sorted lexicographicly
 
-        int winWealth;
-        int winWeight;
-        bool wonned;
+        Mayor* mayor;                   // Mayor reference               
+        vector<Farmer> farmers;         // Farmer objects
+        vector<Cattleman> cattlemans;  // Cattleman objects
+
+        int winWealth;              // Winning Condition for wealth
+        int winWeight;              // Winning Condition for weight               
 
     public:
         /**

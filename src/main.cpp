@@ -33,6 +33,7 @@ int main(){
         // Player Commands
         int command = 0;
         while(true){
+            // Do Player Commands
             command = game.playerCommandIO();
             if(command == 1 || command == 2) {
                 break;
