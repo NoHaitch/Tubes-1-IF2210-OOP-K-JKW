@@ -38,10 +38,11 @@ class Game{
 
         Mayor* mayor;                   // Mayor reference               
         vector<Farmer> farmers;         // Farmer objects
-        vector<Cattleman> cattlemans;  // Cattleman objects
+        vector<Cattleman> cattlemans;   // Cattleman objects
 
-        int winWealth;              // Winning Condition for wealth
-        int winWeight;              // Winning Condition for weight               
+        int winWealth;                  // Winning Condition for wealth
+        int winWeight;                  // Winning Condition for weight           
+        int day;     
 
     public:
         /**

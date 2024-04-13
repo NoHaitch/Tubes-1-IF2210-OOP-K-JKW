@@ -5,6 +5,8 @@ using namespace std;
 Game::Game(){
     shop = new Shop();
     mayor = nullptr;
+
+    day = 0;
     winWealth = -1;
     winWeight = -1;
 
@@ -39,6 +41,7 @@ void Game::nextTurn(){
     currTurn++;
     if(currTurn == playerOrder.size()){
         currTurn = 0;
+        day++;
     }
     for (int i = 0; i < farmers.size(); i++) {
         farmers[i].incrementPlantDuration();
@@ -47,10 +50,10 @@ void Game::nextTurn(){
 
 void Game::nextTurnIO(){
     if(currTurn != -1){
-        cout << "Giliran " << getCurrentPlayer()->getUsername() << " berakhir." << endl;
+        cout << "Giliran " << getCurrentPlayer()->getUsername() << " berakhir.\n" << endl;
     }
     nextTurn();
-    cout << "\nGiliran " << getCurrentPlayer()->getUsername() << " dimulai ." << endl;
+    cout << "===== Giliran " << getCurrentPlayer()->getUsername() << " dimulai =====" << endl;
 }
 
 int Game::playerCommandIO(){
@@ -58,31 +61,35 @@ int Game::playerCommandIO(){
     startTextGreen();
     cout << "> ";
     cin >> input;
-    resetTextColor();   
+    resetTextColor();  
+    
+    // change input to lower case
+    std::transform(input.begin(), input.end(), input.begin(), [](unsigned char c){ return std::tolower(c); });
+     
     try{
-        if(input == "NEXT" ){
+        if(input == "exit" ){
             return 1;
             
-        } else if(input == "EXIT"){
+        } else if(input == "next"){
             return 2;
 
-        } else if(input == "HELP" ){
+        } else if(input == "help" ){
             printCommands();
 
-        } else if(input == "SIMPAN" ){
+        } else if(input == "simpan" ){
             saveGameIO();
 
-        } else if(input == "CETAK_PENYIMPANAN" ){
+        } else if(input == "cetak_penyimpanan" ){
             getCurrentPlayer()->printItemStorage();
         
-        } else if(input == "PUNGUT_PAJAK" ){
+        } else if(input == "pungut_pajak" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
                 // TODO: Pungut Pajak
             } else{
                 throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
             }
         
-        } else if(input == "CETAK_LADANG" ){
+        } else if(input == "cetak_ladang" ){
             Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
             if (farmerPtr) {
                 farmerPtr->getLadang().printStorage();
@@ -90,7 +97,7 @@ int Game::playerCommandIO(){
                 throw CommandWrongRole("CETAK_LADANG hanya dapat dilakukan oleh Petani.");
             }
         
-        } else if(input == "CETAK_PETERNAKAN" ){
+        } else if(input == "cetak_peternakan" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
                 // TODO: cetak Peternakan
@@ -98,7 +105,7 @@ int Game::playerCommandIO(){
                 throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
             }
         
-        } else if(input == "TANAM" ){
+        } else if(input == "tanam" ){
             Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
             if (farmerPtr) {
                 farmerPtr->tanam();
@@ -106,7 +113,7 @@ int Game::playerCommandIO(){
                 throw CommandWrongRole("TANAM hanya dapat dilakukan oleh Petani.");
             }
         
-        } else if(input == "TERNAK" ){
+        } else if(input == "ternak" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
                 // TODO: Ternak
@@ -114,17 +121,17 @@ int Game::playerCommandIO(){
                 throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
             }
         
-        } else if(input == "BANGUN" ){
+        } else if(input == "bangun" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
                 // TODO: Bangun
             } else{
                 throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
             }
         
-        } else if(input == "MAKAN" ){
+        } else if(input == "makan" ){
             getCurrentPlayer()->eatFromStorage();
 
-        } else if(input == "KASIH_MAKAN" ){
+        } else if(input == "kasih_makan" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
                 // TODO: Kasih Makanan Hewan
@@ -132,22 +139,28 @@ int Game::playerCommandIO(){
                 throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
             }
 
-        } else if(input == "BELI" ){
+        } else if(input == "beli" ){
             // getCurrentPlayer()->buy();
         
-        } else if(input == "JUAL" ){
+        } else if(input == "jual" ){
             // getCurrentPlayer()->sell();
         
-        } else if(input == "PANEN" ){
+        } else if(input == "panen" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
                 throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
             } else{
-                // TODO PANEN
+                Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                if (farmerPtr) {
+                    farmerPtr->panen();
+                } else {
+                    Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                    // cattlemanPtr->panen();
+                }
             }
         
         } else{
             startTextRed();
-            cout << "Command: " << input << " tidak dikenal." << endl;
+            cout << "Command: " << input << " tidak dikenal. Gunakan 'HELP' untuk menunjukan semua Perintah." << endl;
             resetTextColor();
         }
     } catch (CommandWrongRole e){
@@ -158,10 +171,10 @@ int Game::playerCommandIO(){
 }
 
 void Game::printCommands(){
-    cout << "Semua Perintah: " << endl;
-    cout << " - NEXT" << endl;
-    cout << " - EXIT" << endl;
+    cout << "Daftar Perintah: " << endl;
     cout << " - HELP" << endl;
+    cout << " - EXIT" << endl;
+    cout << " - NEXT" << endl;
     cout << " - SIMPAN" << endl;
     cout << " - CETAK_PENYIMPANAN" << endl;
     cout << " - PUNGUT_PAJAK" << endl;
@@ -174,7 +187,7 @@ void Game::printCommands(){
     cout << " - KASIH_MAKAN" << endl;
     cout << " - BELI" << endl;
     cout << " - JUAL" << endl;
-    cout << " - PANEN" << endl;
+    cout << " - PANEN\n" << endl;
 }
 
 Player* Game::getPlayer(string playerUsername){
@@ -229,7 +242,7 @@ void Game::getGameStateIO(){
         cout << " Menu "; 
         resetTextColor();
         cout << setw(15) << "" << endl << setfill(' ');
-        cout << "Choose the menu number:" << endl;
+        cout << "Pilih Opsi Menu:" << endl;
         cout << "1. New Game State" << endl;
         cout << "2. Load Game State" << endl;
         cout << "3. Exit" << endl;
@@ -272,6 +285,7 @@ void Game::getGameStateIO(){
         }
     }
 
+    cout << "Berhasil membuat game state.\n" << endl;
 }
 
 // TODO: Read Items
