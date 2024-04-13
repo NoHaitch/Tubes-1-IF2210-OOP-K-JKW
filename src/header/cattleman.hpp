@@ -54,6 +54,10 @@ class Cattleman : public Player{
         */
         void sell() override;
 
+        void buyBlackMarket();
+
+        void sellBlackMarket();
+
         /**
          * @brief farm animals, moving an animal from storage to farm
          * \note Called from farm command
