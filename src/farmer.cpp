@@ -30,55 +30,6 @@ bool Farmer::isLadangSlotEmpty(string idx) {
     return this->ItemStorage.isEmpty(idx);
 }
 
-void Farmer::printLadang() {
-    vector <string> allPlantInLadang;
-    resetTextColor();
-    cout << "     ";
-    for (int i=0; i<max(0,(this->Ladang.getNumCol()*3)-7); i++){
-        cout << "=";
-    }
-    cout << "[ Ladang ]";
-    for (int i=0; i<max(0,(this->Ladang.getNumCol()*3)-7); i++){
-        cout << "=";
-    }
-    cout << endl;
-    cout << "      ";
-    for (int i=65; i<65+this->Ladang.getNumCol(); i++){
-        char c = static_cast<char>(i);
-        cout << "  " << c << "   ";
-    }
-    cout << endl;
-    cout << "     ";
-    for (int i=0; i<this->Ladang.getNumCol(); i++){
-        cout << "+-----";
-    }
-    cout << "+" << endl;
-    for (int i=0; i<this->Ladang.getNumRow(); i++){
-        cout << "  " << setw(2) << setfill('0') << i+1 << " |";
-        for (int j=0; j<this->Ladang.getNumCol(); j++){
-            if (this->Ladang.isEmpty(to_string(i) + to_string(j))){
-                cout << "     |";
-            } else {
-                if (this->Ladang.getElmt(i, j).isReadyToHarvest()){
-                    startTextGreen();
-                } else {
-                    startTextRed();
-                }
-                cout << " " << this->Ladang.getElmt(i, j).getCode() << " |";
-                resetTextColor();
-                allPlantInLadang.push_back(this->Ladang.getElmt(i, j).getCode());
-            }
-        }
-        cout << endl;
-        cout << "     ";
-        for (int j=0; j<this->Ladang.getNumCol(); j++){
-            cout << "+-----";
-        }
-        cout << "+" << endl;
-    }
-    cout << endl;
-}
-
 
 void Farmer::tanam() {
     string positionCode;
@@ -120,7 +71,7 @@ void Farmer::tanam() {
                 cout << "Kamu memilih tanaman" << P.getPlantName() << endl;
                 // Ambil posisi pada ladang untuk ditanam
                 string positionLadang;
-                this->printLadang();
+                this->Ladang.printStorage();
                 while (true) {
                     cout << endl << "Petak tanah: ";
                     cin >> positionLadang;
@@ -178,7 +129,7 @@ void Farmer::panen() {
         return;
     }
 
-    this->printLadang();
+    this->Ladang.printStorage();
     int num = 1;
     cout << "Pilih tanaman siap panen yang kamu miliki" << endl;
     map<int, string> penomoran;
@@ -194,6 +145,7 @@ void Farmer::panen() {
         cout << "Nomor tanaman yang ingin dipanen: ";
         try {
             cin >> choosenPlant;
+
         } catch (exception &e) {
             cout << "Input harus berupa angka" << endl;
             continue;
@@ -253,27 +205,6 @@ void Farmer::panen() {
 
 }
 
-int Farmer::countWealth() {
-
-}
-
-int Farmer::calculateTax() {
-    int ktkp = 13, currWealth = countWealth();
-    if (currWealth <= ktkp) {
-        return 0;
-    } else {
-        int kenaPajak = currWealth - ktkp;
-        if (kenaPajak <= 6) {
-
-        }
-        return 0;
-    }
-}
-
-void Farmer::payTax() {
-
-}
-
 void Farmer::buy() {
     // TODO implement buy
 }
@@ -290,4 +221,19 @@ void Farmer::incrementPlantDuration() {
             }
         }
     }
+}
+
+int Farmer::calculateKKP() {
+    int res = Player::calculateWealth();
+    for (int i=0; i<Ladang.getNumRow(); i++){
+        for (int j=0; j<Ladang.getNumCol(); j++){
+            if (Ladang.isEmpty(i, j)){
+                continue;
+            }
+            Plant a = Ladang.getElmt(i,j);
+            res += Plant::getPlantPriceMapConfig()[a.getCode()];
+        }
+    }
+    res -= 13; //KTKP
+    return res;
 }

@@ -63,35 +63,7 @@ public:
      */
     Plant getItem(string idx);
 
-
-    /**
-     * @brief print khusus ladang
-     * \note - hanya menampilkan kode tanaman
-     * \note - warna hijau menandakan tanaman yang sudah siap panen
-     * \note - warna merah menandakan tanaman yang belum siap panen
-     */
-    void printLadang();
-
-    /**
-     * @brief menghitung pajak yang harus dibayarkan
-     * @return pajak int yang harus dibayarkan
-     */
-    int calculateTax();
-
-    /**
-     * @brief fungsi untuk membayar pajak
-     * \note mengambil nilai besar pajak yang dibutuhkan dari fungsi counTax()
-     */
-    void payTax();
-
-    /**
-     * @brief menghitung total kekayaan
-     * @return total kekayaan
-     * \note
-     */
-    int countWealth();
-
-    void buy() ;
+    void buy() override;
 
     void sell() override;
 
@@ -100,6 +72,14 @@ public:
      * \note dipanggil dari kelas Game pada setiap nextTurn
      */
     void incrementPlantDuration();
+
+    /**
+        * @brief calculates KKP using total wealth including profession storage
+        * @return KKP
+        *
+        * \note calling parent's calculate wealth and adds the total from profession storage
+        */
+    int calculateKKP() override;
 };
 
 #endif
