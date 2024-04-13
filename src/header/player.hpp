@@ -137,6 +137,7 @@ class Player{
         /**
         * @brief check item type in a specified index
         *
+        * \note item is guaranteed not empty
         * \note index input is in string parameter
         * \note check whether index input is valid or not
         *
@@ -149,7 +150,8 @@ class Player{
         /**
         * @brief check item type in a specified index
         *
-        * \note index input is in string parameter
+        * \note item is guaranteed not empty
+        * \note index input is in index (y,x)
         * \note check whether index input is valid or not
         *
         * @param y int row position

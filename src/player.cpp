@@ -84,6 +84,7 @@ void Player::eatFromStorage(){
             }
         } catch (exception e){
             cout << e.what() << endl;
+            cout << endl;
         }
     }
 }

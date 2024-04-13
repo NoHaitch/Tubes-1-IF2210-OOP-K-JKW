@@ -2,6 +2,7 @@
 #define __CATTLEMAN_HPP__
 
 #include "player.hpp"
+#include "playerException.hpp"
 
 class Cattleman : public Player{
     private:
