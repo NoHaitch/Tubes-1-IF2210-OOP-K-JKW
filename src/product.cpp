@@ -58,6 +58,10 @@ int Product::getAddedWeight() const{
     return addedWeight;
 }
 
+string Product::getType() const {
+    return type;
+}
+
 string getOriginCode(Product& product) {
     return product.origin;
 }

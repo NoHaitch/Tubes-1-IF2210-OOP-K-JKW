@@ -146,6 +146,13 @@ class Animal{
         bool isReadyToHarvest();
 
         /**
+         * @brief Check if food can be eaten
+         * 
+         * @param Product food 
+        */
+        bool canEat(Product& food);
+
+        /**
          * @brief check if animal is empty
          * 
          * @return true 

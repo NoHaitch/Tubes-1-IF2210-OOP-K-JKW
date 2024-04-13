@@ -99,6 +99,12 @@ class Product {
     */
     int getAddedWeight() const;
     
+    /**
+     * @brief Get Product Type
+     * 
+     * @return string 
+    */
+    string getType() const;
 
     /**
      * @brief Get product origin code
