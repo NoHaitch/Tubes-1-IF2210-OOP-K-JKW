@@ -1,8 +1,5 @@
-#include "header/animal.hpp"
 #include "header/game.hpp"
-#include "header/product.hpp"
 #include "header/printColor.hpp"
-#include "header/storage.hpp"
 #include "header/utils.hpp"
 #include <iostream>
 #include <string>
