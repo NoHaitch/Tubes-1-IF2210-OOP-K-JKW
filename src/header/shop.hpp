@@ -5,10 +5,17 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <random>
+#include <algorithm>
+#include <numeric>
 #include "game.hpp"
 #include "player.hpp"
+#include "animal.hpp"
+#include "plant.hpp"
+#include "building.hpp"
+#include "product.hpp"
 #include "storage.hpp"
-#include <any>
+
 
 using namespace std;
 
@@ -25,9 +32,16 @@ protected:
     int item_number;         // Item's item_number number / Item number
     string code;    // Item's Code
     string name;    // Item's Name
-    int Price;      // Item's Price
+    int price;      // Item's Price
     bool isQtyInf;  // Bool Checker for Qty
-    float Qty;      // Qty Float to facilitate INFINITY
+    int qty;        // Item's Qty
+
+    vector<string> ConfigCode;
+    map<string, int> ConfigItemsnumber;
+    map<string, string> ConfigName;
+    map<string, int> ConfigPrice;
+    map<string, bool> ConfigItemsisQtyInf;
+    map<string, int > ConfigItemsQty;
     
 
 public:
@@ -38,14 +52,20 @@ public:
      * \note if item came from Animal or Plant then isQtyInf = True, Qty = INFINITY else isQtyInf = False, Qty = 0
     */
     Shop();
-    // [[item_number, code, Price, isQtyInf, Qty]]
+    
 
     /**
      * @brief 
      * 
      */
-    Shop(int _id, string _code, string _name,int _Price, bool isQtyInf, float _Qty);
+    Shop(string _code);
     
+    Shop(int item_number, string code, string name, int price, bool isQtyInf, int qty);
+    /**
+     * @brief Shop cctor
+     * 
+     */
+    Shop(const Shop& other);
 
     /**
      * @brief Shop dtor
@@ -110,11 +130,7 @@ public:
      * @param code
      * @param _Qty
      */
-    void Shop::setQty(string _code, int _Qty){
-        if(this->code == _code){
-            this->Qty = _Qty;
-        }
-    }
+    void Shop::setQty(string _code, int _Qty);
 
     /**
      * @brief Update the Qty of the items with code = code
@@ -197,7 +213,7 @@ private:
      * @return string Code from other .hpp
      * 
      */
-    string getCode_outer() const;
+    vector<string> getCode_outer() const;
 
     /**
      * @brief Get Price from other .hpp for initial value
@@ -205,7 +221,7 @@ private:
      * @return int Price from other .hpp
      * 
      */
-    int getPrice_outer() const;
+    map<string,int> getPrice_outer() const;
 
     /*************** SET Data to cotr *************************/
 
@@ -234,112 +250,58 @@ private:
     /**
      * @brief Set the Qty into the ctor ?
      * 
-     * \note for Animal and Plant, Qty = INFINITY
-     * \note for else, Qty = 0
+     * \note Check isQtyInf. If True then Qty = INFINITY else Qty = 0
+     *
      * 
      * @param int Qty
      */
-    void set_Code(int Qty);
+    void set_Qty(string code);
 
+    /**
+     * @brief Set the Item Number object
+     * 
+     * @return map<string, int> 
+     */
+    map<string, int> setItemNumber();
+    
+    /**
+     * @brief Set the Is Qty Inf object
+     * 
+     * @return map<string, bool> 
+     */
+    map<string, bool> setIsQtyInf();
 
+    /**
+     * @brief Set the Qty object@
+     * 
+     * @return map<string, int> 
+     */
+    map<string, int> setQty();
+
+     /**
+         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * 
+         * @param os        output stream
+         * @param animal    animal reference
+         * 
+         * @return Reference to the output stream.
+        */
+        friend ostream& operator<<(ostream& stream, const Shop& shop);
+        
+    /**
+     * @brief 
+     * 
+     */
+    void printInfo();
 
 };
-
-
-      
-
-
-/*
-player p
-
->> BELI
-
-role = getRole(p) (?)   // Game.hpp
-
-Show_Shop_Inventory(role)
-***** Output
-// Selamat datang di toko !
-// Berikut adalah barang yg bisa diakses -> Pisah sesuai role sesuai spek
-***** Format: Nama - Harga Gulden - Qty jika ada. Misal sudah ada yg jual product
-// 1. Cow - 6 Gulden
-// 2. Sheep - 5 Gulden
-...
-// 8. Teak Tree - 5 Gulden
-...
-// 16. Teak Wood - 9 Gulden - 0 (Tidak bisa dibeli)
-// 17. Sandalwood Wood - 8 Gulden - 10
-...
-
-gulden_now = p -> getWealth()
-***** contoh Output
-Uang anda: 100 Gulden
-
-empty_slot_now = storage.getNumElmt()
-***** contoh Output
-Slot penyimpanan tersedia: 10 slot
-
-int itemNumber;
-int quantity;
-
-Validasi sekali/sampe bener ? 
-
-if (Validate_buy(itemNumber, quantity) ){
-    //Ubah Qty
-    item_Qty_Modifier(itemNumber, quantity, shop(?), False)
-
-    //Update uang player
-    gulden_update = gulden_now - (getPrice(itemNumber)*quantity)
-    setWealth(gulden_update)
-
-     //Ambil data dengan itemNumber itu 
-    T = get_Data(itemNumber).drop(item_number).drop(Qty)
-
-    output_update(gulden_update, quantity, T)
-
-
-   
-    -> Insert Elmt T
-}
-*/
-
-/*
-
-Player p
-
->> JUAL
-
-role = getRole(p) (?)
-
-p -> printItemStorage()
-
-gulden_now = getWealth()
-
-n = getNumElmt();
-
-if n != 0 {
-    Item coordinat = ...
-
-        Data = ambil data per koordinat -> Code = getCode(Data) 
-
-        item_id = get_id_from_code(Code)
-
-        total += getPrice(item_id)
-        item_Qty_Modifier(item_id, 1, shop(?), True)
-
-    cout << total
-
-    setWealth(gulden_now + total)
-
-}
-
-*/
-
 
 
 
 
 class BlackMarket: public Shop{
     protected:
+        bool isBuy;
 
     public:
         /**
@@ -348,7 +310,13 @@ class BlackMarket: public Shop{
          * @param Black Market Qty
          * 
          */
-        BlackMarket(int Qty_BM);
+        BlackMarket(int Qty_BM, int Price_BM, bool isBuy);
+
+        /**
+         * @brief cctor
+         * 
+         */
+        BlackMarket(const BlackMarket& other);
 
         
         //**************** GETTER SETTER *****************//
@@ -374,7 +342,7 @@ class BlackMarket: public Shop{
         void Show_Shop_Inventory(string Role, int BMList) const;
 
 
-    private:
+    
         /**
          * @brief Set a Random number for Black Market Qty of item with Code = code
          * 
@@ -383,14 +351,35 @@ class BlackMarket: public Shop{
          * @param code 
          * @return int 
          */
-        int SetQtyBM(string code);
+        int MakeQtyBM(string code);
 
         /**
-         * @brief Get a list of random number
+         * @brief Get a random number
          * 
+         * @param int Max; int Min
+         * 
+         * @return int
          */
+        int getRandomInt(int Min, int Max);
+
+        /**
+         * @brief Make the Price for Black Market
+         * 
+         * @param _code 
+         * @param isBuy 
+         * @return int 
+         */
+        int MakePriceBM (string _code, bool isBuy);
 
 
+        /**
+         * @brief Update the Price List for Black market
+         * 
+         * @param isBuy 
+         * @return map<string, int> 
+         */
+        map<string, int> BlackMarket::Make_BMPriceList(bool isBuy);
+       
 };
 
 

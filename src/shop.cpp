@@ -8,23 +8,31 @@ Shop::Shop(){
     item_number = 0;
     code = "";
     name = "";
-    Price = 0;
+    price = 0;
     isQtyInf = false;
-    Qty = 0;
+    qty = 0;
 
 }
     
-Shop::Shop(int _itemNumber, string _code, string _name, int _Price, bool _isQtyInf, float _Qty){
-    item_number = _itemNumber;
+Shop::Shop(string _code){
+    item_number = ConfigItemsnumber[_code];
     code = _code;
-    Price = _Price;
-    isQtyInf = _isQtyInf;
-    Qty = _Qty;
+    name = ConfigName[_code];
+    price = ConfigPrice[_code];
+    isQtyInf = ConfigItemsisQtyInf[_code];
+    qty = ConfigItemsQty[_code];
 }
-    
-Shop::~Shop(){
-    
+
+Shop::Shop(const Shop& other){
+    item_number = other.item_number;
+    code = other.code;
+    name = other.name;
+    price = other.price;
+    isQtyInf = other.isQtyInf;
+    qty = other.qty;
+
 }
+Shop::~Shop(){}
 
 
     //**************** GETTER  *****************//
@@ -36,10 +44,12 @@ Shop::~Shop(){
      * @return string Code
      */
     string Shop::getCode (int _itemNumber){
-        if (this -> item_number == _itemNumber){
-            return this->code;
+        for(const auto& pair : ConfigItemsnumber){
+            if (pair.second == item_number){
+                return pair.first;
+            }
         }
-
+        
     }
 
 
@@ -50,9 +60,7 @@ Shop::~Shop(){
      * 
      */
     int Shop::getPrice(string _code){
-        if(this -> code == _code ){
-            return this->Price;
-        }
+        return ConfigPrice[_code];
 
     }
 
@@ -63,22 +71,21 @@ Shop::~Shop(){
      * @return string 
      */
     string Shop::getName(string _code){
-        if(this->code == _code){
-            return this->name;
-        }
+        return ConfigName[_code];
 
     }
 
     /**
      * @brief Get Qty of the item with Code = code from Shop
      * 
+     * \note only access if not isQtyInf
      * @param code
      * 
      * @return 
      * 
      */
     int Shop::getQty(string _code){
-
+        return ConfigItemsQty[_code];
     }
 
     /**
@@ -90,9 +97,7 @@ Shop::~Shop(){
      * @param _Qty
      */
     void Shop::setQty(string _code, int _Qty){
-        if(this->code == _code){
-            this->Qty = _Qty;
-        }
+        ConfigItemsQty[_code] = _Qty;
     }
     /**
      * @brief Get isQtyInf of the item with Code = code from Shop
@@ -103,9 +108,7 @@ Shop::~Shop(){
      * 
      */
     bool Shop::getIsQtyInf(string _code){
-        if(this->code == _code){
-            return this-> isQtyInf;
-        }
+        return ConfigItemsisQtyInf[_code];
     }
 
     /**
@@ -140,6 +143,11 @@ Shop::~Shop(){
      * 
      */
     void Shop::Show_Shop_Inventory_NonMayor() const{
+        cout << "Selamat Datang di Toko" << endl;
+        cout << "Berikut adalah barang yang bisa anda beli" <<endl;
+
+        //Format itemNumber. Nama - Price "Gulden" - Qty
+
 
     }
 
@@ -150,11 +158,37 @@ Shop::~Shop(){
      * 
      */
     void Shop::Show_Shop_Inventory_Mayor() const{
+        cout << "Selamat Datang di Toko" <<endl;
+        cout << "Beriku adalah barang yang bisa anda beli" <<endl;
+
+        
 
     }
 
+    ostream& operator<<(ostream& stream, const Shop& shop){
+        stream << shop.item_number << " ";
+        stream << shop.name << " ";
+        stream << shop.price << " ";
+        stream << shop.qty << " ";
+
+        return stream;
+    }
+
+    void Shop::printInfo(){
+        cout << this->item_number ;
+        cout << ". ";
+        cout<< this->name;
+        cout<< " - ";
+        cout << this->price;
+        cout << " Gulden";
+        if (!this->isQtyInf){
+            cout << " - ";
+            cout << this->qty;
+        }
 
 
+    }
+    
     //**************** Validator *****************//
 
     /**
@@ -190,9 +224,7 @@ Shop::~Shop(){
      * @return false if not Legal (Mayor want to buy buildings)
      */
     bool Shop::isBuyLegal (string _code){
-        if (this->code == _code){
-            return(getName(_code) != "Building");
-        }
+        return getName(_code) != "Building";
     }
 
 
@@ -207,9 +239,7 @@ Shop::~Shop(){
      * @return false if not Legal (Non Mayor want to sell buildings)
      */
     bool Shop::isSaleLegal (string _code){
-        if (this->code == _code){
-            return(getName(_code) != "Building");
-        }
+        return getName(_code) != "Building";
     }
 
     
@@ -225,7 +255,43 @@ Shop::~Shop(){
      * @return string Code from other .hpp
      * 
      */
-    string Shop::getCode_outer() const{
+    vector<string> Shop::getCode_outer() const{
+        vector<string> allCode, animalCode, plantCode, buildingCode, productCode;
+
+        string MARK = "MARK";
+        string Building = "Building";
+
+
+        animalCode = Animal::getAnimalCodeConfig();plantCode = Plant::getPlantCodeListConfig();productCode = Product::getProductCodeListConfig();
+
+        buildingCode ;
+
+        allCode.insert(allCode.end(), buildingCode.begin(), buildingCode.end());
+
+        //allCode.push_back();
+        allCode.insert(allCode.end(), productCode.begin(), productCode.end());
+
+        allCode.push_back(MARK);
+        allCode.insert(allCode.end(), animalCode.begin(), animalCode.end());      
+
+        allCode.insert(allCode.end(), plantCode.begin(), plantCode.end());    
+
+        return allCode;      
+    }
+
+    template<typename key, typename value>
+    void insertToAll(map<key,value> all, 
+                    const map<key,value> building, 
+                    const map<key,value> product, 
+                    const map<key,value> animal, 
+                    const map<key,value> plant){
+
+        all.insert(building.begin(), building.end());
+        all.insert(product.begin(), product.end());
+        all.insert(animal.begin(), animal.end());
+        all.insert(plant.begin(), plant.end());
+
+        
 
     }
 
@@ -235,53 +301,150 @@ Shop::~Shop(){
      * @return int Price from other .hpp
      * 
      */
-    int Shop::getPrice_outer() const{
+    map<string,int> Shop::getPrice_outer() const{
+        map<string, int> allPrice, animalPrice, plantPrice, buildingPrice, productPrice;
+
+        animalPrice = Animal::getAnimalPriceConfig();
+        plantPrice = Plant::getPlantPriceMapConfig();
+        productPrice = Product::getProductPriceMapConfig();
+        buildingPrice;
+
+        insertToAll(allPrice, buildingPrice, productPrice, animalPrice, plantPrice);
+
+        return allPrice;
 
     }
 
-    /*************** SET Data to cotr *************************/
+    map<string, string> getName_outer(){
+        map<string,string> allName, animalName, plantName, buildingName, productName;
 
-    /**
-     * @brief Set the item_number from 1 to the last elmt 
-     * 
-     * @param int current item_number
-     * 
-     */
-    void Shop::set_ItemNumber(int _itemNumber){
+        animalName = Animal::getAnimalNameConfig();
+        plantName = Plant::getPlantNameMapConfig();
+        productName = Product::getProductNameMapConfig();
+        buildingName;
+
+        insertToAll(allName, buildingName, productName, animalName, plantName);
+
+        return allName;
+    }
+
+    map<string, int> Shop::setItemNumber(){
+        vector<string> allItemCode;
+        map<string, int> mapCodeandItemNumber;
+        vector<int> itemNumber(allItemCode.size());
+
+        allItemCode = Shop::getCode_outer();
+
+        allItemCode.erase(remove(allItemCode.begin(), allItemCode.end(), "MARK"), allItemCode.end());
+
+        iota(itemNumber.begin(), itemNumber.end(), 1);
+
+        transform(allItemCode.begin(), allItemCode.end(), itemNumber.begin(), inserter(mapCodeandItemNumber, mapCodeandItemNumber.end()), 
+        [](const string& key, int value) {
+            return make_pair(key,value);
+        });
 
     }
 
-    /**
-     * @brief Set the Code into the ctor ?
-     * 
-     * @param string code
-     */
-    void Shop::set_Code(string code){
+    map<string, bool> Shop::setIsQtyInf(){
+        vector<string> allItemCode;
+        map<string, bool> mapCodeandIsINF;
+
+        allItemCode = Shop::getCode_outer();
+
+        bool isInf = false;
+
+        auto isInfFunction = [&isInf](const string&code){
+            if(code == "MARK"){
+                isInf = true;
+            }
+            return isInf;
+        };
+
+        transform(allItemCode.begin(), allItemCode.end(), inserter(mapCodeandIsINF, mapCodeandIsINF.end()), isInfFunction);
+
+        return mapCodeandIsINF;
 
     }
 
-    /**
-     * @brief Set the Price into the ctor ?
-     * 
-     * @param int Price
-     */
-    void Shop::set_Price(int Price){
+    map<string, int> Shop::setQty(){
+        vector<string> allItemCode;
+        map<string, int> mapCodeandQty;
+
+        allItemCode = Shop::getCode_outer();
+
+        auto markIter = find(allItemCode.begin(), allItemCode.end(), "MARK");
+
+        transform(allItemCode.begin(), allItemCode.end(), inserter(mapCodeandQty, mapCodeandQty.end()),
+        [isMarkFound = markIter != allItemCode.end()](const string& code){
+            return make_pair(code, isMarkFound ? numeric_limits<int>::max(): 0);
+        });
+
+        mapCodeandQty.erase("MARK");
+
+        return mapCodeandQty;
 
     }
+    
 
-    /**
-     * @brief Set the Qty into the ctor ?
-     * 
-     * \note for Animal and Plant, Qty = INFINITY
-     * \note for else, Qty = 0
-     * 
-     * @param int Qty
-     */
-    void Shop::set_Code(int Qty){
+    
 
+
+/* Class Black Market*/
+
+BlackMarket::BlackMarket(int Qty_BM, int Price_BM, bool isBuy) : Shop(item_number, code, name, Price_BM, false, Qty_BM), isBuy(isBuy){}
+
+
+int BlackMarket::MakeQtyBM(string _code){
+    int Shop_Qty = Shop::getQty(_code); 
+    bool isInf = Shop::getIsQtyInf(_code);
+
+    int Min = 1;
+    int Max = 10;
+    int rand = getRandomInt(1,10);
+
+    if (isInf){
+        return rand;
+    }
+    else{
+        return min(Shop_Qty, rand);
+    }
+}
+
+int BlackMarket::getRandomInt(int Min, int Max) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> distribution(Min, Max);
+
+    return distribution(gen);
+}
+
+int BlackMarket::MakePriceBM (string _code, bool isBuy){
+    int Price = Shop::getPrice(_code);
+
+    int Percentage = 30;
+
+    float Difference = Price*Percentage*0.01;
+
+    if (isBuy){
+        Price = ceil(Price+Difference);
+    }
+    else{
+        Price = floor(Price-Difference);
     }
 
+    return Price;
 
+}
 
+map<string, int> BlackMarket::Make_BMPriceList(bool isBuy){
 
+    map<string,int> BlackMarketPriceMap = Shop::ConfigPrice;
 
+    for (auto& pair : BlackMarketPriceMap){
+        pair.second = MakePriceBM(pair.first, isBuy);
+    }
+
+    return BlackMarketPriceMap;
+
+}
