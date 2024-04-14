@@ -208,8 +208,8 @@ void Farmer::panen() {
             }
             if (this->Ladang.getElmt(pos).getCode() == penomoran[choosenPlant]) {
                 vector <string> convertedProductCodes = Product::convertToProductCode(this->Ladang.getElmt(pos).getCode());
-                for (int i = 0; i < convertedProductCodes.size(); i++) {
-                    Product P = Product(convertedProductCodes[i]);
+                for (int j = 0; j < convertedProductCodes.size(); j++) {
+                    Product P = Product(convertedProductCodes[j]);
                     this->ItemStorage + P.getCode();
                     this->Ladang.deleteElmtAtPosition(pos);
                     choosenPosition.push_back(pos);
