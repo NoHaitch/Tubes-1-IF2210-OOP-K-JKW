@@ -7,7 +7,7 @@ map<string, string> Product::productNameMap;
 map<string, string> Product::productOriginMap;
 map<string, int> Product::productAddedWeightMap;
 map<string, int> Product::productPriceMap;
-map<string, string> Product::productOriginToCode;
+map<string, vector<string>> Product::productOriginToCode;
 
 
 void Product::addProductConfig(int _id, std::string _code, std::string _type, std::string _name, std::string _origin,
@@ -19,7 +19,7 @@ void Product::addProductConfig(int _id, std::string _code, std::string _type, st
     productOriginMap[_code] = _origin;
     productAddedWeightMap[_code] = _addedWeight;
     productPriceMap[_code] = _price;
-    productOriginToCode[_origin] = _code;
+    productOriginToCode[_origin].push_back(Product::convertNameToCode(_code));
 }
 
 
@@ -52,9 +52,9 @@ string Product::getCode() {
     return this->code;
 }
 
-Product Product::convertToProduct(string _origin) {
-    string productCode = Product::productOriginToCode[_origin];
-    return Product(Product::productIDMap[productCode], productCode, Product::productNameMap[productCode], Product::productTypeMap[productCode], _origin, Product::productAddedWeightMap[productCode], Product::productPriceMap[productCode]);
+vector<string> Product::convertToProductCode(std::string _origin) {}(string _origin) {
+    // Convert the code origin into name of origin
+    return Product::productOriginToCode[_origin];
 }
 
 int Product::getAddedWeight() const{
@@ -119,7 +119,7 @@ map<string, int> Product::getProductPriceMapConfig(){
     return Product::productPriceMap;
 }
 
-map <string, string> Product::getProductOriginToCode(){
+map <string, vector<string>> Product::getProductOriginToCode(){
     return Product::productOriginToCode;
 }
 
@@ -128,5 +128,19 @@ Product::~Product(){}
 void Product::printParsedConfig() {
     for (int i = 0; i < Product::productCodeList.size(); i++) {
         cout << Product::productCodeList[i] << " ";
+    }
+}
+
+string Product::convertNameToCode(string name) {
+    for (map <string, string>::iterator it = Plant::getPlantNameToCodeConfig().begin(); it != Plant::getPlantNameToCodeConfig().end(); it++) {
+        if (it->first == name) {
+            return it->second;
+        }
+    }
+
+    for (map <string, string>::iterator it = Animal::getAnimalNameToCodeConfig().begin(); it != Animal::getAnimalNameToCodeConfig().end(); it++) {
+        if (it->first == name) {
+            return it->second;
+        }
     }
 }

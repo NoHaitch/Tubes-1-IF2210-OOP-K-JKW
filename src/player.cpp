@@ -104,16 +104,16 @@ string Player::itemType(string positionCode) {
 
     // Find in Plant
     it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
-    if (it != Plant::Plant::getPlantCodeListConfig().end()) {
+    if (it != Plant::getPlantCodeListConfig().end()) {
         return "Plant";
     } else {
         // Find in Animal
         it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::Animal::getAnimalCodeConfig().end()) {
+        if (it != Animal::getAnimalCodeConfig().end()) {
             return "Animal";
         } else {
             it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
-            if (it != Product::Product::getProductCodeListConfig().end()) {
+            if (it != Product::getProductCodeListConfig().end()) {
                 return "Product";
             } else {
                 // TODO : implement search building

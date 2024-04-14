@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "plant.hpp"
 #include "animal.hpp"
 using namespace std;
@@ -34,7 +35,7 @@ class Product {
         static map <string, string> productOriginMap; // <code, productOrigin>
         static map <string, int> productAddedWeightMap; // <code, addedWeight>
         static map <string, int> productPriceMap; // <code, price>
-        static map <string, string> productOriginToCode; // <origin code, product code>
+        static map <string, vector<string>> productOriginToCode; // <origin code, vector of product code>
 
         int id;                 // Product id
         string code;            // Product code
@@ -108,9 +109,11 @@ class Product {
 
     /**
      * @brief ctor product dengan input code origin (code bahan pembuat product)
-     * @param _origin origin of product maker
+     * @param _origin origin of product, code
+     * @return vector of code of product
     */
-    static Product convertToProduct(string _origin);
+    static vector<string> convertToProductCode(string _origin);
+
 
     /**
      * @brief Get product origin code
@@ -188,12 +191,23 @@ class Product {
      */
     static map <string, int> getProductPriceMapConfig();
 
-    static map <string, string> getProductOriginToCode();
+    /**
+     * @brief Get Config : Product Origin to Code, <origin code, vector of product code>
+     * @return map<string, vector<string>> productOriginToCode, map berisi <origin code, vector of product code>
+     */
+    static map <string, vector<string>> getProductOriginToCode();
 
     /** 
      * @brief Checker apakah product sudah di-parse semuanya
     */
     static void printParsedConfig();
+
+    /**
+     * @brief mengubah string nama item menjadi string code, baik untuk animal maupun plant
+     * @param name string nama, plant atau animal
+     * @return code item, plant atau animal
+     */
+    static string convertNameToCode(string name);
 };
 
 #endif

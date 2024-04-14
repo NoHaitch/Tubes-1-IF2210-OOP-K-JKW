@@ -367,11 +367,14 @@ void Cattleman::harvestAnimal(){
                     if (Farm.getElmt(farmPositionCode).isReadyToHarvest()){
 
                         // Inputs are valid, Do Harvesting process
-                        Product newProduct = Product::convertToProduct(animalCode);
-                        productCode = newProduct.getCode();
-                        ItemStorage.insertElmtAtEmptySlot(productCode);
-                        Farm.deleteElmtAtPosition(farmPositionCode);
-                        selectionList.push_back(farmPositionCode);
+                        vector <string> convertedProductCodes = Product::convertToProductCode(animalCode);
+                        for (int i = 0; i < convertedProductCodes.size(); i++) {
+                            Product newProduct = Product(convertedProductCodes[i]);
+                            productCode = newProduct.getCode();
+                            ItemStorage.insertElmtAtEmptySlot(productCode);
+                            Farm.deleteElmtAtPosition(farmPositionCode);
+                            selectionList.push_back(farmPositionCode);
+                        }
                     } else {
                         throw NotHarvestableException("Binatang pada kode posisi tersebut tidak dapat dipanen");
                     }

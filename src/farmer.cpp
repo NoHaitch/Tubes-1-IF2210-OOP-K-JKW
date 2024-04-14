@@ -207,10 +207,13 @@ void Farmer::panen() {
                 continue;
             }
             if (this->Ladang.getElmt(pos).getCode() == penomoran[choosenPlant]) {
-                Product P = Product::convertToProduct(this->Ladang.getElmt(pos).getCode());
-                this->ItemStorage.insertElmtAtEmptySlot(P.getCode());
-                this->Ladang.deleteElmtAtPosition(pos);
-                choosenPosition.push_back(pos);
+                vector <string> convertedProductCodes = Product::convertToProductCode(this->Ladang.getElmt(pos).getCode());
+                for (int i = 0; i < convertedProductCodes.size(); i++) {
+                    Product P = Product(convertedProductCodes[i]);
+                    this->ItemStorage.insertElmtAtEmptySlot(P.getCode());
+                    this->Ladang.deleteElmtAtPosition(pos);
+                    choosenPosition.push_back(pos);
+                }
                 break;
             } else {
                 cout << "Tanaman yang dipilih tidak sesuai" << endl;
