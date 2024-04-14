@@ -6,6 +6,7 @@
 #include "header/player.hpp"
 #include "header/storage.hpp"
 #include "header/product.hpp"
+#include "header/building.hpp"
 #include "header/playerException.hpp"
 
 using namespace std;
@@ -140,8 +141,12 @@ string Player::itemType(int y, int x) {
             if (it != Product::Product::getProductCodeListConfig().end()) {
                 return "Product";
             } else {
-                // TODO : implement search building
-                return "";
+                it = find(Building::getBuildingCodeListConfig().begin(), Building::Building::getBuildingCodeListConfig().end(), itemCode);
+                if (it != Building::Building::getBuildingCodeListConfig().end()){
+                    return "Building";
+                } else {
+                    return "";
+                }
             }
         }
     }
@@ -190,7 +195,7 @@ int Player::calculateWealth(){
             } else if (itemType(i, j) == "Product"){
                 ans += Product::getProductPriceMapConfig()[itemCode];
             } else if (itemType(i, j) == "Building"){
-                // TODO : implement case for building
+                ans += Building::getBuildingPriceMapConfig()[itemCode];
             }
         }
     }
