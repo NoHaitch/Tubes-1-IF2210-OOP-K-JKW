@@ -52,7 +52,7 @@ string Product::getCode() {
     return this->code;
 }
 
-vector<string> Product::convertToProductCode(std::string _origin) {}(string _origin) {
+vector<string> Product::convertToProductCode(std::string _origin) {
     // Convert the code origin into name of origin
     return Product::productOriginToCode[_origin];
 }
@@ -143,4 +143,6 @@ string Product::convertNameToCode(string name) {
             return it->second;
         }
     }
+
+    return "";
 }
