@@ -25,7 +25,7 @@ protected:
     int currentDuration = 0;        // Durasi saat ini sebelum bisa di-harvest, default 0
     const int harvestDuration;      // Durasi yang dibutuhkan untuk bisa di-harvest
     const int price;                // Harga jual tanaman
-
+    bool isEdible;
 public:
     /**
      * @brief default ctor plant
@@ -96,6 +96,12 @@ public:
      * @return harvest duration, time needed to harvest
      */
     int getHarvestDuration();
+
+    /**
+     * @brief Getter isedible
+     * @return isEdible
+     */
+    bool getEdible();
 
     /**
      * @brief Getter get price
