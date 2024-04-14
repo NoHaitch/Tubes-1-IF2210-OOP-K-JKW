@@ -144,11 +144,6 @@ public:
      void static addPlantConfig(int _id, string _code, string _plantType, string _plantName, int _harvestDuration, int _price);
 
      /**
-      * @brief usia tanaman bertambah 1
-      */
-     void grow();
-
-     /**
       * @brief Cek apakah tanaman sudah bisa di-harvest atau belum
       * return true, currentDuration >= harvestDuration
       */

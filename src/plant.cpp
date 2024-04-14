@@ -80,10 +80,6 @@ int Plant::getHarvestDuration() {return this->harvestDuration;}
 int Plant::getPrice() {return this->price;}
 bool Plant::getEdible() {return this->isEdible;}
 
-void Plant::grow() {
-    this->currentDuration++;
-}
-
 bool Plant::isReadyToHarvest() {
     return this->currentDuration >= this->harvestDuration;
 }
