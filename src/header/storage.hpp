@@ -95,6 +95,13 @@ class Storage{
         bool isStorageFull();
 
         /**
+         * @brief Check if the storage is empty
+         * 
+         * @return bool whether the storage is empty
+        */
+        bool isStorageEmpty();
+
+        /**
          * @brief convert position code into indexes of storage
          * 
          * \note Throw exception if position code is invalid
@@ -121,6 +128,16 @@ class Storage{
          * @param elmt  T element to be inserted
         */
         void insertElmtAtPosition(string positionCode, string codeElmt);
+
+        /**
+         * @brief Insert element elmt at a certain postion coded by positionCode
+         * 
+         * \note Throw exception if storage is full or code invalid
+         * 
+         * @param positionCode  string code for position
+         * @param elmtPtr  T* element to be inserted
+        */
+        void insertElmtAtPosition(string positionCode, T* elmtPtr);
 
         /**
          * @brief Insert element elmt at an empty slot

@@ -83,6 +83,13 @@ class Player{
         int getCurrWeight() const;
 
         /**
+         * @brief Get Player Item Storage
+         * 
+         * @return Storage<string> Player Item Storage
+        */
+        Storage<string> getItemStorage();
+
+        /**
          * @brief Set Player wealth
          * 
          * @param _wealth new wealth

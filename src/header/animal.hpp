@@ -159,7 +159,7 @@ class Animal{
          * 
          * @param string product type 
         */
-        virtual bool canEat(string productType) = 0;
+        virtual bool canEat(string productType);
 
         /**
          * @brief check if animal is empty
@@ -198,6 +198,12 @@ class Animal{
          * @return animal Name configuration
          */
         static map<string, string> getAnimalNameConfig();
+
+        /**
+         * @brief Get Animal Code from Name Configuration 
+         * @return animal Name to Code configuration
+         */
+        static map<string, string> getAnimalNameToCodeConfig();
 
         /**
          * @brief Get Animal Food Type Configuration 

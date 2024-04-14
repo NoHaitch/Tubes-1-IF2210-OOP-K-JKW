@@ -64,6 +64,13 @@ public:
      */
     Plant getItem(string idx);
 
+    /**
+     * @brief print the plantCode along with the plant name for every slot of the farm
+     * 
+     * \note called by print field command along with Ladang.printStorage()
+    */
+    void printLegend();
+
     void buy() override;
 
     void sell() override;

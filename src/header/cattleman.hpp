@@ -25,6 +25,11 @@ class Cattleman : public Player{
         ~Cattleman();
 
         /**
+         * @brief Getter for Cattleman's Farm
+        */
+        Storage<Animal> getFarm();
+
+        /**
         * @brief calculates KKP using total wealth including profession storage
         * @return KKP
         * 

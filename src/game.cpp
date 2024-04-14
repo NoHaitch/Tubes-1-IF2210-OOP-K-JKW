@@ -93,6 +93,7 @@ int Game::playerCommandIO(){
             Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
             if (farmerPtr) {
                 farmerPtr->getLadang().printStorage();
+                farmerPtr->printLegend();
             } else {
                 throw CommandWrongRole("CETAK_LADANG hanya dapat dilakukan oleh Petani.");
             }
@@ -100,7 +101,8 @@ int Game::playerCommandIO(){
         } else if(input == "cetak_peternakan" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
-                // TODO: cetak Peternakan
+                cattlemanPtr->getFarm().printStorage();
+                cattlemanPtr->printLegend();
             } else {
                 throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
             }
@@ -118,14 +120,14 @@ int Game::playerCommandIO(){
             if (cattlemanPtr) {
                 // TODO: Ternak
             } else {
-                throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
+                throw CommandWrongRole("TERNAK hanya dapat dilakukan oleh Peternak.");
             }
         
         } else if(input == "bangun" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
                 // TODO: Bangun
             } else{
-                throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
+                throw CommandWrongRole("BANGUN hanya dapat dilakukan oleh Walikota.");
             }
         
         } else if(input == "makan" ){
@@ -136,7 +138,7 @@ int Game::playerCommandIO(){
             if (cattlemanPtr) {
                 // TODO: Kasih Makanan Hewan
             } else {
-                throw CommandWrongRole("CETAK_PETERNAKAN hanya dapat dilakukan oleh Peternak.");
+                throw CommandWrongRole("KASIH_MAKAN hanya dapat dilakukan oleh Peternak.");
             }
 
         } else if(input == "beli" ){
@@ -147,7 +149,7 @@ int Game::playerCommandIO(){
         
         } else if(input == "panen" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
-                throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
+                throw CommandWrongRole("PANEN tidak dapat dilakukan oleh walikota.");
             } else{
                 Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
                 if (farmerPtr) {
@@ -348,6 +350,7 @@ void Game::readGameState(string path){
 
         // TODO: Player Items
 
+        Player* playerPointer = getPlayer(playerUsername);
         for(int item = 0; item < playerItemCount; item++){
             string itemName = "";
             getline(saveFile, line);
@@ -356,9 +359,11 @@ void Game::readGameState(string path){
 
             if(itemName == ""){
                 throw FileReadingFailedException();
+            } else {
+                playerPointer->getItemStorage().insertElmtAtEmptySlot(itemName);
             }
         }
-
+        
         int playerRoleStorage = -1;
         
         getline(saveFile, line);
@@ -370,19 +375,46 @@ void Game::readGameState(string path){
         }
 
         if(player < amountOfPlayer - 1){
-            for(int item = 0; item < playerRoleStorage; item++){
-                string location = "";
-                string itemName = "";
-                int progress = -1;
+            Farmer* farmerPtr = dynamic_cast<Farmer*>(getPlayer(playerUsername));
+            if (farmerPtr) {
+                for(int item = 0; item < playerRoleStorage; item++){
+                    string location = "";
+                    string itemName = "";
+                    int progress = -1;
 
-                getline(saveFile, line);
-                iss = istringstream(line);
-                iss >> location >> itemName >> progress;
+                    getline(saveFile, line);
+                    iss = istringstream(line);
+                    iss >> location >> itemName >> progress;
 
-                if(location == "" || itemName == "" || progress < 0){
-                    throw FileReadingFailedException();
+                    if(location == "" || itemName == "" || progress < 0){
+                        throw FileReadingFailedException();
+                    } else {
+                        string plantCode = Plant::getPlantNameToCodeConfig()[itemName];
+                        Plant* plantPtr = new Plant(plantCode);
+                        plantPtr->setCurrentDuration(progress);
+                        farmerPtr->getLadang().insertElmtAtPosition(location, plantPtr);
+                    }
                 }
+            } else {
+                Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getPlayer(playerUsername));
+                for(int item = 0; item < playerRoleStorage; item++){
+                    string location = "";
+                    string itemName = "";
+                    int progress = -1;
 
+                    getline(saveFile, line);
+                    iss = istringstream(line);
+                    iss >> location >> itemName >> progress;
+
+                    if(location == "" || itemName == "" || progress < 0){
+                        throw FileReadingFailedException();
+                    } else {
+                        string animalCode = Animal::getAnimalNameToCodeConfig()[itemName];
+                        Animal* animalPtr = new Animal(animalCode);
+                        animalPtr->setCurrWeight(progress);
+                        cattlemanPtr->getFarm().insertElmtAtPosition(location, animalPtr);
+                    }
+                }
             }
 
         } else{
@@ -402,6 +434,8 @@ void Game::readGameState(string path){
             }
         }
     }
+
+    // TODO : Read Toko Configuration
 
     saveFile.close();    
 }

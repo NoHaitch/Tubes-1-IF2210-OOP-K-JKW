@@ -98,6 +98,29 @@ Plant Farmer::getItem(string idx) {
     return this->Ladang.getElmt(idx);
 }
 
+void Farmer::printLegend(){
+    map<string, int> numMap;
+    string plantCode;
+    for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
+        numMap[Plant::getPlantCodeListConfig()[i]] = 0;
+    }
+    for (int i=0; i<Ladang.getNumRow(); i++){
+        for (int j=0; j<Ladang.getNumCol(); j++){
+            if (!Ladang.isEmpty(i,j)){
+                plantCode = Ladang.getElmt(i,j).getCode();
+                numMap[plantCode]++;
+            }
+        }
+    }
+    for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
+        plantCode = Plant::getPlantCodeListConfig()[i];
+        if (numMap[plantCode] > 0){
+            cout << " - " << plantCode << ": " << Plant::getPlantNameMapConfig()[plantCode] << endl;
+        }
+    }
+    cout << endl;
+}
+
 
 void Farmer::panen() {
     string positionCode;

@@ -1,11 +1,15 @@
 #include "header/cattleman.hpp"
 
-Cattleman::Cattleman(string _username) : Player(_username){}
+Cattleman::Cattleman(string _username) : Player(_username), Farm(){}
 
 Cattleman::Cattleman(string _username, int _wealth, int _currWeight) 
-    : Player(_username, _wealth, _currWeight){}
+    : Player(_username, _wealth, _currWeight), Farm(){}
 
 Cattleman::~Cattleman(){}
+
+Storage<Animal> Cattleman::getFarm(){
+    return Farm;
+}
 
 int Cattleman::calculateKKP(){
     int res = Player::calculateWealth();
@@ -363,7 +367,8 @@ void Cattleman::harvestAnimal(){
                     if (Farm.getElmt(farmPositionCode).isReadyToHarvest()){
 
                         // Inputs are valid, Do Harvesting process
-                        productCode = Product::getProductOriginToCode()[animalCode];
+                        Product newProduct = Product::convertToProduct(animalCode);
+                        productCode = newProduct.getCode();
                         ItemStorage.insertElmtAtEmptySlot(productCode);
                         Farm.deleteElmtAtPosition(farmPositionCode);
                         selectionList.push_back(farmPositionCode);

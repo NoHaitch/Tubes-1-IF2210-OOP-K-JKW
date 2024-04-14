@@ -42,6 +42,10 @@ int Player::getCurrWeight() const{
     return this->currWeight;
 }
 
+Storage<string> Player::getItemStorage(){
+    return this->ItemStorage;
+}
+
 void Player::setWealth(int _wealth){
     this->wealth = _wealth;
 }
@@ -70,7 +74,7 @@ void Player::eatFromStorage(){
                 selectedItem = ItemStorage.getElmt(inputCode);
                 if (itemType(inputCode)=="Product"){
                     Product selectedProduct(selectedItem);
-                    if (isEdible(selectedProduct)){
+                    if (Product::isEdible(selectedProduct)){
                         ItemStorage.deleteElmtAtPosition(inputCode);
                         currWeight += selectedProduct.getAddedWeight();
                         valid = true;

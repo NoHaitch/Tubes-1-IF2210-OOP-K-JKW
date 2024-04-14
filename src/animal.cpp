@@ -108,6 +108,10 @@ map<string, string> Animal::getAnimalNameConfig(){
     return configName;
 }
 
+map<string, string> Animal::getAnimalNameToCodeConfig(){
+    return configNameToCode;
+}
+
 map<string, string> Animal::getAnimalFoodTypeConfig(){
     return configFoodType;
 }

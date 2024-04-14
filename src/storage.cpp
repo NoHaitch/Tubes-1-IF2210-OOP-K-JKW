@@ -64,6 +64,11 @@ bool Storage<T>::isStorageFull(){
 }
 
 template<class T>
+bool Storage<T>::isStorageEmpty(){
+    return numElmt==0;
+}
+
+template<class T>
 pair<int, int> Storage<T>::translatePositionCode(string positionCode){
     int row = (stoi(positionCode.substr(1)) - 1);
     int col = (positionCode[0] - 'A');
@@ -96,6 +101,24 @@ void Storage<T>::insertElmtAtPosition(string positionCode, string codeElmt){
             pair<int, int> position = translatePositionCode(positionCode);
             delete matrix[position.first][position.second];
             matrix[position.first][position.second] = new T(codeElmt);
+            numElmt++;
+        }
+    } catch (PositionCodeInvalidException e){
+        startTextRed();
+        cout << e.what() << endl;
+        resetTextColor();
+    }
+}
+
+template<class T>
+void Storage<T>::insertElmtAtPosition(string positionCode, T* elmtPtr){
+    try {
+        if (isStorageFull()){
+            throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
+        } else {
+            pair<int, int> position = translatePositionCode(positionCode);
+            delete matrix[position.first][position.second];
+            matrix[position.first][position.second] = elmtPtr;
             numElmt++;
         }
     } catch (PositionCodeInvalidException e){

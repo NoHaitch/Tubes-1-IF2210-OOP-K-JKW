@@ -16,6 +16,7 @@ protected:
     static map <string, string> plantNameMap; // <code, plantName>
     static map <string, int> plantHarvestDurationMap; // <code, harvestDuration>
     static map <string, int> plantPriceMap; // <code, price>
+    static map <string, string> plantNameToCode; // <plantName, code>
 
     int id;                         // plant ID
     string code;                    // 3 characters plant code
@@ -188,6 +189,12 @@ public:
      * @return map of plant price
      */
     static map<string, int> getPlantPriceMapConfig();
+
+    /**
+     * @brief Get Config: map of <plantName, code>
+     * @return map plantNameToCode
+     */
+    static map<string, string> getPlantNameToCodeConfig();
 
     /**
      * @brief Print all config variables

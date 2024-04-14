@@ -7,6 +7,7 @@ map <string, string> Plant::plantTypeMap; // <code, plantType>
 map <string, string> Plant::plantNameMap; // <code, plantName>
 map <string, int> Plant::plantHarvestDurationMap; // <code, harvestDuration>
 map <string, int> Plant::plantPriceMap; // <code, price>
+map <string, string> Plant::plantNameToCode; // <plantName, code>
 
 Plant::Plant() : price(0), harvestDuration(0), plantType(""){
     this->id = 0;
@@ -59,6 +60,7 @@ void Plant::addPlantConfig(int _id, std::string _code, std::string _plantType, s
     plantNameMap[_code] = _plantName;
     plantHarvestDurationMap[_code] = _harvestDuration;
     plantPriceMap[_code] = _price;
+    plantNameToCode[_plantName] = _code;
 }
 
 void Plant::setID(int _id) {this->id = _id;}
@@ -108,6 +110,10 @@ map<string, int> Plant::getPlantHarvestDurationMapConfig() {
 
 map<string, int> Plant::getPlantPriceMapConfig() {
     return plantPriceMap;
+}
+
+map<string, string> Plant::getPlantNameToCodeConfig(){
+    return plantNameToCode;
 }
 
 void Plant::printParsedConfig() {
