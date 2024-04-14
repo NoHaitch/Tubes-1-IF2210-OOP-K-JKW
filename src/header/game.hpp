@@ -27,6 +27,7 @@
 #include "gameException.hpp"
 #include "printColor.hpp"
 #include "utils.hpp"
+#include "building.hpp"
 
 using namespace std;
 

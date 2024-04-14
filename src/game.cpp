@@ -667,39 +667,33 @@ void Game::readConfigRecipe(){
     if (!configFile.is_open()) {
         throw FileNotFoundException("Failed to open recipe.txt");
     }
-     
+    
+    int id;                         // Building ID
+    string code;                    // Building code
+    string name;                    // Building name
+    int price;                      // Building price
+    int quantity;                   // Material quantity
+    string material;                // Material name
+    vector<Building> building;      // Vector of building
 
-    string line; 
-    while (getline(configFile, line)) {
-        int id;
-        string code;
-        string name;
-        int price;
-        vector<string> material;
-        vector<int> materialAmount;
-
+    string line;
+    Building tempBuilding;
+    while (getline(configFile, line)){
         istringstream iss(line);
-        iss >> id >> code >> name >> price;
-        
-        string materialName;
-        int amount;
-        while(true){
-            materialName = "";
-            amount = -1;
-            iss >> materialName >> amount;
-            if(materialName == "" || amount < 0){
-                break;
-            } else{
-                material.push_back(materialName);
-                materialAmount.push_back(amount);
-            }
+        if (!(iss >> id >> code >> name >> price)) {
+            throw FileFormatException();
+        }
+        tempBuilding.addBuildingConfig(id, code, name, price);
+
+        while (iss >> material >> quantity){
+            tempBuilding.addMaterials(code, material, quantity);
         }
 
-        // Bangunan::addProductConfig(id, code, name, price, material, materialAmount);
-    }
+        building.push_back(tempBuilding);
 
     cout << " > Finished Reading Recipe Configuration" << endl;
     configFile.close(); 
+    }
 }
 
 void Game::readConfigMisc(){
