@@ -3,8 +3,11 @@
 using namespace std;
 
 Game::Game(){
-    shop = new Shop();
+    // shop = new Shop();
     mayor = nullptr;
+    farmers = vector<Farmer>();
+    cattlemans = vector<Cattleman>();
+
 
     day = 0;
     winWealth = -1;
@@ -23,7 +26,7 @@ Game::~Game(){
         delete mayor;
     }
 
-    delete shop;
+    // delete shop;
 
     cout << endl;
     cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
@@ -118,7 +121,7 @@ int Game::playerCommandIO(){
         } else if(input == "ternak" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
-                // TODO: Ternak
+                cattlemanPtr->farming();
             } else {
                 throw CommandWrongRole("TERNAK hanya dapat dilakukan oleh Peternak.");
             }
@@ -136,16 +139,16 @@ int Game::playerCommandIO(){
         } else if(input == "kasih_makan" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
-                // TODO: Kasih Makanan Hewan
+                cattlemanPtr->feeding();
             } else {
                 throw CommandWrongRole("KASIH_MAKAN hanya dapat dilakukan oleh Peternak.");
             }
 
         } else if(input == "beli" ){
-            // getCurrentPlayer()->buy();
+            getCurrentPlayer()->buy();
         
         } else if(input == "jual" ){
-            // getCurrentPlayer()->sell();
+            getCurrentPlayer()->sell();
         
         } else if(input == "panen" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
@@ -156,7 +159,7 @@ int Game::playerCommandIO(){
                     farmerPtr->panen();
                 } else {
                     Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
-                    // cattlemanPtr->panen();
+                    cattlemanPtr->harvestAnimal();
                 }
             }
         

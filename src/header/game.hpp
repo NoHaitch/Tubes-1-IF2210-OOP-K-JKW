@@ -15,25 +15,26 @@
 #include <sstream>
 #include <filesystem>
 
+#include "animal.hpp"
+#include "plant.hpp"
+#include "storage.hpp"
 #include "player.hpp"
 #include "mayor.hpp"
 #include "farmer.hpp"
 #include "cattleman.hpp"
 #include "product.hpp"
-#include "shop.hpp"
-#include "animal.hpp"
-#include "plant.hpp"
-#include "storage.hpp"
-#include "gameException.hpp"
 #include "printColor.hpp"
 #include "utils.hpp"
+#include "gameException.hpp"
 #include "building.hpp"
 
 using namespace std;
 
+class Farmer; // For compiler reason. This makes the compiler think that Farmer exist thus not giving an error.
+
 class Game{
     private:
-        Shop *shop;                     // Shop
+        // Shop *shop;                     // Shop
         int currTurn = -1;              // current Turn, -1 means the game just started
         vector<string> playerOrder;     // Player Username sorted lexicographicly
 
