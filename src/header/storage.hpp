@@ -149,6 +149,15 @@ class Storage{
         void insertElmtAtEmptySlot(string codeElmt);
 
         /**
+         * @brief Insert element elmt at an empty slot
+         * 
+         * \note Throw exception if storage is full
+         * 
+         * @param elmtPtr  T* element to be inserted
+        */
+        void insertElmtAtEmptySlot(T* elmtPtr);
+
+        /**
          * @brief Delete element elmt at a certain postion coded by positionCode
          * 
          * \note Throw exception if code invalid or no items in that position
@@ -180,6 +189,16 @@ class Storage{
          * @return true jika kosong
          */
         bool isEmpty(int y, int x);
+
+
+        /**
+         * @brief operator overloading untuk menambahkan item pada storage
+         * 
+         * \note contoh penggunaan:  Storage + item
+         * 
+         * @param item T item yang ingin ditambahkan
+         */
+        void operator+(T item);
 };
 
 template class Storage<string>;

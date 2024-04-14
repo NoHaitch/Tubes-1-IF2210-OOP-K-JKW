@@ -360,7 +360,7 @@ void Game::readGameState(string path){
             if(itemName == ""){
                 throw FileReadingFailedException();
             } else {
-                playerPointer->getItemStorage().insertElmtAtEmptySlot(itemName);
+                playerPointer->getItemStorage() + itemName;
             }
         }
         

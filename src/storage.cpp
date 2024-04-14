@@ -135,9 +135,25 @@ void Storage<T>::insertElmtAtEmptySlot(string codeElmt){
     } else {
         for (int i=0; i<numRow; i++){
             for (int j=0; j<numCol; j++){
-                //cout << i << " " << j << " " << matrix[i][j] << endl;
                 if (matrix[i][j] == nullptr){
                     matrix[i][j] = new T(codeElmt);
+                    numElmt++;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+template<class T>
+void Storage<T>::insertElmtAtEmptySlot(T* elmtPtr){
+    if (isStorageFull()){
+        throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
+    } else {
+        for (int i=0; i<numRow; i++){
+            for (int j=0; j<numCol; j++){
+                if (matrix[i][j] == nullptr){
+                    matrix[i][j] = elmtPtr;
                     numElmt++;
                     return;
                 }
@@ -331,4 +347,19 @@ bool Storage<T>::isEmpty(int y, int x) {
     } else {
         throw PositionCodeInvalidException("Indeks diluar ukuran storage");
     }
+}
+
+template<class T>
+void Storage<T>::operator+(T item){
+    insertElmtAtEmptySlot(&T);
+}
+
+template<>
+void Storage<Animal>::operator+(Animal item){
+    insertElmtAtEmptySlot(item.getCode());
+}
+
+template<>
+void Storage<Plant>::operator+(Plant item){
+    insertElmtAtEmptySlot(item.getCode());
 }

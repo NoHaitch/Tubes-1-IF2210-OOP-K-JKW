@@ -353,7 +353,7 @@ void Cattleman::harvestAnimal(){
 
     // Validate & Harvest postionCode
     int doneHarvested = 1;
-    string farmPositionCode, productCode;
+    string farmPositionCode;
     vector<string> selectionList;
     cout << "Pilih petak yang ingin dipanen: " << endl;
     while (doneHarvested <= numToHarvestInput){
@@ -370,8 +370,7 @@ void Cattleman::harvestAnimal(){
                         vector <string> convertedProductCodes = Product::convertToProductCode(animalCode);
                         for (int i = 0; i < convertedProductCodes.size(); i++) {
                             Product newProduct = Product(convertedProductCodes[i]);
-                            productCode = newProduct.getCode();
-                            ItemStorage.insertElmtAtEmptySlot(productCode);
+                            ItemStorage + newProduct.getCode();
                             Farm.deleteElmtAtPosition(farmPositionCode);
                             selectionList.push_back(farmPositionCode);
                         }
