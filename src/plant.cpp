@@ -13,6 +13,7 @@ Plant::Plant() : price(0), harvestDuration(0), plantType(""){
     this->code = "";
     this->plantName = "";
     this->currentDuration = 0;
+    this->isEdible = false;
 }
 
 Plant::Plant(string _code) : 
@@ -29,6 +30,7 @@ Plant::Plant(int _id, string _code, string _plantType, string _plantName, int _h
     this->code = _code;
     this->plantName = _plantName;
     this->currentDuration = 0;
+    this->isEdible = false;
 }
 
 Plant::Plant(Plant &other) : price(other.price), harvestDuration(other.harvestDuration), plantType(other.plantType) {
@@ -36,6 +38,7 @@ Plant::Plant(Plant &other) : price(other.price), harvestDuration(other.harvestDu
     this->code = other.code;
     this->plantName = other.plantName;
     this->currentDuration = other.currentDuration;
+    this->isEdible = false;
 }
 
 Plant::~Plant() {}
@@ -73,6 +76,7 @@ string Plant::getPlantName() {return this->plantName;}
 int Plant::getCurrentDuration() {return this->currentDuration;}
 int Plant::getHarvestDuration() {return this->harvestDuration;}
 int Plant::getPrice() {return this->price;}
+bool Plant::getEdible() {return this->isEdible;}
 
 void Plant::grow() {
     this->currentDuration++;
@@ -121,12 +125,16 @@ void Plant::incrementCurrentDuration() {
 }
 
 MaterialPlant::MaterialPlant(int _id, string _code, std::string _plantName, int _harvestDuration, int _price) :
-    Plant(_id, _code, "MATERIAL_PLANT", _plantName, _harvestDuration, _price) {}
+    Plant(_id, _code, "MATERIAL_PLANT", _plantName, _harvestDuration, _price) {
+    this->isEdible = false;
+}
 
 MaterialPlant::~MaterialPlant() {}
 
 FoodPlant::FoodPlant(int _id, string _code, std::string _plantName, int _harvestDuration, int _price) :
-    Plant(_id, _code, "FRUIT_PLANT", _plantName, _harvestDuration, _price){}
+    Plant(_id, _code, "FRUIT_PLANT", _plantName, _harvestDuration, _price){
+    this->isEdible = true;
+}
 
 FoodPlant::~FoodPlant() {}
 
