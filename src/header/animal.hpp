@@ -30,6 +30,7 @@ class Animal{
         
         /* Configuration Variables */
         static vector<string> configCode;               // Animal Configuration Codes
+        static map<string, string> configNameToCode;    // Convert Animal Name to Animal Code
         static map<string, int> configID;               // Animal Configuration Key: Code, Value: Animal Id, Id starts from 1.
         static map<string, string> configName;          // Animal Configuration Names
         static map<string, string> configFoodType;      // Animal Configuration Food Types
@@ -124,6 +125,14 @@ class Animal{
         int getCurrWeight() const;
 
         /**
+         * @brief Convert Animal Name to Animal Code;
+         * 
+         * @param name 
+         * @return string 
+        */
+        string convertNameToCode(string name);
+
+        /**
          * @brief Set current weight to _weight
          * @param _weight new weight
         */
@@ -150,7 +159,7 @@ class Animal{
          * 
          * @param string product type 
         */
-        bool canEat(string productType);
+        virtual bool canEat(string productType) = 0;
 
         /**
          * @brief check if animal is empty
@@ -209,16 +218,6 @@ class Animal{
         static map<string, int> getAnimalPriceConfig();
 
         /**
-         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
-         * 
-         * @param os        output stream
-         * @param animal    animal reference
-         * 
-         * @return Reference to the output stream.
-        */
-        friend ostream& operator<<(ostream& stream, const Animal& animal);
-        
-        /**
          * @brief Debuging tool, shows all variables.
          * 
         */
@@ -259,14 +258,11 @@ class Herbivore : public Animal{
         ~Herbivore();   
 
         /**
-         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * @brief Check if food can be eaten
          * 
-         * @param os        output stream
-         * @param herbivore herbivore reference
-         * 
-         * @return Reference to the output stream.
+         * @param string product type 
         */
-        friend ostream& operator<<(ostream& os, const Herbivore& herbivore);
+        bool canEat(string productType) override;
 
         /**
          * @brief Debuging tool, shows all variables.
@@ -303,14 +299,11 @@ class Carnivore : public Animal{
         ~Carnivore();   
 
         /**
-         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * @brief Check if food can be eaten
          * 
-         * @param os        Output stream
-         * @param carnivore Carnivore reference
-         * 
-         * @return Reference to the output stream.
+         * @param string product type 
         */
-        friend ostream& operator<<(ostream& os, const Carnivore& carnivore);
+        bool canEat(string productType) override;
 
         /**
          * @brief Debuging tool, shows all variables.
@@ -347,14 +340,11 @@ class Omnivore : public Animal{
         ~Omnivore();   
 
         /**
-         * @brief Output Format: <id> <code> <name> <foodType> <currWeight> <weightToHarvest> <price>
+         * @brief Check if food can be eaten
          * 
-         * @param os        Output stream
-         * @param carnivore Carnivore reference
-         * 
-         * @return Reference to the output stream.
+         * @param string product type 
         */
-        friend ostream& operator<<(ostream& os, const Omnivore& omnivore);
+        bool canEat(string productType) override;
 
         /**
          * @brief Debuging tool, shows all variables.

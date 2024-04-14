@@ -9,6 +9,7 @@ const string Animal::DefaultAnimalFoodTypeOmnivore = "OMNIVORE";
 /* Configuration Variables */
 vector<string> Animal::configCode;               // Animal Configuration Codes
 map<string, int> Animal::configID;               // Animal Configuration Key: Code, Value: Animal Id, Id starts from 1.
+map<string, string> Animal::configNameToCode;    // Convert Animal Name to Animal Code
 map<string, string> Animal::configName;          // Animal Configuration Names
 map<string, string> Animal::configFoodType;      // Animal Configuration Food Types
 map<string, int> Animal::configWeightToHarvest;  // Animal Configuration Weights To Harvest
@@ -78,14 +79,6 @@ bool Animal::isReadyToHarvest(){
 }
 
 bool Animal::canEat(string productType){
-    if(foodType == DefaultAnimalFoodTypeOmnivore){
-        return true;
-    } else if(foodType == DefaultAnimalFoodTypeCarnivore && productType == "PRODUCT_ANIMAL"){
-        return true;
-    } else if(foodType == DefaultAnimalFoodTypeHerbivore && productType == "PRODUCT_FRUIT_PLANT"){
-        return true;
-    }
-
     return false;
 }
 
@@ -100,6 +93,7 @@ void Animal::AddAnimalConfig(int _id, string _code, string _name, string _foodty
     configFoodType[_code] = _foodtype;
     configWeightToHarvest[_code] = _weightToHarvest;
     configPrice[_code] = _price;
+    configNameToCode[_name] = _code;
 }
 
 vector<string> Animal::getAnimalCodeConfig(){
@@ -124,17 +118,6 @@ map<string, int> Animal::getAnimalWeightToHarvestConfig(){
 
 map<string, int> Animal::getAnimalPriceConfig(){
     return configPrice;
-}
-
-ostream& operator<<(ostream& stream, const Animal& animal){
-    stream << animal.id << " ";
-    stream << animal.code << " ";
-    stream << animal.name << " ";
-    stream << animal.foodType << " ";
-    stream << animal.currWeight << " ";
-    stream << animal.weightToHarvest << " ";
-    stream << animal.price << endl;
-    return stream;
 }
 
 void Animal::printInfo(){
@@ -162,6 +145,11 @@ void Animal::printConfig(){
     cout << "--------------------------------------------------------------------------------------" << endl;
 }
 
+string Animal::convertNameToCode(string name){
+    return configNameToCode[name];
+}
+
+
 /* CLASS Herbivore */
 
 Herbivore::Herbivore(string code, int _currWeight) 
@@ -172,15 +160,8 @@ Herbivore::Herbivore(const Herbivore& other)
 
 Herbivore::~Herbivore(){}
 
-ostream& operator<<(ostream& stream, const Herbivore& herbivore){
-    stream << herbivore.id << " ";
-    stream << herbivore.code << " ";
-    stream << herbivore.name << " ";
-    stream << herbivore.foodType << " ";
-    stream << herbivore.currWeight << " ";
-    stream << herbivore.weightToHarvest << " ";
-    stream << herbivore.price << endl;
-    return stream;
+bool Herbivore::canEat(string productType){
+    return productType == "PRODUCT_FRUIT_PLANT";
 }
 
 void Herbivore::printInfo(){
@@ -205,15 +186,8 @@ Carnivore::Carnivore(const Carnivore& other)
 
 Carnivore::~Carnivore(){}
 
-ostream& operator<<(ostream& stream, const Carnivore& carnivore){
-    stream << carnivore.id << " ";
-    stream << carnivore.code << " ";
-    stream << carnivore.name << " ";
-    stream << carnivore.foodType << " ";
-    stream << carnivore.currWeight << " ";
-    stream << carnivore.weightToHarvest << " ";
-    stream << carnivore.price << endl;
-    return stream;
+bool Carnivore::canEat(string productType){
+    return productType == "PRODUCT_ANIMAL";
 }
 
 void Carnivore::printInfo(){
@@ -238,15 +212,8 @@ Omnivore::Omnivore(const Omnivore& other)
 
 Omnivore::~Omnivore(){}
 
-ostream& operator<<(ostream& stream, const Omnivore& omnivore){
-    stream << omnivore.id << " ";
-    stream << omnivore.code << " ";
-    stream << omnivore.name << " ";
-    stream << omnivore.foodType << " ";
-    stream << omnivore.currWeight << " ";
-    stream << omnivore.weightToHarvest << " ";
-    stream << omnivore.price << endl;
-    return stream;
+bool Omnivore::canEat(string productType){
+    return productType == "PRODUCT_ANIMAL" || productType == "PRODUCT_FRUIT_PLANT";
 }
 
 void Omnivore::printInfo(){
