@@ -60,3 +60,9 @@ string Building::getName() const{
 int Building::getPrice() const{
     return price;
 }
+
+bool operator==(Building a, Building b){
+    return a.code == b.code && a.name == b.name;
+}
+
+
