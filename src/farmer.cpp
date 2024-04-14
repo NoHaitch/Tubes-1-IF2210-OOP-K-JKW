@@ -1,17 +1,11 @@
 #include "header/farmer.hpp"
 
 Farmer::Farmer(string _username) : Player(_username), Ladang(){
-    numberOfHarvestablePlant = map<string, int>();
-    for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
-        numberOfHarvestablePlant[Plant::getPlantCodeListConfig()[i]] = 0;
-    }
+
 }
 
 Farmer::Farmer(string _username, int _wealth, int _currWeight) : Player(_username, _wealth, _currWeight), Ladang() {
-    numberOfHarvestablePlant = map<string, int>();
-    for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
-        numberOfHarvestablePlant[Plant::getPlantCodeListConfig()[i]] = 0;
-    }
+
 }
 
 Farmer::~Farmer() {
@@ -60,35 +54,44 @@ void Farmer::tanam() {
     while (true) {
         cout << "Slot: ";
         cin >> positionCode;
-        // Ambil tanaman dari slot penyimpanan
-        if (this->ItemStorage.isEmpty(positionCode)) {
-            cout << "Item tidak ditemukan di penyimpanan" << endl;
-        } else {
-            if (this->itemType(positionCode) != "Plant") {
-                cout << "Item yang dipilih bukan tanaman" << endl;
+        try {
+            // Ambil tanaman dari slot penyimpanan
+            if (this->ItemStorage.isEmpty(positionCode)) {
+                cout << "Item tidak ditemukan di penyimpanan" << endl;
+                continue;
             } else {
-                Plant P = Plant(this->ItemStorage.getElmt(positionCode));
-                cout << "Kamu memilih tanaman" << P.getPlantName() << endl;
-                // Ambil posisi pada ladang untuk ditanam
-                string positionLadang;
-                this->Ladang.printStorage();
-                while (true) {
-                    cout << endl << "Petak tanah: ";
-                    cin >> positionLadang;
-                    // Cek apakah slot pada ladang kosong
-                    if (!this->Ladang.isEmpty(positionLadang)) {
-                        cout << "Slot pada ladang sudah terisi" << endl;
-                    } else {
-                        // Tanam tanaman pada ladang
-                        this->Ladang.insertElmtAtPosition(positionLadang, P.getCode());
-                        cout << "Cangkul, cangkul, cangkul yang dalam~!\n" << P.getPlantName() <<
-                             " berhasil ditanam!" << endl;
-                        this->ItemStorage.deleteElmtAtPosition(positionCode);
-                        break;
+                if (this->itemType(positionCode) != "Plant") {
+                    cout << "Item yang dipilih bukan tanaman" << endl;
+                } else {
+                    Plant P = Plant(this->ItemStorage.getElmt(positionCode));
+                    cout << "Kamu memilih tanaman" << P.getPlantName() << endl;
+                    // Ambil posisi pada ladang untuk ditanam
+                    string positionLadang;
+                    this->Ladang.printStorage();
+                    while (true) {
+                        cout << endl << "Petak tanah: ";
+                        cin >> positionLadang;
+                        // Cek apakah slot pada ladang kosong
+                        if (!this->Ladang.isEmpty(positionLadang)) {
+                            cout << "Slot pada ladang sudah terisi" << endl;
+                        } else {
+                            // Tanam tanaman pada ladang
+                            this->Ladang.insertElmtAtPosition(positionLadang, P.getCode());
+                            cout << "Cangkul, cangkul, cangkul yang dalam~!\n" << P.getPlantName() <<
+                                 " berhasil ditanam!" << endl;
+                            this->ItemStorage.deleteElmtAtPosition(positionCode);
+                            break;
+                        }
                     }
+                    break;
                 }
-                break;
             }
+        } catch (PositionCodeInvalidException e) {
+            cout << e.what() << endl;
+            continue;
+        } catch (exception e) {
+            cout << "Input posisi tidak valid!" << endl;
+            continue;
         }
     }
 }
@@ -133,6 +136,9 @@ void Farmer::panen() {
     }
 
     map<string, int> plantReadyToHarvest; // <plant code, number of plants>
+    for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
+        plantReadyToHarvest[Plant::getPlantCodeListConfig()[i]] = 0;
+    }
     // Validasi apakah ada tanaman di ladang yang siap panen
     int readyForHarvest = 0;
     for (int i = 0; i < this->Ladang.getNumRow(); i++) {
@@ -141,7 +147,7 @@ void Farmer::panen() {
             if (!this->Ladang.isEmpty(pos)) {
                 if (this->Ladang.getElmt(i, j).isReadyToHarvest()) {
                     readyForHarvest++;
-                    this->numberOfHarvestablePlant[this->Ladang.getElmt(i, j).getCode()]++;
+                    plantReadyToHarvest[this->Ladang.getElmt(i, j).getCode()]++;
                 }
             }
         }
@@ -156,7 +162,7 @@ void Farmer::panen() {
     int num = 1;
     cout << "Pilih tanaman siap panen yang kamu miliki" << endl;
     map<int, string> penomoran;
-    for (map<string, int>::iterator it = this->numberOfHarvestablePlant.begin(); it != this->numberOfHarvestablePlant.end(); ++it) {
+    for (map<string, int>::iterator it = plantReadyToHarvest.begin(); it != plantReadyToHarvest.end(); it++) {
         if (it->second > 0) {
             penomoran[num] = it->first;
             cout << num << ". " << it->first << " (" << it->second << " petak siap panen)" << endl;
@@ -177,7 +183,7 @@ void Farmer::panen() {
             cout << "Berapa petak yang ingin dipanen: ";
             cin >> numOfPlantChoosen;
             // Cek apakah jumlah tanaman yang dipilih valid
-            if (numOfPlantChoosen > this->numberOfHarvestablePlant[penomoran[choosenPlant]]) {
+            if (numOfPlantChoosen > plantReadyToHarvest[penomoran[choosenPlant]]) {
                 cout << "Jumlah tanaman yang dipilih melebihi tanaman yang bisa dipanen!" << endl;
                 continue;
             }
@@ -221,7 +227,7 @@ void Farmer::panen() {
         }
     }
 
-    cout << numOfPlantChoosen << " petak tanaman pada";
+    cout << numOfPlantChoosen << " petak tanaman " << penomoran[choosenPlant] << " pada petak ";
     for (int i = 0; i< choosenPosition.size(); i++) {
         cout << choosenPosition[i];
         if (i != choosenPosition.size() - 1) {
@@ -258,7 +264,7 @@ void Farmer::buy() {
                     continue;
                 }
                 else {
-                    
+
                 }
             }
         } catch (PositionCodeInvalidException e) {
@@ -272,8 +278,144 @@ void Farmer::buy() {
 }
 
 void Farmer::sell() {
-    // TODO implement sell
+    if (this->ItemStorage.getNumElmt() == 0) {
+        cout << "Penyimpanan tidak cukup untuk membeli barang" << endl;
+        return;
+    }
+    bool notAllDone = true;
+    while (notAllDone) {
+        cout << "Berikut penyimpanan Anda" << endl;
+        this->ItemStorage.printStorage();
+
+        cout << "Silahkan pilih petak yang ingin Anda jual" << endl;
+        string positionCode;
+        cin >> positionCode;
+        vector <string> position;
+        string temp;
+        // Kemungkinan bisa pilih lebih dari 1 petak
+        for (int i = 0; i < positionCode.size(); i++) {
+            if (positionCode[i] == ',') {
+                position.push_back(temp);
+                continue;
+            } else if (positionCode[i] == ' ') {
+                continue;
+            } else {
+                temp += positionCode[i];
+            }
+        }
+        if (position.size() < this->ItemStorage.getNumElmt()) {
+            cout << "Pilihan tidak valid" << endl;
+            continue;
+        }
+        // Cek terlebih dahulu apakah salah satu posisi dari input valid
+        try {
+            for (int i = 0; i < position.size(); i++) {
+                if (this->ItemStorage.isEmpty(position[i])) {
+                    cout << "Item pada posisi " << position[i] << " kosong!" << endl;
+                    notAllDone = true; // Masuk loop lagi
+                    break;
+                }
+                if (Player::itemType(position[i]) == "Building") {
+                    cout << "Tidak bisa menjual bangunan pada petak" << position[i] << endl;
+                    notAllDone = true;
+                    break;
+                } else {
+                    string itemCode = this->ItemStorage.getElmt(positionCode);
+                    // TODO : implementasi ke shop
+                    cout << "Item " << itemCode << " berhasil dijual" << endl;
+                    if (i == position.size() - 1) {
+                        notAllDone = false;
+                    }
+                }
+            }
+            if (!notAllDone) {
+                break;
+            }
+        } catch (PositionCodeInvalidException e) {
+            cout << e.what() << endl;
+            return;
+        } catch (exception e) {
+            cout << "Posisi tidak valid!" << endl;
+            return;
+        }
+    }
 }
+
+void Farmer::buyBlackMarket() {
+    int emptySlot = (this->ItemStorage.getNumCol() * this->ItemStorage.getNumRow()) - this->ItemStorage.getNumElmt();
+    if (emptySlot == 0) {
+        cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
+        return;
+    }
+}
+
+void Farmer::sellBlackMarket() {
+    if (this->ItemStorage.getNumElmt() == 0) {
+        startTextRed();
+        cout << "Tidak ada barang untuk dijual!" << endl;
+        resetTextColor();
+        return;
+    }
+    bool notAllDone = true;
+    while (notAllDone) {
+        cout << "Berikut penyimpanan Anda" << endl;
+        this->ItemStorage.printStorage();
+
+        cout << "Silahkan pilih petak yang ingin Anda jual" << endl;
+        string positionCode;
+        cin >> positionCode;
+        vector <string> position;
+        string temp;
+        // Kemungkinan bisa pilih lebih dari 1 petak
+        for (int i = 0; i < positionCode.size(); i++) {
+            if (positionCode[i] == ',') {
+                position.push_back(temp);
+                continue;
+            } else if (positionCode[i] == ' ') {
+                continue;
+            } else {
+                temp += positionCode[i];
+            }
+        }
+        if (position.size() < this->ItemStorage.getNumElmt()) {
+            cout << "Pilihan tidak valid" << endl;
+            continue;
+        }
+        // Cek terlebih dahulu apakah salah satu posisi dari input valid
+        try {
+            for (int i = 0; i < position.size(); i++) {
+                if (this->ItemStorage.isEmpty(position[i])) {
+                    cout << "Item pada posisi " << position[i] << " kosong!" << endl;
+                    notAllDone = true; // Masuk loop lagi
+                    break;
+                }
+                if (Player::itemType(position[i]) == "Building") {
+                    cout << "Tidak bisa menjual bangunan pada petak" << position[i] << endl;
+                    notAllDone = true;
+                    break;
+                } else {
+                    string itemCode = this->ItemStorage.getElmt(positionCode);
+                    // TODO : implementasi ke shop
+                    cout << "Item " << itemCode << " berhasil dijual" << endl;
+                    if (i == position.size() - 1) {
+                        notAllDone = false;
+                    }
+                }
+            }
+            if (!notAllDone) {
+                break;
+            }
+        } catch (PositionCodeInvalidException e) {
+            cout << e.what() << endl;
+            return;
+        } catch (exception e) {
+            cout << "Posisi tidak valid!" << endl;
+            return;
+        }
+    }
+
+}
+
 
 void Farmer::incrementPlantDuration() {
     for (int i = 0; i < this->Ladang.getNumRow(); i++) {

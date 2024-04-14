@@ -14,7 +14,6 @@ using namespace std;
 class Farmer : public Player {
 private:
     Storage<Plant> Ladang;
-    map<string, int> numberOfHarvestablePlant;
 
 public:
     /**

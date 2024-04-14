@@ -116,8 +116,7 @@ string Player::itemType(string positionCode) {
             if (it != Product::getProductCodeListConfig().end()) {
                 return "Product";
             } else {
-                // TODO : implement search building
-                return "";
+                return "Building";
             }
         }
     }
