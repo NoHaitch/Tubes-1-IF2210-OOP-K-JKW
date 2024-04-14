@@ -153,6 +153,10 @@ string Animal::convertNameToCode(string name){
     return configNameToCode[name];
 }
 
+bool operator==(const Animal& A, const Animal& B){
+    return A.code == B.code && A.currWeight == B.currWeight;
+}
+
 
 /* CLASS Herbivore */
 

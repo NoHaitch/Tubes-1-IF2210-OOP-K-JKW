@@ -234,6 +234,12 @@ class Animal{
          * 
         */
         void printConfig();
+
+        /**
+         * @brief Check if Equal
+         * 
+         */
+        friend bool operator==(const Animal& A, const Animal& B);
 };
 
 /**
