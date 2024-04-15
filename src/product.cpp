@@ -136,13 +136,15 @@ void Product::printParsedConfig() {
 }
 
 string Product::convertNameToCode(string name) {
-    for (map <string, string>::iterator it = Plant::getPlantNameToCodeConfig().begin(); it != Plant::getPlantNameToCodeConfig().end(); it++) {
+    map<string, string> temp = Product::getProductNameMapConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
         if (it->first == name) {
             return it->second;
         }
     }
 
-    for (map <string, string>::iterator it = Animal::getAnimalNameToCodeConfig().begin(); it != Animal::getAnimalNameToCodeConfig().end(); it++) {
+    temp = Animal::getAnimalNameToCodeConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
         if (it->first == name) {
             return it->second;
         }

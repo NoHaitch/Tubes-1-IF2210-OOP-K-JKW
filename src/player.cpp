@@ -109,7 +109,7 @@ string Player::itemType(string positionCode) {
         return "Plant";
     } else {
         // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
+        it = find(Animal::getAnimalCodeConfig().begin(), Animal::getAnimalCodeConfig().end(), itemCode);
         if (it != Animal::getAnimalCodeConfig().end()) {
             return "Animal";
         } else {
@@ -133,8 +133,8 @@ string Player::itemType(int y, int x) {
         return "Plant";
     } else {
         // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::Animal::getAnimalCodeConfig().end()) {
+        it = find(Animal::getAnimalCodeConfig().begin(), Animal::getAnimalCodeConfig().end(), itemCode);
+        if (it != Animal::getAnimalCodeConfig().end()) {
             return "Animal";
         } else {
             it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
