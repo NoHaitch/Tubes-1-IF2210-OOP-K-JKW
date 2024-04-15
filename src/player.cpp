@@ -82,7 +82,7 @@ void Player::eatFromStorage(){
                         cout << "Dengan lahapnya, kamu memakanan hidangan itu" << endl;
                         cout << "Alhasil, berat badan kamu naik menjadi " << currWeight << endl;
                     } else {
-                        throw InedibleProductException("Apa yang kamu lakukan??!! Kamu mencoba untuk memakan itu?!! \n Silahkan masukan slot yang berisi makanan. \n");
+                        throw InedibleProductException("Apa yang kamu lakukan?? !! Kamu mencoba untuk memakan itu?!! \n Silahkan masukan slot yang berisi makanan. \n");
                     }
                 } else {
                     throw NotProductException("Benda tersebut bukan produk!! Bagaimana bisa kamu makan?? !! \n Silahkan masukan slot yang berisi makanan. \n");
@@ -202,4 +202,4 @@ int Player::calculateWealth(){
     return ans;
 }
 
-int Player::calculateKKP(){}
+int Player::calculateKKP(){return 0;}
