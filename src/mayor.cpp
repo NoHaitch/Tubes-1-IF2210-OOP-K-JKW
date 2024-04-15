@@ -59,7 +59,24 @@ void Mayor::bangunBangunan(){
 }
 
 void Mayor::buy(){
-    
+    int emptySlot = (this->ItemStorage.getNumCol()*this->ItemStorage.getNumRow()) - this->ItemStorage.getNumElmt();
+    if (emptySlot == 0){
+        cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
+        return;
+    }
+    cout << "Selamat datang di toko!" << endl << "Berikut merupakan hal yang dapat Anda Beli" << endl;
+    cout << "Uang Anda: " << this->wealth << endl;
+    cout << "Slot penyimpanan tersedia: " << emptySlot << endl;
+    int choice;
+    while (true){
+        try {
+            
+        } catch (PositionCodeInvalidException e){
+            cout << e.what() << endl;
+        } catch (exception e){
+            cout << "Pilihan tidak tersedia" << endl;
+        }
+    }
 }
 
 void Mayor::sell(){
