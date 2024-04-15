@@ -79,7 +79,7 @@ int Game::playerCommandIO(){
         } else if(input == "info"){
             printInfo(getCurrentPlayer());
 
-        } else if(input == "cetak_pemain"){
+        } else if(input == "daftar_pemain"){
             printPlayers();
 
         } else if(input == "help" ){
@@ -188,7 +188,7 @@ void Game::printCommands(){
     cout << "Daftar Perintah: " << endl;
     cout << " - HELP" << endl;
     cout << " - EXIT" << endl;
-    cout << " - CETAK_PEMAIN" << endl;
+    cout << " - DAFTAR_PEMAIN" << endl;
     cout << " - INFO" << endl;
     cout << " - NEXT" << endl;
     cout << " - SIMPAN" << endl;
@@ -237,11 +237,7 @@ Player* Game::getCurrentPlayer(){
 
 void Game::initGameState(){
     mayor = new Mayor("Walikota", 50, 40);
-
-    farmers = vector<Farmer>();
     farmers.push_back(Farmer("Petani1", 50, 40));
-    
-    cattlemans = vector<Cattleman>();
     cattlemans.push_back(Cattleman("Peternak1", 50, 40));
 
     addPlayerToTurnOrder("Walikota");
@@ -790,7 +786,7 @@ string Game::getPlayerRole(Player* player){
     if(mayor != nullptr && mayor->getUsername() == player->getUsername()){
         return "Walikota";
     } else{
-        Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+        Farmer* farmerPtr = dynamic_cast<Farmer*>(player);
         if(farmerPtr){
             return "Petani";
         } else{
