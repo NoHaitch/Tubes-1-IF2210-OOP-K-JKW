@@ -27,6 +27,9 @@ int Cattleman::calculateKKP(){
 }
 
 // TODO: buy() and sell()
+void Cattleman::buy(){}
+
+void Cattleman::sell(){}
 
 void Cattleman::farming(){
     // Check if Farm is full

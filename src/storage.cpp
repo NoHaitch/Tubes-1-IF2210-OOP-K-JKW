@@ -49,6 +49,7 @@ T Storage<T>::getElmt(string positionCode){
         cout << e.what() << endl;
         resetTextColor();
     }
+    return T();
 }
 
 
@@ -77,6 +78,8 @@ pair<int, int> Storage<T>::translatePositionCode(string positionCode){
     } else {
         throw PositionCodeInvalidException("Kode posisi melampaui ukuran penyimpanan");
     }
+    
+    return pair<int, int>();
 }
 
 template<class T>
@@ -338,6 +341,7 @@ bool Storage<T>::isEmpty(string idx) {
         cout << e.what() << endl;
         resetTextColor();
     }
+    return false;
 }
 
 template <class T>
@@ -347,11 +351,12 @@ bool Storage<T>::isEmpty(int y, int x) {
     } else {
         throw PositionCodeInvalidException("Indeks diluar ukuran storage");
     }
+    return false;
 }
 
 template<class T>
 void Storage<T>::operator+(T item){
-    insertElmtAtEmptySlot(&T);
+    insertElmtAtEmptySlot(&item);
 }
 
 template<>
