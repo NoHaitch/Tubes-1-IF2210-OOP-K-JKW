@@ -53,6 +53,7 @@ void Mayor::tambahPemain(){
 
 void Mayor::bangunBangunan(){
     Building::displayBuilding();
+    
 }
 
 void Mayor::buy(){
@@ -62,9 +63,15 @@ void Mayor::buy(){
         return;
     }
     cout << "Selamat datang di toko!" << endl << "Berikut merupakan hal yang dapat Anda Beli" << endl;
+   
+    // TODO tampilkan semua item yang bisa dibeli
+    
     cout << "Uang Anda: " << this->wealth << endl;
     cout << "Slot penyimpanan tersedia: " << emptySlot << endl;
     int choice;
+
+    // TODO cek apakah choice valid
+
     while (true){
         try {
             
