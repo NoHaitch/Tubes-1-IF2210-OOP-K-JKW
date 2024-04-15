@@ -144,7 +144,7 @@ public:
 
 class BlackMarket: public Shop{
     protected:
-        static const float BMPRICECHANGEPERCENTAGE = 0.3;
+        static constexpr float BMPRICECHANGEPERCENTAGE = 0.3;
 
     public:
         /**

@@ -70,6 +70,7 @@ string Shop::getNameFromCode(string itemCode){
     } else if (itemType(&itemCode)=="Building"){
         return Building::getBuildingNameConfig()[itemCode];
     }
+    return "";
 }
 
 int Shop::getPriceFromCode(string itemCode){
@@ -82,6 +83,7 @@ int Shop::getPriceFromCode(string itemCode){
     } else if (itemType(&itemCode)=="Building"){
         return Building::getBuildingPriceMapConfig()[itemCode];
     }
+    return -1;
 }
 
 void Shop::showShopNonBuildings(){
@@ -138,7 +140,7 @@ void Shop::showShopBuildings(int prevNumber){
     }
 }
 
-void showShopTitle(){
+void Shop::showShopTitle(){
     cout << "Selamat datang di toko!!" << endl;
     cout << "Berikut merupakan hal yang dapat Anda Beli" << endl;
     cout << endl;
@@ -169,7 +171,7 @@ int Shop::numItemQuantityPositive(){
 
 BlackMarket::BlackMarket() : Shop(){}
 
-BlackMarket::BlackMarket(){}
+BlackMarket::~BlackMarket(){}
 
 int BlackMarket::getPriceBlackMarket(string code, bool isBuy){
     float multiplier;
