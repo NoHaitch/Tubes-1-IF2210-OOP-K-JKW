@@ -39,6 +39,13 @@ public :
     // void displayBuilding(vector<Building> buildings);
     static void displayBuilding();
     /**
+     *
+     * @param codeBuilding kode building yang akan dibangun
+     * @return map dari <bahan bangunan, banyak bahan yang diperlukan>
+     */
+    static map<string, int> getBuildingMaterialMapConfig(string codeBuilding);
+
+    /**
      * @brief Operator overloading untuk assignment apakah kedua bangunan sama.
      * @brief Kedua bangunan sama jika memiliki nama dan tipe yang sama.
      * @param a bangunan

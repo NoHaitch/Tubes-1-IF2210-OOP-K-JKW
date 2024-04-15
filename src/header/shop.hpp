@@ -110,7 +110,7 @@ public:
      * @return 
      * 
      */
-    int Shop::getQty(string _code);
+    static int getQty(string _code);
 
     /**
      * @brief Get isQtyInf of the item with Code = code from Shop
@@ -120,7 +120,7 @@ public:
      * @return bool
      * 
      */
-    bool Shop::getIsQtyInf(string _code);
+    bool getIsQtyInf(string _code);
 
     /**
      * @brief Set Qty of the item with Code = code with Qty = _Qty

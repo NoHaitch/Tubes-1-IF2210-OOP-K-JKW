@@ -88,3 +88,7 @@ void Building::displayBuilding(){
         }
     }
 }
+
+map<string, int> Building::getBuildingMaterialMapConfig(string codeBuilding) {
+    return configMaterial[codeBuilding];
+}
