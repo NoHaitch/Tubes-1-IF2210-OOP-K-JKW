@@ -5,6 +5,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "header/utils.hpp"
 using namespace std;
 
 class Building {
@@ -32,18 +33,19 @@ public :
     string getCode() const;
     string getName() const;
     int getPrice() const;
+    static map<string, string> getBuildingNameConfig();
     static void addBuildingConfig(int _id, string _code, string _name, int _price);
     static void addMaterials(string _code, string _material, int _quantity);
     static vector<string> getBuildingCodeListConfig();
     static map<string, int> getBuildingPriceMapConfig();
-    // void displayBuilding(vector<Building> buildings);
     static void displayBuilding();
     /**
      *
      * @param codeBuilding kode building yang akan dibangun
-     * @return map dari <bahan bangunan, banyak bahan yang diperlukan>
+     * @return map dari <kode bahan bangunan, banyak bahan yang diperlukan>
+     * \note terdapat proses pengubahan string nama material menjadi kode material
      */
-    static map<string, int> getBuildingMaterialMapConfig(string codeBuilding);
+    static map<string, int> getBuildingMaterialMapConfig(string nameBuilding);
 
     /**
      * @brief Operator overloading untuk assignment apakah kedua bangunan sama.
@@ -53,6 +55,12 @@ public :
      * @return true jika bangunan a dan b memiliki nama dan tipe yang sama
      */
     friend bool operator==(Building a, Building b);
+
+    /**
+     *
+     * @return map dari <kode bangunan, map dari (nama bahan bangunan, banyak bahan yang diperlukan)
+     */
+    static map<string, map<string, int>> getBuildingMaterialConfig();
 };
 
 #endif

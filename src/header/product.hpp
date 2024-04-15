@@ -168,8 +168,8 @@ class Product {
     static map <string, string> getProductTypeMapConfig();
 
     /**
-     * @brief Get Config : Product Name Map, <code, productName>
-     * @return map<string, string> productNameMap
+     * @brief Get Config : Product Name Map, (code, productName)
+     * @return map<string code, string name> productNameMap
      */
     static map <string, string> getProductNameMapConfig();
 

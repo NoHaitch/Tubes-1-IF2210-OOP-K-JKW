@@ -174,7 +174,7 @@ public:
     static map<string, string> getPlantTypeMapConfig();
 
     /**
-     * @brief Get Config: map of plant name, <code, plantName>
+     * @brief Get Config: map of plant name, (code, plantName)
      * @return map of plant name
      */
     static map<string, string> getPlantNameMapConfig();
@@ -192,7 +192,7 @@ public:
     static map<string, int> getPlantPriceMapConfig();
 
     /**
-     * @brief Get Config: map of <plantName, code>
+     * @brief Get Config: map of (plantName, code)
      * @return map plantNameToCode
      */
     static map<string, string> getPlantNameToCodeConfig();

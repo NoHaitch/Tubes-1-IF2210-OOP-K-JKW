@@ -59,3 +59,39 @@ string itemType(char* itemCode){
         }
     }
 }
+
+string convertItemNameToCode(string itemName) {
+    // Cek pada product
+    map<string, string> temp = Product::getProductNameMapConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->second == itemName) {
+            return it->first;
+        }
+    }
+
+    // Cek pada plant
+    temp = Plant::getPlantNameMapConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->second == itemName) {
+            return it->first;
+        }
+    }
+
+    // Cek pada building
+    temp = Building::getBuildingNameConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->second == itemName) {
+            return it->first;
+        }
+    }
+
+    // Cek pada animal
+    temp = Animal::getAnimalNameToCodeConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->first == itemName) {
+            return it->second;
+        }
+    }
+
+    return "";
+}

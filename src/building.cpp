@@ -89,6 +89,15 @@ void Building::displayBuilding(){
     }
 }
 
-map<string, int> Building::getBuildingMaterialMapConfig(string codeBuilding) {
+map <string, string> Building::getBuildingNameConfig() {
+    return configName;
+}
+
+map<string, map<string, int>> Building::getBuildingMaterialConfig(){
+    return configMaterial;
+}
+
+map<string, int> Building::getBuildingMaterialMapConfig(string nameBuilding) {
+    string codeBuilding = convertItemNameToCode(nameBuilding);
     return configMaterial[codeBuilding];
 }
