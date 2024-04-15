@@ -148,6 +148,24 @@ void Storage<T>::insertElmtAtEmptySlot(string codeElmt){
     }
 }
 
+template<>
+void Storage<string>::insertElmtAtEmptySlot(string *codeElmt){
+    if (isStorageFull()){
+        throw StorageFullException("Tidak ada slot tersedia karena penyimpanan penuh");
+    } else {
+        for (int i=0; i<numRow; i++){
+            for (int j=0; j<numCol; j++){
+                if (matrix[i][j] == nullptr){
+                    matrix[i][j] = codeElmt;
+                    numElmt++;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+
 template<class T>
 void Storage<T>::insertElmtAtEmptySlot(T* elmtPtr){
     if (isStorageFull()){
@@ -357,6 +375,11 @@ bool Storage<T>::isEmpty(int y, int x) {
 template<class T>
 void Storage<T>::operator+(T item){
     insertElmtAtEmptySlot(&item);
+}
+
+template<>
+void Storage<string>::operator+(string item){
+    insertElmtAtEmptySlot(item);
 }
 
 template<>

@@ -50,9 +50,6 @@ void Mayor::tambahPemain(){
 
 
 
-int Mayor::calculateKKP(){
-    return 0;
-}
 
 void Mayor::bangunBangunan(){
     Building::displayBuilding();

@@ -190,6 +190,8 @@ class Player{
          * \note Mayor will return 0
         */
         virtual int calculateKKP() = 0;
+
+        void insertItem(string itemCode);
 };
 
 #endif 

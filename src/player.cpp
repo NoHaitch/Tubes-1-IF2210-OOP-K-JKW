@@ -161,3 +161,7 @@ int Player::calculateWealth(){
 }
 
 int Player::calculateKKP(){return 0;}
+
+void Player::insertItem(std::string itemCode) {
+    ItemStorage.insertElmtAtEmptySlot(itemCode);
+}
