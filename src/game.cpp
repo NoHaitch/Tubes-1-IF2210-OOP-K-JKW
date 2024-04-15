@@ -179,6 +179,8 @@ int Game::playerCommandIO(){
         }
     } catch (CommandWrongRole e){
         cout << e.what() << endl << endl;
+    } catch (CommandCannotBeDoneException e){
+        cout << e.what() << endl << endl;
     }
 
     return 0;
@@ -403,10 +405,13 @@ void Game::readGameState(string path){
                 if(location == "" || itemName == "" || progress < 0){
                     throw FileReadingFailedException();
                 } else {
+                    cout << itemName << endl;
                     string plantCode = Plant::getPlantNameToCodeConfig()[itemName];
+                    cout << plantCode << endl;
                     Plant* plantPtr = new Plant(plantCode);
                     plantPtr->setCurrentDuration(progress);
-                    farmerPtr->getLadang().insertElmtAtPosition(location, plantPtr);
+                    plantPtr->printInfo();
+                    farmerPtr->getLadangPointer()->insertElmtAtPosition(location, plantPtr);
                 }
             }
         } else{
@@ -428,7 +433,7 @@ void Game::readGameState(string path){
                         string animalCode = Animal::getAnimalNameToCodeConfig()[itemName];
                         Animal* animalPtr = new Animal(animalCode);
                         animalPtr->setCurrWeight(progress);
-                        cattlemanPtr->getFarm().insertElmtAtPosition(location, animalPtr);
+                        cattlemanPtr->getFarmPointer()->insertElmtAtPosition(location, animalPtr);
                     }
                 }
             }
@@ -441,7 +446,7 @@ void Game::readGameState(string path){
     iss = istringstream(line);
     iss >> shopItemCount;
 
-     if(shopItemCount < 0){
+    if(shopItemCount < 0){
         throw FileReadingFailedException();
     } 
 

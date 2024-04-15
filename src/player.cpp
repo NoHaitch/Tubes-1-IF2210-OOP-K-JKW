@@ -73,7 +73,7 @@ void Player::eatFromStorage(){
             if (ItemStorage.isEmpty(inputCode)){
                 throw StorageSlotException("Kamu mengambil harapan kosong dari penyimpanan. \n Silahkan masukan slot yang berisi makanan. \n"); 
             } else {
-                selectedItem = ItemStorage.getElmt(inputCode);
+                selectedItem = *ItemStorage.getElmt(inputCode);
                 if (itemTypeAtIndex(inputCode)=="Product"){
                     Product selectedProduct(selectedItem);
                     if (Product::isEdible(selectedProduct)){
@@ -101,13 +101,11 @@ void Player::buy(){}
 void Player::sell(){}
 
 string Player::itemTypeAtIndex(string positionCode) {
-    string itemCode = ItemStorage.getElmt(positionCode);
-    return itemType(&itemCode);
+    return itemType(ItemStorage.getElmt(positionCode));
 }
 
 string Player::itemTypeAtIndex(int y, int x) {
-    string itemCode = ItemStorage.getElmt(y, x);
-    return itemType(&itemCode);
+    return itemType(ItemStorage.getElmt(y, x));
 }
 
 int Player::calculateTax(int KKP){
@@ -145,7 +143,7 @@ int Player::calculateWealth(){
             if (ItemStorage.isEmpty(i, j)){
                 continue;
             }
-            string itemCode = ItemStorage.getElmt(i, j);
+            string itemCode = *ItemStorage.getElmt(i, j);
             if (itemTypeAtIndex(i, j) == "Plant"){
                 ans += Plant::getPlantPriceMapConfig()[itemCode];
             } else if (itemTypeAtIndex(i, j) == "Animal"){

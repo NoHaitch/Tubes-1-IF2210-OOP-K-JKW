@@ -40,23 +40,23 @@ int Storage<T>::getNumElmt(){
 }
 
 template<class T>
-T Storage<T>::getElmt(string positionCode){
+T* Storage<T>::getElmt(string positionCode){
     try{
         pair<int, int> position = translatePositionCode(positionCode);
-        return *matrix[position.first][position.second];
+        return matrix[position.first][position.second];
     } catch (PositionCodeInvalidException e){
         startTextRed();
         cout << e.what() << endl;
         resetTextColor();
     }
-    return T();
+    
+    return nullptr;
 }
 
 
 template<class T>
-T Storage<T>::getElmt(int y, int x){
-    T *elmt = matrix[y][x];
-    return *elmt;
+T* Storage<T>::getElmt(int y, int x){
+    return matrix[y][x];
 }
 
 template<class T>

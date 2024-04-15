@@ -42,6 +42,11 @@ public:
     Storage<Plant> getLadang();
 
     /**
+     * @return pointer of Ladang
+    */
+    Storage<Plant>* getLadangPointer();
+
+    /**
      * @brief menanam tanaman di ladang
      */
     void tanam();
@@ -61,7 +66,7 @@ public:
      * @brief override getItem() untuk mengambil tanaman dari penyimpanan ladang
      * @return tanaman yang diambil
      */
-    Plant getItem(string idx);
+    Plant* getItem(string idx);
 
     /**
      * @brief print the plantCode along with the plant name for every slot of the farm
