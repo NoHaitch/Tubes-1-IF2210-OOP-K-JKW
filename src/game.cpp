@@ -301,7 +301,6 @@ void Game::getGameStateIO(){
     cout << "\nPermainan dimulai\n";
 }
 
-// TODO: Read Items
 void Game::readGameState(string path){
     ifstream saveFile(path);
     if(!saveFile.is_open()){
@@ -319,6 +318,7 @@ void Game::readGameState(string path){
         throw FileReadingFailedException();
     }
 
+    /* Reading Player State */
     for(int player = 0; player < amountOfPlayer; player++){
         string playerUsername;
         string playerRole;
@@ -333,6 +333,7 @@ void Game::readGameState(string path){
             throw FileReadingFailedException();
         }
 
+        /* Create Player Object */
         if(playerRole == "Walikota"){
             mayor = new Mayor(playerUsername, playerWealth, playerWeight);
             addPlayerToTurnOrder(playerUsername);
@@ -356,8 +357,7 @@ void Game::readGameState(string path){
             throw FileReadingFailedException();
         }
 
-        // TODO: Player Items
-
+        /* Reading Player Items */
         Player* playerPointer = getPlayer(playerUsername);
         for(int item = 0; item < playerItemCount; item++){
             string itemName = "";
@@ -383,29 +383,32 @@ void Game::readGameState(string path){
             throw FileReadingFailedException();
         }
 
-        if(player < amountOfPlayer - 1){
-            Farmer* farmerPtr = dynamic_cast<Farmer*>(getPlayer(playerUsername));
-            if (farmerPtr) {
-                for(int item = 0; item < playerRoleStorage; item++){
-                    string location = "";
-                    string itemName = "";
-                    int progress = -1;
+        /* Read Player Role Spesific Storage */
+        Farmer* farmerPtr = dynamic_cast<Farmer*>(getPlayer(playerUsername));
+        if (farmerPtr) {
+            /* Read Plants */
+            for(int item = 0; item < playerRoleStorage; item++){
+                string location = "";
+                string itemName = "";
+                int progress = -1;
 
-                    getline(saveFile, line);
-                    iss = istringstream(line);
-                    iss >> location >> itemName >> progress;
+                getline(saveFile, line);
+                iss = istringstream(line);
+                iss >> location >> itemName >> progress;
 
-                    if(location == "" || itemName == "" || progress < 0){
-                        throw FileReadingFailedException();
-                    } else {
-                        string plantCode = Plant::getPlantNameToCodeConfig()[itemName];
-                        Plant* plantPtr = new Plant(plantCode);
-                        plantPtr->setCurrentDuration(progress);
-                        farmerPtr->getLadang().insertElmtAtPosition(location, plantPtr);
-                    }
+                if(location == "" || itemName == "" || progress < 0){
+                    throw FileReadingFailedException();
+                } else {
+                    string plantCode = Plant::getPlantNameToCodeConfig()[itemName];
+                    Plant* plantPtr = new Plant(plantCode);
+                    plantPtr->setCurrentDuration(progress);
+                    farmerPtr->getLadang().insertElmtAtPosition(location, plantPtr);
                 }
-            } else {
-                Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getPlayer(playerUsername));
+            }
+        } else{
+            Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getPlayer(playerUsername));
+            if(cattlemanPtr){
+                /* Read Animals */
                 for(int item = 0; item < playerRoleStorage; item++){
                     string location = "";
                     string itemName = "";
@@ -425,26 +428,33 @@ void Game::readGameState(string path){
                     }
                 }
             }
-
-        } else{
-            for(int item = 0; item < playerRoleStorage; item++){
-                // For Mayor
-                string itemName = "";
-                int itemAmount = -1;
-
-                getline(saveFile, line);
-                iss = istringstream(line);
-                iss >> itemName >> itemAmount;
-
-                if(itemName == "" || itemAmount < 1){
-                    throw FileReadingFailedException();
-                }
-
-            }
         }
     }
 
-    // TODO : Read Toko Configuration
+    /* Read Shop State */
+    int shopItemCount = -1;
+    getline(saveFile, line);
+    iss = istringstream(line);
+    iss >> shopItemCount;
+
+     if(shopItemCount < 0){
+        throw FileReadingFailedException();
+    } 
+
+    for(int item = 0; item < shopItemCount; item++){
+        string itemName = "";
+        int itemAmount = -1;
+
+        getline(saveFile, line);
+        iss = istringstream(line);
+        iss >> itemName >> itemAmount;
+
+        if(itemName == "" || itemAmount < 1){
+            throw FileReadingFailedException();
+        }
+        
+        // TODO : Use Shop Item Data
+    }
 
     saveFile.close();    
 }
