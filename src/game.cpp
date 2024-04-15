@@ -56,10 +56,10 @@ void Game::nextTurnIO(){
         cout << "Giliran " << getCurrentPlayer()->getUsername() << " berakhir.\n" << endl;
     }
     nextTurn();
-    cout << "===== Giliran " << getCurrentPlayer()->getUsername() << " dimulai =====" << endl;
 }
 
 int Game::playerCommandIO(){
+    cout << "========== Giliran " << getCurrentPlayer()->getUsername() << " ==========" << endl;
     string input;
     startTextGreen();
     cout << "> ";
@@ -76,6 +76,12 @@ int Game::playerCommandIO(){
         } else if(input == "next"){
             return 2;
 
+        } else if(input == "info"){
+            printInfo(getCurrentPlayer());
+
+        } else if(input == "cetak_pemain"){
+            printPlayers();
+
         } else if(input == "help" ){
             printCommands();
 
@@ -83,6 +89,7 @@ int Game::playerCommandIO(){
             saveGameIO();
 
         } else if(input == "cetak_penyimpanan" ){
+            cout << endl;
             getCurrentPlayer()->printItemStorage();
         
         } else if(input == "pungut_pajak" ){
@@ -95,6 +102,7 @@ int Game::playerCommandIO(){
         } else if(input == "cetak_ladang" ){
             Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
             if (farmerPtr) {
+                cout << endl;
                 farmerPtr->getLadang().printStorage();
                 farmerPtr->printLegend();
             } else {
@@ -104,6 +112,7 @@ int Game::playerCommandIO(){
         } else if(input == "cetak_peternakan" ){
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
             if (cattlemanPtr) {
+                cout << endl;
                 cattlemanPtr->getFarm().printStorage();
                 cattlemanPtr->printLegend();
             } else {
@@ -179,6 +188,8 @@ void Game::printCommands(){
     cout << "Daftar Perintah: " << endl;
     cout << " - HELP" << endl;
     cout << " - EXIT" << endl;
+    cout << " - CETAK_PEMAIN" << endl;
+    cout << " - INFO" << endl;
     cout << " - NEXT" << endl;
     cout << " - SIMPAN" << endl;
     cout << " - CETAK_PENYIMPANAN" << endl;
@@ -196,7 +207,7 @@ void Game::printCommands(){
 }
 
 Player* Game::getPlayer(string playerUsername){
-    if(mayor->getUsername() == playerUsername){
+    if(mayor != nullptr && mayor->getUsername() == playerUsername){
         return mayor;
     } else {
         for(int i = 0; i < farmers.size(); i++){
@@ -291,6 +302,7 @@ void Game::getGameStateIO(){
     }
 
     cout << "Berhasil membuat game state.\n" << endl;
+    cout << "\nPermainan dimulai\n";
 }
 
 // TODO: Read Items
@@ -310,9 +322,6 @@ void Game::readGameState(string path){
     if(amountOfPlayer < 3){
         throw FileReadingFailedException();
     }
-
-    farmers = vector<Farmer>();
-    cattlemans = vector<Cattleman>();
 
     for(int player = 0; player < amountOfPlayer; player++){
         string playerUsername;
@@ -366,6 +375,7 @@ void Game::readGameState(string path){
                 playerPointer->getItemStorage() + itemName;
             }
         }
+        
         
         int playerRoleStorage = -1;
         
@@ -659,8 +669,6 @@ void Game::readConfigProduct(){
         
         Product::addProductConfig(id, code, type, name, origin, addedWeight, price);
     }
-    // Product::printParsedConfig();
-
     cout << " > Finished Reading Product Configuration" << endl;
     configFile.close();    
 }
@@ -754,5 +762,39 @@ void Game::printPlayerTurnOrder(){
     cout << "Player Order: " << endl;
     for(int i = 0; i < playerOrder.size(); i++){
         cout << i + 1 << " " << playerOrder[i] << endl;
+    }
+}
+
+void Game::printInfo(Player* player){
+    cout << "Username: " << player->getUsername() << endl;
+    cout << "Peran: " << getPlayerRole(player) << endl;
+    cout << "Berat: " << player->getCurrWeight() << endl;
+    cout << "Uang: " << player->getWealth() << endl;
+    cout << endl;
+    cout << "Kondisi Kemenangan: " << endl;
+    cout << " - Berat : " << winWeight << endl;
+    cout << " - Uang : " << winWealth << endl;
+    cout << endl;
+}
+
+void Game::printPlayers(){
+    cout << "Daftar Pemain: " << endl;
+    for(int i = 0 ; i < playerOrder.size(); i++){
+        Player* player = getPlayer(playerOrder[i]);
+        cout << " " << i + 1 << ". " << player->getUsername() << " : " << getPlayerRole(player) << endl;
+    }
+    cout << endl;
+}
+
+string Game::getPlayerRole(Player* player){
+    if(mayor != nullptr && mayor->getUsername() == player->getUsername()){
+        return "Walikota";
+    } else{
+        Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+        if(farmerPtr){
+            return "Petani";
+        } else{
+            return "Peternak";
+        }
     }
 }

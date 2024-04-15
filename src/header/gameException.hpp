@@ -107,7 +107,7 @@ class CommandWrongRole : public exception{
 
     public:
         CommandWrongRole() : message("Perintah tidak dapat dilakukan.") {}
-        CommandWrongRole(string msg) : message("Perintah tidak dapat dilakukan." + msg) {}
+        CommandWrongRole(string msg) : message("Perintah tidak dapat dilakukan. " + msg) {}
         string what () {
             return message;
         }

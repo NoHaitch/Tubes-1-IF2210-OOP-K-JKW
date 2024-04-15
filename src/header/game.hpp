@@ -25,12 +25,14 @@
 #include "product.hpp"
 #include "printColor.hpp"
 #include "utils.hpp"
-#include "gameException.hpp"
 #include "building.hpp"
+#include "shop.hpp"
+#include "gameException.hpp"
 
 using namespace std;
 
 class Farmer; // For compiler reason. This makes the compiler think that Farmer exist thus not giving an error.
+class Mayor; // For compiler reason. This makes the compiler think that Mayor exist thus not giving an error.
 
 class Game{
     private:
@@ -168,6 +170,27 @@ class Game{
          * 
         */
         void printPlayerTurnOrder();
+
+        /**
+         * @brief Print Player Info
+         * 
+         * @param player 
+         */
+        void printInfo(Player *player);
+
+        /**
+         * @brief Get Player Role
+         * 
+         * @param player 
+         * @return string 
+         */
+        string getPlayerRole(Player* player);
+
+        /**
+         * @brief Print All Player and their Role
+         * 
+         */
+        void printPlayers();
 
     private:
         /**
