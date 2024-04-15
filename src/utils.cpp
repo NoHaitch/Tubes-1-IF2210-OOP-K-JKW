@@ -93,3 +93,39 @@ string convertItemNameToCode(string itemName) {
 
     return "";
 }
+
+string convertItemCodeToName(string itemCode) {
+    // Cek pada product
+    map<string, string> temp = Product::getProductNameMapConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->first == itemCode) {
+            return it->second;
+        }
+    }
+
+    // Cek pada plant
+    temp = Plant::getPlantNameMapConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->first == itemCode) {
+            return it->second;
+        }
+    }
+
+    // Cek pada building
+    temp = Building::getBuildingNameConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->first == itemCode) {
+            return it->second;
+        }
+    }
+
+    // Cek pada animal
+    temp = Animal::getAnimalNameToCodeConfig();
+    for (map <string, string>::iterator it = temp.begin(); it != temp.end(); it++) {
+        if (it->second == itemCode) {
+            return it->first;
+        }
+    }
+
+    return "";
+}

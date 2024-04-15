@@ -41,13 +41,15 @@ int Game::getPlayerAmount(){
 }
 
 void Game::nextTurn(){
+    if(currTurn != -1){
+        for (int i = 0; i < farmers.size(); i++) {
+            farmers[i].incrementPlantDuration();
+        }
+    }
     currTurn++;
     if(currTurn == playerOrder.size()){
         currTurn = 0;
         day++;
-    }
-    for (int i = 0; i < farmers.size(); i++) {
-        farmers[i].incrementPlantDuration();
     }
 }
 
@@ -378,7 +380,6 @@ void Game::readGameState(string path){
             }
         }
         
-        
         int playerRoleStorage = -1;
         
         getline(saveFile, line);
@@ -405,12 +406,9 @@ void Game::readGameState(string path){
                 if(location == "" || itemName == "" || progress < 0){
                     throw FileReadingFailedException();
                 } else {
-                    cout << itemName << endl;
                     string plantCode = Plant::getPlantNameToCodeConfig()[itemName];
-                    cout << plantCode << endl;
                     Plant* plantPtr = new Plant(plantCode);
                     plantPtr->setCurrentDuration(progress);
-                    plantPtr->printInfo();
                     farmerPtr->getLadangPointer()->insertElmtAtPosition(location, plantPtr);
                 }
             }
@@ -518,18 +516,55 @@ void Game::saveGame(string path){
 
     saveFile << getPlayerAmount() << endl;
 
-    // Save Cattlemans
-    for(int i = 0; i < cattlemans.size(); i++){
-        saveFile << cattlemans[i].getUsername() << " Peternak "<< cattlemans[i].getCurrWeight() << " " << cattlemans[i].getWealth() << endl;
+    for(int i = 0; i < getPlayerAmount(); i++){
+        Player* player = getPlayer(playerOrder[i]);
+        saveFile << player->getUsername() << " " << getPlayerRole(player) << " " << player->getCurrWeight() << " " << player->getWealth() << endl;
+        Storage<string> itemStorage = player->getItemStorage();
+        saveFile << itemStorage.getNumElmt() << endl;
+        for(int j = 0; j < itemStorage.getNumRow(); j++){
+            for(int k = 0; k < itemStorage.getNumCol(); k++){
+                if(!itemStorage.isEmpty(j, k)){
+                    saveFile << convertItemCodeToName(*itemStorage.getElmt(j, k)) << endl;
+                }
+            }
+        }
+        
+        if(player->getUsername() == mayor->getUsername()){
+            continue;
+        } else{
+            Farmer* farmerPtr = dynamic_cast<Farmer*>(player);
+            if(farmerPtr){
+                Storage<Plant> ladang = farmerPtr->getLadang();
+                saveFile << ladang.getNumElmt() << endl;
+                for(int j = 0; j < ladang.getNumRow(); j++){
+                    for(int k = 0; k < ladang.getNumCol(); k++){
+                        if(!ladang.isEmpty(j, k)){
+                            saveFile << ladang.translatePositionCode(j, k) << " ";
+                            saveFile << ladang.getElmt(j, k)->getPlantName() << " ";
+                            saveFile << ladang.getElmt(j, k)->getCurrentDuration();
+                            saveFile << endl;
+                        }
+                    }
+                }
+            } else{
+                Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(player);
+                Storage<Animal> farm = cattlemanPtr->getFarm();
+                saveFile << farm.getNumElmt() << endl;
+                for(int j = 0; j < farm.getNumRow(); j++){
+                    for(int k = 0; k < farm.getNumCol(); k++){
+                        if(!farm.isEmpty(j, k)){
+                            saveFile << farm.translatePositionCode(j, k) << " ";
+                            saveFile << farm.getElmt(j, k)->getName() << " ";
+                            saveFile << farm.getElmt(j, k)->getCurrWeight();
+                            saveFile << endl;
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    // Save Farmers
-    for(int i = 0; i < farmers.size(); i++){
-        saveFile << farmers[i].getUsername() << " Petani "<< farmers[i].getCurrWeight() << " " << farmers[i].getWealth() << endl;
-    }
-
-    // Save Mayor
-    saveFile << mayor->getUsername() << " Walikota " << mayor->getCurrWeight() << " " << mayor->getWealth() << endl;
+    // TODO: Save Shop Item
 
     saveFile.close();
 }
@@ -543,7 +578,7 @@ void Game::saveGameIO(){
 
     try{
         saveGame(path);
-        cout << "State berhasil disimpan" << endl;
+        cout << "State berhasil disimpan\n" << endl;
     } catch (FileBadPathException e){
         startTextRed();
         cout << e.what() << endl;
@@ -693,32 +728,33 @@ void Game::readConfigRecipe(){
     if (!configFile.is_open()) {
         throw FileNotFoundException("Failed to open recipe.txt");
     }
-    
-    int id;                         // Building ID
-    string code;                    // Building code
-    string name;                    // Building name
-    int price;                      // Building price
-    int quantity;                   // Material quantity
-    string material;                // Material name
-    vector<Building> building;      // Vector of building
 
-    string line;
-    Building tempBuilding;
-    while (getline(configFile, line)){
+    string line; 
+    while (getline(configFile, line)) {
+        int id;                         // Building ID
+        string code;                    // Building code
+        string name;                    // Building name
+        int price;                      // Building price
+        int quantity;                   // Material quantity
+        string material;                // Material name
+
         istringstream iss(line);
-        if (!(iss >> id >> code >> name >> price)) {
-            throw FileFormatException();
+        iss >> id >> code >> name >> price;
+
+        Building::addBuildingConfig(id, code, name, price);
+
+        string materialName;
+        int amount;
+        while(true){
+            materialName = "";
+            amount = -1;
+            iss >> materialName >> amount;
+            if(materialName == "" || amount < 0){
+                break;
+            } else{
+                Building::addMaterials(code, material, quantity);
+            }
         }
-        tempBuilding.addBuildingConfig(id, code, name, price);
-
-        while (iss >> material >> quantity){
-            tempBuilding.addMaterials(code, material, quantity);
-        }
-
-        building.push_back(tempBuilding);
-
-    cout << " > Finished Reading Recipe Configuration" << endl;
-    configFile.close(); 
     }
 }
 
