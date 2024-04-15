@@ -52,8 +52,15 @@ void Mayor::tambahPemain(){
 
 
 void Mayor::bangunBangunan(){
-    Building::displayBuilding();
-    
+    while (true){
+        Building::displayBuilding();
+        string jenisBangunan;
+        cout << endl << "Bangunan yang ingin dibangun: ";
+        cin >> jenisBangunan;
+        
+        // TODO periksa apakah jenisBangunan valid
+        
+    }
 }
 
 void Mayor::buy(){
@@ -70,11 +77,26 @@ void Mayor::buy(){
     cout << "Slot penyimpanan tersedia: " << emptySlot << endl;
     int choice;
 
-    // TODO cek apakah choice valid
-
     while (true){
         try {
-            
+            cout << endl << "Barang ingin dibeli: ";
+            cin >> choice;
+
+            // TODO cek apakah choice valid
+            if (choice != 1){ // choice invalid
+                cout << "Pilihan barang tidak ada!" << endl;
+                continue;
+            }
+            else {
+                int kuantitas;
+                cout << "Kuantitas: ";
+                cin >> kuantitas;
+                if (kuantitas > emptySlot){
+                    cout << "Penyimpanan tidak cukup untuk membeli " << kuantitas << "barang" << endl;
+                    continue;
+                }
+
+            }
         } catch (PositionCodeInvalidException e){
             cout << e.what() << endl;
         } catch (exception e){

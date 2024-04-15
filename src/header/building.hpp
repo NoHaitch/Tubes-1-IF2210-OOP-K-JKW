@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include "utils.hpp"
+#include <algorithm>
 using namespace std;
 
 class Building {

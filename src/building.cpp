@@ -76,9 +76,11 @@ map<string, int> Building::getBuildingPriceMapConfig(){
 void Building::displayBuilding(){
     cout << "Resep bangunan yang ada adalah sebagai berikut." << endl;
     for (int i=0; i<configCode.size(); i++){
-        cout << "   " << configID[configCode[i]] << ". " << configName[configCode[i]] << " (" << configPrice[configCode[i]] << " gulden, ";
+        cout << "   " << configID[configCode[i]] << ". " << configName[configCode[i]] << " (";
         for (map<string, int>::iterator it = configMaterial[configCode[i]].begin(); it != configMaterial[configCode[i]].end(); ++it){
-            cout << it->first << " " << it->second;
+            string materialName = it->first;
+            replace(materialName.begin(), materialName.end(), '_', ' ');
+            cout << materialName << " " << it->second;
             if (it != configMaterial[configCode[i]].end()){
                 cout << ", ";
             }
