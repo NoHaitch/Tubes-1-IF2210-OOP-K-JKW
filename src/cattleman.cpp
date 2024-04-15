@@ -41,7 +41,7 @@ void Cattleman::farming(){
     bool found = false;
     for (int i=0; i<ItemStorage.getNumRow(); i++){
         for (int j=0; j<ItemStorage.getNumCol(); j++){
-            if (itemType(i, j) == "Animal"){
+            if (itemTypeAtIndex(i, j) == "Animal"){
                 found = true;
                 break;
             }
@@ -71,7 +71,7 @@ void Cattleman::farming(){
             if (ItemStorage.isEmpty(storageCode)){
                 throw StorageSlotException("Slot yang dipilih kosong! \n Silahkan pilih slot yang berisi binatang \n");
             } else {
-                if (itemType(storageCode) == "Animal"){
+                if (itemTypeAtIndex(storageCode) == "Animal"){
                     animalCode = ItemStorage.getElmt(storageCode);
                     valid = true;
                 } else {
@@ -168,7 +168,7 @@ void Cattleman::feeding(){
     found = false;
     for (int i=0; i<ItemStorage.getNumRow(); i++){
         for (int j=0; j<ItemStorage.getNumCol(); j++){
-            if (itemType(i, j) == "Product"){ // Check if current Item is a product // Check if this animal can eat the product  
+            if (itemTypeAtIndex(i, j) == "Product"){ // Check if current Item is a product // Check if this animal can eat the product  
                 productCode = ItemStorage.getElmt(i,j);
                 if (tempAnimal.canEat(productCode)){
                     found = true;
@@ -198,7 +198,7 @@ void Cattleman::feeding(){
             if (ItemStorage.isEmpty(storageCode)){
                 throw StorageSlotException("Slot yang dipilih kosong! \n Silahkan pilih slot yang berisi produk makanan \n");
             } else {
-                if (itemType(storageCode) == "Product"){
+                if (itemTypeAtIndex(storageCode) == "Product"){
                     foodCode = ItemStorage.getElmt(storageCode);
                     if (tempAnimal.canEat(foodCode)){
                         cout << "Kamu memilih makanan " << Product::getProductNameMapConfig()[foodCode] << endl;

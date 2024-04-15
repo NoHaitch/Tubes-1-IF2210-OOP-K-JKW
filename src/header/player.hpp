@@ -144,28 +144,26 @@ class Player{
         /**
         * @brief check item type in a specified index
         *
-        * \note item is guaranteed not empty
         * \note index input is in string parameter
-        * \note check whether index input is valid or not
         *
         * @param positionCode string signifies where is the postition of item to be checked
+        * 
         * @return string item type
         */
-        string itemType(string positionCode);
+        string itemTypeAtIndex(string positionCode);
 
 
         /**
         * @brief check item type in a specified index
         *
-        * \note item is guaranteed not empty
         * \note index input is in index (y,x)
-        * \note check whether index input is valid or not
         *
         * @param y int row position
         * @param x int column position
+        * 
         * @return string item type
         */
-        string itemType(int y, int x);
+        string itemTypeAtIndex(int y, int x);
 
         /**
          * @brief calculate tax need to be paid by player according to KKP

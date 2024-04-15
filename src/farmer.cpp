@@ -32,7 +32,7 @@ void Farmer::tanam() {
     for (int i = 0; i < this->ItemStorage.getNumRow(); i++) {
         for (int j = 0; j < this->ItemStorage.getNumCol(); j++) {
             string pos = to_string(i) + to_string(j);
-            if (this->itemType(i, j) == "Plant") {
+            if (this->itemTypeAtIndex(i, j) == "Plant") {
                 numPlant++;
             }
         }
@@ -60,7 +60,7 @@ void Farmer::tanam() {
                 cout << "Item tidak ditemukan di penyimpanan" << endl;
                 continue;
             } else {
-                if (this->itemType(positionCode) != "Plant") {
+                if (this->itemTypeAtIndex(positionCode) != "Plant") {
                     cout << "Item yang dipilih bukan tanaman" << endl;
                 } else {
                     Plant P = Plant(this->ItemStorage.getElmt(positionCode));
@@ -315,7 +315,7 @@ void Farmer::sell() {
                     notAllDone = true; // Masuk loop lagi
                     break;
                 }
-                if (Player::itemType(position[i]) == "Building") {
+                if (Player::itemTypeAtIndex(position[i]) == "Building") {
                     cout << "Tidak bisa menjual bangunan pada petak" << position[i] << endl;
                     notAllDone = true;
                     break;
@@ -389,7 +389,7 @@ void Farmer::sellBlackMarket() {
                     notAllDone = true; // Masuk loop lagi
                     break;
                 }
-                if (Player::itemType(position[i]) == "Building") {
+                if (Player::itemTypeAtIndex(position[i]) == "Building") {
                     cout << "Tidak bisa menjual bangunan pada petak" << position[i] << endl;
                     notAllDone = true;
                     break;

@@ -3,6 +3,7 @@
 #include <string>
 #include <cmath>
 
+#include "header/utils.hpp"
 #include "header/player.hpp"
 #include "header/storage.hpp"
 #include "header/product.hpp"
@@ -73,7 +74,7 @@ void Player::eatFromStorage(){
                 throw StorageSlotException("Kamu mengambil harapan kosong dari penyimpanan. \n Silahkan masukan slot yang berisi makanan. \n"); 
             } else {
                 selectedItem = ItemStorage.getElmt(inputCode);
-                if (itemType(inputCode)=="Product"){
+                if (itemTypeAtIndex(inputCode)=="Product"){
                     Product selectedProduct(selectedItem);
                     if (Product::isEdible(selectedProduct)){
                         ItemStorage.deleteElmtAtPosition(inputCode);
@@ -99,57 +100,14 @@ void Player::buy(){}
 
 void Player::sell(){}
 
-string Player::itemType(string positionCode) {
-    string itemCode = this->ItemStorage.getElmt(positionCode);
-    vector <string>::iterator it;
-
-    // Find in Plant
-    it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
-    if (it != Plant::getPlantCodeListConfig().end()) {
-        return "Plant";
-    } else {
-        // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::getAnimalCodeConfig().end()) {
-            return "Animal";
-        } else {
-            it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
-            if (it != Product::getProductCodeListConfig().end()) {
-                return "Product";
-            } else {
-                return "Building";
-            }
-        }
-    }
+string Player::itemTypeAtIndex(string positionCode) {
+    string itemCode = ItemStorage.getElmt(positionCode);
+    return itemType(&itemCode[0]);
 }
 
-string Player::itemType(int y, int x) {
-    string itemCode = this->ItemStorage.getElmt(y, x);
-    vector <string>::iterator it;
-
-    // Find in Plant
-    it = find(Plant::getPlantCodeListConfig().begin(), Plant::Plant::getPlantCodeListConfig().end(), itemCode);
-    if (it != Plant::Plant::getPlantCodeListConfig().end()) {
-        return "Plant";
-    } else {
-        // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::getAnimalCodeConfig().end()) {
-            return "Animal";
-        } else {
-            it = find(Product::getProductCodeListConfig().begin(), Product::Product::getProductCodeListConfig().end(), itemCode);
-            if (it != Product::Product::getProductCodeListConfig().end()) {
-                return "Product";
-            } else {
-                it = find(Building::getBuildingCodeListConfig().begin(), Building::Building::getBuildingCodeListConfig().end(), itemCode);
-                if (it != Building::Building::getBuildingCodeListConfig().end()){
-                    return "Building";
-                } else {
-                    return "";
-                }
-            }
-        }
-    }
+string Player::itemTypeAtIndex(int y, int x) {
+    string itemCode = ItemStorage.getElmt(y, x);
+    return itemType(&itemCode[0]);
 }
 
 int Player::calculateTax(int KKP){
@@ -188,13 +146,13 @@ int Player::calculateWealth(){
                 continue;
             }
             string itemCode = ItemStorage.getElmt(i, j);
-            if (itemType(i, j) == "Plant"){
+            if (itemTypeAtIndex(i, j) == "Plant"){
                 ans += Plant::getPlantPriceMapConfig()[itemCode];
-            } else if (itemType(i, j) == "Animal"){
+            } else if (itemTypeAtIndex(i, j) == "Animal"){
                 ans += Animal::getAnimalPriceConfig()[itemCode];
-            } else if (itemType(i, j) == "Product"){
+            } else if (itemTypeAtIndex(i, j) == "Product"){
                 ans += Product::getProductPriceMapConfig()[itemCode];
-            } else if (itemType(i, j) == "Building"){
+            } else if (itemTypeAtIndex(i, j) == "Building"){
                 ans += Building::getBuildingPriceMapConfig()[itemCode];
             }
         }
