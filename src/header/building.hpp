@@ -37,7 +37,7 @@ public :
     static vector<string> getBuildingCodeListConfig();
     static map<string, int> getBuildingPriceMapConfig();
     // void displayBuilding(vector<Building> buildings);
-    void displayBuilding();
+    static void displayBuilding();
     /**
      * @brief Operator overloading untuk assignment apakah kedua bangunan sama.
      * @brief Kedua bangunan sama jika memiliki nama dan tipe yang sama.
