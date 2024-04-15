@@ -55,11 +55,11 @@ int Mayor::calculateKKP(){
 }
 
 void Mayor::bangunBangunan(){
-    
+    Building::displayBuilding();
 }
 
 void Mayor::buy(){
-
+    
 }
 
 void Mayor::sell(){
