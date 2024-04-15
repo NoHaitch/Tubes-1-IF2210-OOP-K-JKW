@@ -335,6 +335,9 @@ void Game::readGameState(string path){
 
         /* Create Player Object */
         if(playerRole == "Walikota"){
+            if(mayor != nullptr){
+                throw FileReadingFailedException();
+            }
             mayor = new Mayor(playerUsername, playerWealth, playerWeight);
             addPlayerToTurnOrder(playerUsername);
 
