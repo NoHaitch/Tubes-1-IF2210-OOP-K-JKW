@@ -2,6 +2,7 @@
 #define BUILDING_HPP
 
 #include <string>
+#include <iostream>
 #include <map>
 #include <vector>
 using namespace std;
@@ -12,7 +13,7 @@ protected :
     const string code;                 // Building code
     const string name;                 // Building name
     const int price;                   // Building price
-    map<string, int> materials;  // Building materials Key : material, Value : quantity of material
+    map<string, int> materials;        // Building materials Key : material, Value : quantity of material
 
     /* Configuration Variables */
     static vector<string> configCode;
@@ -35,6 +36,8 @@ public :
     static void addMaterials(string _code, string _material, int _quantity);
     static vector<string> getBuildingCodeListConfig();
     static map<string, int> getBuildingPriceMapConfig();
+    // void displayBuilding(vector<Building> buildings);
+    void displayBuilding();
     /**
      * @brief Operator overloading untuk assignment apakah kedua bangunan sama.
      * @brief Kedua bangunan sama jika memiliki nama dan tipe yang sama.

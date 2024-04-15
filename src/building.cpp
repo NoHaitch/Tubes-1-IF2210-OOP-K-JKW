@@ -5,7 +5,7 @@ vector<string> Building::configCode;
 map<string, int> Building::configID;
 map<string, string> Building::configName;
 map<string, int> Building::configPrice;
-map<string, map<string, int>> Building::configMaterial;
+map<string, map<string, int> > Building::configMaterial;
 
 Building::Building() :
     id(0),
@@ -71,4 +71,26 @@ vector<string> Building::getBuildingCodeListConfig(){
 
 map<string, int> Building::getBuildingPriceMapConfig(){
     return configPrice;
+}
+// void Building::displayBuilding(vector<Building> buildings){
+//     cout << "Resep bangunan yang ada adalah sebagai berikut." << endl;
+//     for (int i=0; i<buildings.size(); i++){
+//         cout << "   " << buildings[i].id << ". " << buildings[i].name << " (" << buildings[i].price << " gulden, ";
+//         for (map<string, int>::iterator it = buildings[i].materials.begin(); it != buildings[i].materials.end(); ++it){
+//             cout << it->first << " " << it->second;
+//             if (it->first != buildings[i].materials.end()->first){
+//                 cout << ", ";
+//             }
+//             else {
+//                 cout << ")" << endl;
+//             }
+//         }
+//     }
+// }
+
+void Building::displayBuilding(){
+    cout << "Resep bangunan yang ada adalah sebagai berikut." << endl;
+    for (int i=0; i<configCode.size(); i++){
+        cout << "   ";
+    }
 }

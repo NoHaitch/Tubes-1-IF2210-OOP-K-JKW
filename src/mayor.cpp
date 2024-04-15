@@ -17,6 +17,10 @@ void Mayor::pungutPajak(){
 
 }
 
+int Mayor::calculateKKP(){
+    return 0;
+}
+
 void Mayor::tambahPemain(){
     if (wealth<50){
         cout << "Uang tidak cukup!" << endl;
@@ -26,10 +30,12 @@ void Mayor::tambahPemain(){
         cout << "Masukkan jenis pemain: ";
         cin >> playerType;
         if (!(playerType == "peternak" || playerType == "petani")){
-            throw FileFormatException("Jenis pemain salah!");
+            cout << "Jenis pemain salah!" << endl;
+            return;
         }
         cout << "Masukkan nama pemain: ";
         cin >> plName;
+        // periksa apakah nama sudah digunakan
 
         if (playerType == "peternak"){
             Cattleman peternak(plName);
