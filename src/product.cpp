@@ -19,6 +19,10 @@ void Product::addProductConfig(int _id, std::string _code, std::string _type, st
     productOriginMap[_code] = _origin;
     productAddedWeightMap[_code] = _addedWeight;
     productPriceMap[_code] = _price;
+    vector <string> tempMaterial;
+    if (productOriginToCode.find(_origin) == productOriginToCode.end()) {
+        productOriginToCode[_origin] = tempMaterial;
+    }
     productOriginToCode[_origin].push_back(Product::convertNameToCode(_code));
 }
 
