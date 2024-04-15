@@ -31,33 +31,31 @@ void printTitle(){
     resetTextColor();
 }
 
-string itemType(char* itemCode){
+string itemType(string* itemCode){
     if (itemCode == nullptr){
         return "";
     }
-    vector <string>::iterator it;
-    it = find(Plant::getPlantCodeListConfig().begin(), Plant::getPlantCodeListConfig().end(), itemCode);
-    if (it != Plant::getPlantCodeListConfig().end()) {
-        return "Plant";
-    } else {
-        // Find in Animal
-        it = find(Animal::getAnimalCodeConfig().begin(), Animal::getAnimalCodeConfig().end(), itemCode);
-        if (it != Animal::getAnimalCodeConfig().end()) {
-            return "Animal";
-        } else {
-            it = find(Product::getProductCodeListConfig().begin(), Product::getProductCodeListConfig().end(), itemCode);
-            if (it != Product::getProductCodeListConfig().end()) {
-                return "Product";
-            } else {
-                it = find(Building::getBuildingCodeListConfig().begin(), Building::getBuildingCodeListConfig().end(), itemCode);
-                if (it != Building::getBuildingCodeListConfig().end()){
-                    return "Building";
-                } else {
-                    return "";
-                }
-            }
+    for (int i = 0; i < Plant::getPlantCodeListConfig().size(); i++) {
+        if (*itemCode == Plant::getPlantCodeListConfig()[i]) {
+            return "Plant";
         }
     }
+    for (int i = 0; i < Animal::getAnimalCodeConfig().size(); i++) {
+        if (*itemCode == Animal::getAnimalCodeConfig()[i]) {
+            return "Animal";
+        }
+    }
+    for (int i = 0; i < Product::getProductCodeListConfig().size(); i++) {
+        if (*itemCode == Product::getProductCodeListConfig()[i]) {
+            return "Product";
+        }
+    }
+    for (int i = 0; i < Building::getBuildingCodeListConfig().size(); i++) {
+        if (*itemCode == Building::getBuildingCodeListConfig()[i]) {
+            return "Building";
+        }
+    }
+    return "";
 }
 
 string convertItemNameToCode(string itemName) {

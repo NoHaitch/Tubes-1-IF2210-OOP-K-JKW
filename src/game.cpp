@@ -251,14 +251,14 @@ void Game::getGameStateIO(){
     while(1){
         cout << setfill('=') << setw(21);
 
-        cout << " Menu "; 
+        cout << " Menu ";
         resetTextColor();
         cout << setw(15) << "" << endl << setfill(' ');
         cout << "Pilih Opsi Menu:" << endl;
         cout << "1. New Game State" << endl;
         cout << "2. Load Game State" << endl;
         cout << "3. Exit" << endl;
-        
+
         startTextGreen();
         cout << "> ";
         cin >> input;

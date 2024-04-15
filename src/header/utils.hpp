@@ -20,7 +20,7 @@ void printTitle();
 * @param itemCode string signifies the code of item
 * @return string item type
 */
-string itemType(char* itemCode);
+string itemType(string* itemCode);
 
 /**
  * @brief convert item name into the code of the item

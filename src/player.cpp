@@ -102,12 +102,12 @@ void Player::sell(){}
 
 string Player::itemTypeAtIndex(string positionCode) {
     string itemCode = ItemStorage.getElmt(positionCode);
-    return itemType(&itemCode[0]);
+    return itemType(&itemCode);
 }
 
 string Player::itemTypeAtIndex(int y, int x) {
     string itemCode = ItemStorage.getElmt(y, x);
-    return itemType(&itemCode[0]);
+    return itemType(&itemCode);
 }
 
 int Player::calculateTax(int KKP){
