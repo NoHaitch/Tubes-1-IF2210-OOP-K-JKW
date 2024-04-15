@@ -23,6 +23,7 @@ public:
     void tambahPemain();
     void buy() override;
     void sell() override;
+    int calculateKKP() override;
 };
 
 

@@ -33,6 +33,8 @@ public :
     int getPrice() const;
     static void addBuildingConfig(int _id, string _code, string _name, int _price);
     static void addMaterials(string _code, string _material, int _quantity);
+    static vector<string> getBuildingCodeListConfig();
+    static map<string, int> getBuildingPriceMapConfig();
     /**
      * @brief Operator overloading untuk assignment apakah kedua bangunan sama.
      * @brief Kedua bangunan sama jika memiliki nama dan tipe yang sama.

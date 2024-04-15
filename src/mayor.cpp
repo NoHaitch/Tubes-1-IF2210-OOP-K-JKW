@@ -42,6 +42,20 @@ void Mayor::tambahPemain(){
     }
 }
 
+
+
+int Mayor::calculateKKP(){
+    return 0;
+}
+
 void Mayor::bangunBangunan(){
+    
+}
+
+void Mayor::buy(){
+
+}
+
+void Mayor::sell(){
     
 }

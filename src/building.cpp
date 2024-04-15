@@ -65,4 +65,10 @@ bool operator==(Building a, Building b){
     return a.code == b.code && a.name == b.name;
 }
 
+vector<string> Building::getBuildingCodeListConfig(){
+    return configCode;
+}
 
+map<string, int> Building::getBuildingPriceMapConfig(){
+    return configPrice;
+}
