@@ -85,8 +85,9 @@ string Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattleman
         while (true) {
             cout << "Masukkan nama pemain: ";
             cin >> plName;
+            bool isExist = false;
             if (plName == username) {
-                cout << "Nama pemain sudah ada!" << endl;
+                cout << "Nama pemain sudah ada!" << endl << endl;
                 continue;
             } else if (plName.empty()) {
                 cout << "Nama pemain tidak valid!" << endl << endl;
@@ -96,16 +97,22 @@ string Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattleman
             for (int i = 0; i < farmers->size(); i++) {
                 if (plName == farmers->at(i).getUsername()) {
                     cout << "Nama pemain sudah ada!" << endl << endl;
-                    continue;
+                    isExist = true;
+                    break;
                 }
             }
             for (int i = 0; i < cattlemans->size(); i++) {
                 if (plName == cattlemans->at(i).getUsername()) {
                     cout << "Nama pemain sudah ada!" << endl << endl;
-                    continue;
+                    isExist = true;
+                    break;
                 }
             }
-            break;
+            if (isExist) {
+                continue;
+            } else {
+                break;
+            }
         }
 
 
@@ -118,7 +125,7 @@ string Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattleman
             farmers->push_back(petani);
         }
         cout << "Pemain baru ditambahkan!\n"
-                "Selamat datang " << plName << " di kota ini!" << endl << endl;
+                "Selamat datang \"" << plName << "\" di kota ini!" << endl << endl;
         wealth -= 50;
         return plName;
     }
@@ -223,7 +230,7 @@ void Mayor::buy(){
         cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
         return;
     }
-    cout << "Selamat datang di toko!" << endl << "Berikut merupakan hal yang dapat Anda Beli" << endl;
+
 
     // TODO tampilkan semua item yang bisa dibeli
 
