@@ -221,10 +221,19 @@ string Shop::getItemCodeFromIndex(int idx){
             ++iterat;
         }
     }
+    return "";
 }
 
 bool Shop::isInfinite(string itemCode){
     return getItemQuantity(itemCode)==INFINITEQUANTITY;
+}
+
+void Shop::insertItemNonBuilding(string itemCode, int amount){
+    ShopItems[itemCode] = amount;
+}
+
+void Shop::insertItemBuilding(string itemCode, int amount){
+    ShopBuildings[itemCode] = amount;
 }
 
 BlackMarket::BlackMarket() : Shop(){}

@@ -162,6 +162,9 @@ public:
     int numItemQuantityPositive();
 
     bool isInfinite(string itemCode);
+
+    void insertItemBuilding(string itemCode, int amount);
+    void insertItemNonBuilding(string itemCode, int amount);
 };
 
 

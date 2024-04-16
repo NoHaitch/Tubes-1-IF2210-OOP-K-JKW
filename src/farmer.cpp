@@ -91,10 +91,14 @@ void Farmer::tanam() {
                 }
             }
         } catch (PositionCodeInvalidException e) {
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
             continue;
-        } catch (exception e) {
-            cout << "Input posisi tidak valid!" << endl;
+        } catch (InputInvalidException e) {
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
             continue;
         }
     }
@@ -284,7 +288,9 @@ void Farmer::buy(Shop* shopPtr) {
                 valid = true;
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -329,11 +335,17 @@ void Farmer::buy(Shop* shopPtr) {
                 }
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         } catch(NotEnoughMoneyException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         } catch(NotEnoughSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -350,11 +362,7 @@ void Farmer::buy(Shop* shopPtr) {
             cout << "Petak slot: ";
             getline(cin, inputSlots);
             cout << endl;
-            istringstream iss(inputSlots);
-            string slotToken;
-            while (getline(iss, slotToken, ',')){
-                slotVector.push_back(slotToken);
-            }
+            slotVector = parseSlot(inputSlots);
             if (slotVector.size() == buyQuantity){
                 for (int i=0; i<slotVector.size(); i++){
                     if (ItemStorage.isEmpty(slotVector[i])){
@@ -368,12 +376,18 @@ void Farmer::buy(Shop* shopPtr) {
                 throw InputInvalidException("Banyaknya slot yang diinputkan tidak sesuai dengan banyak barang yang dibeli");
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
         catch(PositionCodeInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(StorageSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
     cout << itemCode << " berhasil disimpan dalam penyimpanan!" << endl;
@@ -403,11 +417,7 @@ void Farmer::sell(Shop* shopPtr) {
             cout << "Petak slot: ";
             getline(cin, inputSlots);
             cout << endl;
-            istringstream iss(inputSlots);
-            string slotToken;
-            while (getline(iss, slotToken, ',')){
-                slotVector.push_back(slotToken);
-            }
+            slotVector = parseSlot(inputSlots);
             if (slotVector.size() > 0){
                 for (int i=0; i<slotVector.size(); i++){
                     if (!ItemStorage.isEmpty(slotVector[i])){
@@ -426,14 +436,22 @@ void Farmer::sell(Shop* shopPtr) {
                 throw InputInvalidException("Tidak ada slot yang diinputkan");
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
         catch(PositionCodeInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(StorageSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(IllegalActionException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -454,82 +472,6 @@ void Farmer::sell(Shop* shopPtr) {
     wealth += profit;
     cout << "Barang Anda berhasil dijual! Uang Anda bertambah " << profit << " gulden!" << endl;
 }
-
-void Farmer::buyBlackMarket() {
-    int emptySlot = (ItemStorage.getNumCol() * ItemStorage.getNumRow()) - ItemStorage.getNumElmt();
-    if (emptySlot == 0) {
-        cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
-        return;
-    }
-}
-
-void Farmer::sellBlackMarket() {
-    if (ItemStorage.getNumElmt() == 0) {
-        startTextRed();
-        cout << "Tidak ada barang untuk dijual!" << endl;
-        resetTextColor();
-        return;
-    }
-    bool notAllDone = true;
-    while (notAllDone) {
-        cout << "Berikut penyimpanan Anda" << endl;
-        ItemStorage.printStorage();
-
-        cout << "Silahkan pilih petak yang ingin Anda jual" << endl;
-        string positionCode;
-        cin >> positionCode;
-        vector <string> position;
-        string temp;
-        // Kemungkinan bisa pilih lebih dari 1 petak
-        for (int i = 0; i < positionCode.size(); i++) {
-            if (positionCode[i] == ',') {
-                position.push_back(temp);
-                continue;
-            } else if (positionCode[i] == ' ') {
-                continue;
-            } else {
-                temp += positionCode[i];
-            }
-        }
-        if (position.size() < ItemStorage.getNumElmt()) {
-            cout << "Pilihan tidak valid" << endl;
-            continue;
-        }
-        // Cek terlebih dahulu apakah salah satu posisi dari input valid
-        try {
-            for (int i = 0; i < position.size(); i++) {
-                if (ItemStorage.isEmpty(position[i])) {
-                    cout << "Item pada posisi " << position[i] << " kosong!" << endl;
-                    notAllDone = true; // Masuk loop lagi
-                    break;
-                }
-                if (Player::itemTypeAtIndex(position[i]) == "Building") {
-                    cout << "Tidak bisa menjual bangunan pada petak" << position[i] << endl;
-                    notAllDone = true;
-                    break;
-                } else {
-                    string itemCode = *ItemStorage.getElmt(positionCode);
-                    // TODO : implementasi ke shop
-                    cout << "Item " << itemCode << " berhasil dijual" << endl;
-                    if (i == position.size() - 1) {
-                        notAllDone = false;
-                    }
-                }
-            }
-            if (!notAllDone) {
-                break;
-            }
-        } catch (PositionCodeInvalidException e) {
-            cout << e.what() << endl;
-            return;
-        } catch (exception e) {
-            cout << "Posisi tidak valid!" << endl;
-            return;
-        }
-    }
-
-}
-
 
 void Farmer::incrementPlantDuration() {
     for (int i = 0; i < Ladang.getNumRow(); i++) {
