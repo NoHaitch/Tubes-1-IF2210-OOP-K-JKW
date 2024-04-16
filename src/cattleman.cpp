@@ -141,6 +141,7 @@ void Cattleman::buy(Shop* shopPtr){
     while (!valid){
         try{
             cout << "Petak slot: ";
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, inputSlots);
             cout << endl;
             slotVector = parseSlot(inputSlots);
@@ -205,6 +206,7 @@ void Cattleman::sell(Shop* shopPtr){
     while (!valid){
         try{
             cout << "Petak slot: ";
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, inputSlots);
             cout << endl;
             slotVector = parseSlot(inputSlots);

@@ -99,7 +99,7 @@ int rng(int min, int max){
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> distribution(min, max);
-    return 0;
+    return distribution(gen);
 }
 
 string convertItemCodeToName(string itemCode) {
