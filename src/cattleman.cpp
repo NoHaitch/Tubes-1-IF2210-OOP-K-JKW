@@ -11,6 +11,10 @@ Storage<Animal> Cattleman::getFarm(){
     return Farm;
 }
 
+Storage<Animal>* Cattleman::getFarmPointer(){
+    return &Farm;
+}
+
 int Cattleman::calculateKKP(){
     int res = Player::calculateWealth();
     for (int i=0; i<Farm.getNumRow(); i++){
@@ -18,8 +22,9 @@ int Cattleman::calculateKKP(){
             if (Farm.isEmpty(i, j)){
                 continue;
             }
-            Animal a = Farm.getElmt(i,j);
-            res += Animal::getAnimalPriceConfig()[a.getCode()];
+            Animal* a = Farm.getElmt(i,j);
+            
+            res += Animal::getAnimalPriceConfig()[a->getCode()];
         }
     }
     res -= 11; //KTKP
@@ -72,7 +77,7 @@ void Cattleman::farming(){
                 throw StorageSlotException("Slot yang dipilih kosong! \n Silahkan pilih slot yang berisi binatang \n");
             } else {
                 if (itemTypeAtIndex(storageCode) == "Animal"){
-                    animalCode = ItemStorage.getElmt(storageCode);
+                    animalCode = *ItemStorage.getElmt(storageCode);
                     valid = true;
                 } else {
                     throw NotAnimalException();
@@ -135,7 +140,7 @@ void Cattleman::feeding(){
 
     // Local Variable
     bool valid;
-    string animalCode, farmCode, storageCode, productCode, foodCode;
+    string animalCode, farmCode, storageCode, *productCode, foodCode;
     string animalName;
     int newWeight, addWeight;
 
@@ -152,8 +157,8 @@ void Cattleman::feeding(){
             if (Farm.isEmpty(farmCode)){
                 throw StorageSlotException("Petak yang dipilih kosong! \n Silahkan pilih petak yang berisi binatang\n");
             } else {
-                animalCode = Farm.getElmt(farmCode).getCode();
-                animalName = Farm.getElmt(farmCode).getName();
+                animalCode = (*Farm.getElmt(farmCode)).getCode();
+                animalName = (*Farm.getElmt(farmCode)).getName();
                 cout << "Kamu memilih " << animalName << " untuk diberi makan." << endl;
                 valid = true;
             }
@@ -170,7 +175,11 @@ void Cattleman::feeding(){
         for (int j=0; j<ItemStorage.getNumCol(); j++){
             if (itemTypeAtIndex(i, j) == "Product"){ // Check if current Item is a product // Check if this animal can eat the product  
                 productCode = ItemStorage.getElmt(i,j);
-                if (tempAnimal.canEat(productCode)){
+                if(productCode == nullptr){
+                    continue;
+                }
+
+                if (tempAnimal.canEat(*productCode)){
                     found = true;
                     break;
                 }
@@ -199,7 +208,7 @@ void Cattleman::feeding(){
                 throw StorageSlotException("Slot yang dipilih kosong! \n Silahkan pilih slot yang berisi produk makanan \n");
             } else {
                 if (itemTypeAtIndex(storageCode) == "Product"){
-                    foodCode = ItemStorage.getElmt(storageCode);
+                    foodCode = *ItemStorage.getElmt(storageCode);
                     if (tempAnimal.canEat(foodCode)){
                         cout << "Kamu memilih makanan " << Product::getProductNameMapConfig()[foodCode] << endl;
                         valid = true;
@@ -218,8 +227,8 @@ void Cattleman::feeding(){
     // Both inputs are valid, do feeding procedure
     ItemStorage.deleteElmtAtPosition(storageCode);
     addWeight = Product::getProductAddedWeightMapConfig()[foodCode];
-    newWeight = addWeight + Farm.getElmt(farmCode).getCurrWeight();
-    Farm.getElmt(farmCode).setCurrWeight(newWeight);
+    newWeight = addWeight + (*Farm.getElmt(farmCode)).getCurrWeight();
+    (*Farm.getElmt(farmCode)).setCurrWeight(newWeight);
     cout << animalName << " sudah diberi makan dan beratnya menjadi " << newWeight << endl;
     return;
 }
@@ -237,9 +246,9 @@ map<string, pair<int,int>> Cattleman::countAnimalsAndHarvestable(){
     for (int i=0; i<Farm.getNumRow(); i++){
         for (int j=0; j<Farm.getNumCol(); j++){
             if (!Farm.isEmpty(i,j)){
-                animalCode = Farm.getElmt(i,j).getCode();
+                animalCode = (*Farm.getElmt(i,j)).getCode();
                 retMap[animalCode].first++;
-                if (Farm.getElmt(i,j).isReadyToHarvest()){
+                if ((*Farm.getElmt(i,j)).isReadyToHarvest()){
                     retMap[animalCode].second++;
                 }
             }
@@ -252,7 +261,7 @@ void Cattleman::printLegend(){
     for(int i=0; i<Farm.getNumRow(); i++){
         for(int j=0; j<Farm.getNumCol(); j++){
             if (!Farm.isEmpty(i,j)){
-                cout << " - " << Farm.translatePositionCode(i,j) << ": " << Farm.getElmt(i,j).getName() << endl;
+                cout << " - " << Farm.translatePositionCode(i,j) << ": " << (*Farm.getElmt(i,j)).getName() << endl;
             }
         }
     }
@@ -366,8 +375,8 @@ void Cattleman::harvestAnimal(){
                 cout << "Petak ke-" << doneHarvested << ": ";
                 cin >> farmPositionCode;
                 cout << endl;
-                if (Farm.getElmt(farmPositionCode).getCode() == animalCode){
-                    if (Farm.getElmt(farmPositionCode).isReadyToHarvest()){
+                if ((*Farm.getElmt(farmPositionCode)).getCode() == animalCode){
+                    if ((*Farm.getElmt(farmPositionCode)).isReadyToHarvest()){
 
                         // Inputs are valid, Do Harvesting process
                         vector <string> convertedProductCodes = Product::convertToProductCode(animalCode);

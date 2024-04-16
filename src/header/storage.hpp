@@ -74,7 +74,7 @@ class Storage{
          * 
          * @return T element matrix[positionCode]
         */
-        T getElmt(string positionCode);
+        T* getElmt(string positionCode);
 
 
         /**
@@ -85,7 +85,7 @@ class Storage{
          *
          * @return T element matrix[positionCode]
         */
-        T getElmt(int y, int x);
+        T* getElmt(int y, int x);
 
         /**
          * @brief Check if the storage is full

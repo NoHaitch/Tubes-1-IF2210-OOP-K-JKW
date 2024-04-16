@@ -19,6 +19,7 @@ Plant::Plant() : price(0), harvestDuration(0), plantType(""){
 
 Plant::Plant(string _code) : 
     id(plantIDMap[_code]), 
+    code(_code),
     plantType(plantTypeMap[_code]), 
     plantName(plantNameMap[_code]), 
     harvestDuration(plantHarvestDurationMap[_code]),

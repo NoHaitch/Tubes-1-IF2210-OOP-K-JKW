@@ -23,7 +23,7 @@ void Product::addProductConfig(int _id, std::string _code, std::string _type, st
     if (productOriginToCode.find(_origin) == productOriginToCode.end()) {
         productOriginToCode[_origin] = tempMaterial;
     }
-    productOriginToCode[_origin].push_back(Product::convertNameToCode(_code));
+    productOriginToCode[_origin].push_back(_code);
 }
 
 

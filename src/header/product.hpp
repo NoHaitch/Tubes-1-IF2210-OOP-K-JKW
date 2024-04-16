@@ -19,11 +19,11 @@ const string DefaultProductTypeAnimal = "PRODUCT_ANIMAL";
  * @brief Kelas product
  * @param id int Product id
  * @param code string Product code
-* @param name string Product name
-*   @param type string Product type 
-*   @param origin string Product origin, use 3 char code of origin
-*   @param addedWeight const int Product added weight when eaten
-*  @param price const int Product price
+ * @param name string Product name
+ * @param type string Product type 
+ * @param origin string Product origin, use 3 char code of origin
+ * @param addedWeight const int Product added weight when eaten 
+ * @param price const int Product price
 */
 class Product {
     protected:

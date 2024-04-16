@@ -101,6 +101,13 @@ class Cattleman : public Player{
          * \note Throw exception for invalid inputs
         */
         void harvestAnimal();
+
+        /**
+         * @brief Get the Farm Pointer object
+         * 
+         * @return Storage<Animal> pointer
+         */
+        Storage<Animal>* getFarmPointer();
 };
 
 #endif

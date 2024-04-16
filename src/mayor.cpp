@@ -58,8 +58,17 @@ void Mayor::bangunBangunan(){
         cout << endl << "Bangunan yang ingin dibangun: ";
         cin >> jenisBangunan;
         
-        // TODO periksa apakah jenisBangunan valid
+
+        map<string, string> buildingNameConfig = Building::getBuildingNameConfig();
+        auto it = buildingNameConfig.find(jenisBangunan);
+        if (it == buildingNameConfig.end()){
+            cout << "Kamu tidak punya resep bangunan tersebut!" << endl;
+            continue;
+        }
+
         
+
+
     }
 }
 
