@@ -22,7 +22,7 @@ protected :
     static map<string, int> configID;
     static map<string, string> configName;
     static map<string, int> configPrice;
-    static map<string, map<string, int>> configMaterial;
+    static map<string, map<string, int>> configMaterial; //<code building, <material name, quantity>>
 
 public :
     Building();
@@ -43,10 +43,10 @@ public :
     /**
      *
      * @param codeBuilding kode building yang akan dibangun
-     * @return map dari <kode bahan bangunan, banyak bahan yang diperlukan>
-     * \note terdapat proses pengubahan string nama material menjadi kode material
+     * @return map dari <nama bahan bangunan, banyak bahan yang diperlukan>
+     *
      */
-    static map<string, int> getBuildingMaterialMapConfig(string nameBuilding);
+    static map<string, int> getCertainBuildingMaterialConfig(string codeBuilding);
 
     /**
      * @brief Operator overloading untuk assignment apakah kedua bangunan sama.
@@ -62,6 +62,8 @@ public :
      * @return map dari <kode bangunan, map dari (nama bahan bangunan, banyak bahan yang diperlukan)
      */
     static map<string, map<string, int>> getBuildingMaterialConfig();
+
 };
+
 
 #endif

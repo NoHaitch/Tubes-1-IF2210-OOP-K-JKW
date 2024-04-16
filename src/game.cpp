@@ -140,7 +140,8 @@ int Game::playerCommandIO(){
         
         } else if(input == "bangun" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
-                // TODO: Bangun
+                Mayor* mayorPtr = dynamic_cast<Mayor*>(getCurrentPlayer());
+                mayorPtr->bangunBangunan();
             } else{
                 throw CommandWrongRole("BANGUN hanya dapat dilakukan oleh Walikota.");
             }
@@ -766,7 +767,7 @@ void Game::readConfigRecipe(){
             if(materialName == "" || amount < 0){
                 break;
             } else{
-                Building::addMaterials(code, material, quantity);
+                Building::addMaterials(code, materialName, amount);
             }
         }
     }
