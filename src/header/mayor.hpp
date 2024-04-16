@@ -6,6 +6,7 @@
 #include "farmer.hpp"
 #include "cattleman.hpp"
 #include "product.hpp"
+#include "shop.hpp"
 #include "playerException.hpp"
 #include <vector>
 #include <iostream>
