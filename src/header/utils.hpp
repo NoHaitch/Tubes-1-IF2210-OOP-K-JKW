@@ -29,6 +29,8 @@ string itemType(string* itemCode);
  */
 string convertItemNameToCode(string itemName);
 
+int rng(int min, int max);
+
 /**
  * @brief convert item Code into the Name of the item
  * @param itemCode string Code of the item

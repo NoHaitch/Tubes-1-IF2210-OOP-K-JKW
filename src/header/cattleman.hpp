@@ -46,7 +46,7 @@ class Cattleman : public Player{
         * \note Throw exception if needed 
         * 
         */
-        void buy() override;
+        void buy(Shop* shopPtr) override;
 
         /**
          * @brief sell specified items from storage into shops, players weight increase
@@ -57,7 +57,7 @@ class Cattleman : public Player{
          * \note Throw exception if needed
          * 
         */
-        void sell() override;
+        void sell(Shop* shopPtr) override;
 
         void buyBlackMarket();
 

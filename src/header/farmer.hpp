@@ -75,9 +75,9 @@ public:
     */
     void printLegend();
 
-    void buy() override;
+    void buy(Shop* shopPtr) override;
 
-    void sell() override;
+    void sell(Shop* shopPtr) override;
 
     void buyBlackMarket();
 

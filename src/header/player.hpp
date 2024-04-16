@@ -9,6 +9,7 @@
 
 #include "storage.hpp"
 #include "product.hpp"
+#include "shop.hpp"
 
 using namespace std;
 
@@ -128,7 +129,7 @@ class Player{
          * 
          * 
         */
-        virtual void buy() = 0;
+        virtual void buy(Shop* shopPtr) = 0;
 
         /**
          * @brief sell specified items from storage into shops, players weight increase
@@ -139,7 +140,7 @@ class Player{
          * 
          * 
         */
-        virtual void sell() = 0;
+        virtual void sell(Shop* shopPtr) = 0;
 
         /**
         * @brief check item type in a specified index

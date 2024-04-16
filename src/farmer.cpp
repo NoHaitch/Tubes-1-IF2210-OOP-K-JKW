@@ -246,7 +246,7 @@ void Farmer::panen() {
 
 }
 
-void Farmer::buy() {
+void Farmer::buy(Shop* shopPtr) {
     int emptySlot = (ItemStorage.getNumCol() * ItemStorage.getNumRow()) - ItemStorage.getNumElmt();
     if (emptySlot == 0) {
         cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
@@ -285,7 +285,7 @@ void Farmer::buy() {
     }
 }
 
-void Farmer::sell() {
+void Farmer::sell(Shop* shopPtr) {
     if (ItemStorage.getNumElmt() == 0) {
         cout << "Penyimpanan tidak cukup untuk membeli barang" << endl;
         return;
