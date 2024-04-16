@@ -32,11 +32,7 @@ public:
     void buy() override;
     void sell() override;
     int calculateKKP() override;
-    /**
-     * @brief mencari jumlah item yang ada di storage
-     * @return map (string kode item, int banyak item)
-     */
-    map<string, int> getNumberofItemStorage();
+
     void operator+(Building B);
 };
 
