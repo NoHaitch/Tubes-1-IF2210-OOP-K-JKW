@@ -53,7 +53,7 @@ void Cattleman::buy(Shop* shopPtr){
 
     // Validate variables
     bool valid;
-    int buySelection, buyQuantity, payment;
+    int buySelection = -1, buyQuantity = -1, payment;
     string itemCode;
 
     // Validate selection input
@@ -69,7 +69,9 @@ void Cattleman::buy(Shop* shopPtr){
                 valid = true;
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -114,11 +116,17 @@ void Cattleman::buy(Shop* shopPtr){
                 }
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         } catch(NotEnoughMoneyException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         } catch(NotEnoughSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -135,14 +143,20 @@ void Cattleman::buy(Shop* shopPtr){
             cout << "Petak slot: ";
             getline(cin, inputSlots);
             cout << endl;
-            istringstream iss(inputSlots);
-            string slotToken;
-            while (getline(iss, slotToken, ',')){
-                slotVector.push_back(slotToken);
-            }
+            slotVector = parseSlot(inputSlots);
+            bool isPositionValid = true;
             if (slotVector.size() == buyQuantity){
                 for (int i=0; i<slotVector.size(); i++){
+                    cout << "TEST FARHAN1" << endl;
+                    try {
+                        pair<int, int>temp = ItemStorage.translatePositionCode(slotVector[i]);
+                    } catch (PositionCodeInvalidException e) {
+                        cout << e.what() << endl << endl;
+                        isPositionValid = false;
+                        break;
+                    }
                     if (ItemStorage.isEmpty(slotVector[i])){
+                        cout << "TEST FARHAN2" << endl;
                         ItemStorage.insertElmtAtPosition(slotVector[i], itemCode);
                     } else {
                         throw StorageSlotException("Slot sudah terisi, pilih slot lain yang kosong");
@@ -153,12 +167,17 @@ void Cattleman::buy(Shop* shopPtr){
                 throw InputInvalidException("Banyaknya slot yang diinputkan tidak sesuai dengan banyak barang yang dibeli");
             }
         } catch(InputInvalidException e){
-            e.what();
-        }
-        catch(PositionCodeInvalidException e){
-            e.what();
-        }catch(StorageSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
+        } catch(PositionCodeInvalidException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
+        } catch(StorageSlotException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
     cout << itemCode << " berhasil disimpan dalam penyimpanan!" << endl;
@@ -188,11 +207,7 @@ void Cattleman::sell(Shop* shopPtr){
             cout << "Petak slot: ";
             getline(cin, inputSlots);
             cout << endl;
-            istringstream iss(inputSlots);
-            string slotToken;
-            while (getline(iss, slotToken, ',')){
-                slotVector.push_back(slotToken);
-            }
+            slotVector = parseSlot(inputSlots);
             if (slotVector.size() > 0){
                 for (int i=0; i<slotVector.size(); i++){
                     if (!ItemStorage.isEmpty(slotVector[i])){
@@ -211,14 +226,22 @@ void Cattleman::sell(Shop* shopPtr){
                 throw InputInvalidException("Tidak ada slot yang diinputkan");
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
         catch(PositionCodeInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(StorageSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(IllegalActionException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -287,8 +310,14 @@ void Cattleman::farming(){
                     throw NotAnimalException();
                 }
             }
-        } catch (exception e){
+        } catch (NotAnimalException e){
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
+        } catch (StorageSlotException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -307,8 +336,10 @@ void Cattleman::farming(){
             } else {
                 throw StorageSlotException("Petak yang dipilih sudah terisi! \n Silahkan pilih petak yang masih kosong \n");
             }
-        } catch (exception e){
+        } catch (StorageSlotException e){
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -366,8 +397,10 @@ void Cattleman::feeding(){
                 cout << "Kamu memilih " << animalName << " untuk diberi makan." << endl;
                 valid = true;
             }
-        } catch (exception e){
+        } catch (StorageSlotException e){
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -423,8 +456,18 @@ void Cattleman::feeding(){
                     throw NotProductException();
                 }
             }
-        } catch (exception e){
+        } catch (StorageSlotException e){
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
+        } catch (InedibleProductException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
+        } catch (NotProductException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -540,8 +583,10 @@ void Cattleman::harvestAnimal(){
             } else {
                 throw InputInvalidException("Nomor hewan tidak sesuai daftar diatas");
             }
-        } catch (exception e){
+        } catch (InputInvalidException e){
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -562,8 +607,14 @@ void Cattleman::harvestAnimal(){
             } else {
                 throw InputInvalidException("Banyak petak yang ingin dipanen tidak sesuai dengan banyaknya hewan yang bisa dipanen");
             }
-        } catch (exception e){
+        } catch (NotEnoughSlotException e){
+            startTextRed();
             cout << e.what() << endl;
+            resetTextColor();
+        } catch (InputInvalidException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -597,8 +648,14 @@ void Cattleman::harvestAnimal(){
                     throw InputInvalidException("Binatang pada kode posisi tersebut berbeda dari jenis yang dipilih");
                 }
                 valid = true;
-            } catch (exception e){
+            } catch (NotHarvestableException e){
+                startTextRed();
                 cout << e.what() << endl;
+                resetTextColor();
+            } catch (InputInvalidException e){
+                startTextRed();
+                cout << e.what() << endl;
+                resetTextColor();
             }
         }
         doneHarvested++;

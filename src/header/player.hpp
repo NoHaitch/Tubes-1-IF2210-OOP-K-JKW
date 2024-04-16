@@ -203,6 +203,8 @@ class Player{
          * @return map (string kode item, int banyak item)
          */
         map<string, int> getNumberofItemStorage();
+
+        vector<string> parseSlot(string input);
 };
 
 #endif 

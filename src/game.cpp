@@ -457,21 +457,21 @@ void Game::readGameState(string path){
                 playerPointer->insertItem(itemCode);
             }
         }
-        
-        int playerRoleStorage = -1;
-        
-        getline(saveFile, line);
-        iss = istringstream(line);
-        iss >> playerRoleStorage;
-
-        if(playerRoleStorage < 0){
-            throw FileReadingFailedException();
-        }
 
         /* Read Player Role Spesific Storage */
         Farmer* farmerPtr = dynamic_cast<Farmer*>(getPlayer(playerUsername));
         if (farmerPtr) {
             /* Read Plants */
+            int playerRoleStorage = -1;
+            
+            getline(saveFile, line);
+            iss = istringstream(line);
+            iss >> playerRoleStorage;
+
+            if(playerRoleStorage < 0){
+                throw FileReadingFailedException();
+            }
+
             for(int item = 0; item < playerRoleStorage; item++){
                 string location = "";
                 string itemName = "";
@@ -493,6 +493,16 @@ void Game::readGameState(string path){
         } else{
             Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getPlayer(playerUsername));
             if(cattlemanPtr){
+                int playerRoleStorage = -1;
+        
+                getline(saveFile, line);
+                iss = istringstream(line);
+                iss >> playerRoleStorage;
+
+                if(playerRoleStorage < 0){
+                    throw FileReadingFailedException();
+                }
+
                 /* Read Animals */
                 for(int item = 0; item < playerRoleStorage; item++){
                     string location = "";
@@ -534,11 +544,16 @@ void Game::readGameState(string path){
         iss = istringstream(line);
         iss >> itemName >> itemAmount;
 
-        if(itemName == "" || itemAmount < 1){
+        if(itemName == "" || itemAmount < 0){
             throw FileReadingFailedException();
         }
         
-        // TODO : Use Shop Item Data
+        string itemCode = convertItemNameToCode(itemName);
+        if(itemType(&itemCode) == "Building"){
+            shop->insertItemBuilding(itemCode, itemAmount);
+        } else{
+            shop->insertItemNonBuilding(itemCode, itemAmount);
+        }
     }
 
     saveFile.close();    
@@ -572,7 +587,6 @@ int Game::readConfig(){
     }
 }
 
-// TODO: Save Items
 void Game::saveGame(string path){ 
     if (path.find("//") != string::npos || path.find("//") == 0) {
         throw FileBadPathException();
@@ -645,7 +659,30 @@ void Game::saveGame(string path){
         }
     }
 
-    // TODO: Save Shop Item
+    int itemAmount = 0;
+    map<string, int> Shopitems = shop->getShopItems();
+    for(map<string, int>::iterator it = Shopitems.begin(); it != Shopitems.end(); it++){
+        string itemCode = it->first;
+        if(itemType(&itemCode) != "Animal" && itemType(&itemCode) != "Plant" ){
+            itemAmount++;
+        }
+    }
+
+    itemAmount += shop->getShopBuildings().size();
+    
+    saveFile << itemAmount << endl;
+
+    for(map<string, int>::iterator it = Shopitems.begin(); it != Shopitems.end(); it++){
+        string itemCode = it->first;
+        if(itemType(&itemCode) != "Animal" && itemType(&itemCode) != "Plant" ){
+            saveFile << convertItemCodeToName(it->first) << " " << it->second << endl;
+        }
+    }
+
+    map<string, int> Shopbuildings = shop->getShopBuildings();
+    for(map<string, int>::iterator it = Shopbuildings.begin(); it != Shopbuildings.end(); it++){
+        saveFile << convertItemCodeToName(it->first) << " " << it->second << endl;
+    }
 
     saveFile.close();
 }
@@ -937,8 +974,12 @@ void Game::resetGameState(){
     if(mayor != nullptr){
         delete mayor;
     }
+    delete shop;
+    delete blackMarket;
 
     mayor = nullptr;
     farmers = vector<Farmer>();
     cattlemans = vector<Cattleman>();
+    shop = new Shop();
+    blackMarket = new BlackMarket();
 }

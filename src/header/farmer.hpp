@@ -82,10 +82,6 @@ public:
 
     void sell(Shop* shopPtr) override;
 
-    void buyBlackMarket();
-
-    void sellBlackMarket();
-
     /**
      * @brief menambahkan durasi tanaman pada ladang pada setiap turn
      * \note dipanggil dari kelas Game pada setiap nextTurn
