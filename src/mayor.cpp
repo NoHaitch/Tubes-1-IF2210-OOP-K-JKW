@@ -209,47 +209,172 @@ void Mayor::bangunBangunan(){
 }
 
 void Mayor::buy(Shop* shopPtr){
-    int emptySlot = (this->ItemStorage.getNumCol()*this->ItemStorage.getNumRow()) - this->ItemStorage.getNumElmt();
-    if (emptySlot == 0){
-        cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
-        return;
+    // check if storage full, cancel this command
+    if (ItemStorage.isStorageFull()){
+        throw CommandCannotBeDoneException("Penyimpanan sudah penuh! tidak bisa membeli barang baru!");
     }
+    cout << "Uang anda : " << wealth << endl;
+    int availableSlot = ItemStorage.getNumRow() * ItemStorage.getNumCol() - ItemStorage.getNumElmt();
+    cout << "Slot penyimpanan tersedia : " << availableSlot << endl;
+    cout << endl;
 
+    // Validate variables
+    bool valid;
+    int buySelection, buyQuantity, payment;
+    string itemCode;
 
-    // TODO tampilkan semua item yang bisa dibeli
-
-    cout << "Uang Anda: " << this->wealth << endl;
-    cout << "Slot penyimpanan tersedia: " << emptySlot << endl;
-    int choice;
-
-    while (true){
-        try {
-            cout << endl << "Barang ingin dibeli: ";
-            cin >> choice;
-
-            // TODO cek apakah choice valid
-            if (choice != 1){ // choice invalid
-                cout << "Pilihan barang tidak ada!" << endl;
-                continue;
-            }
-            else {
-                int kuantitas;
-                cout << "Kuantitas: ";
-                cin >> kuantitas;
-                if (kuantitas > emptySlot){
-                    cout << "Penyimpanan tidak cukup untuk membeli " << kuantitas << "barang" << endl;
-                    continue;
+    // Validate selection input
+    valid = false;
+    while (!valid){
+        try{
+            cout << "Barang ingin dibeli : ";
+            cin >> buySelection;
+            if (buySelection < 1){
+                throw InputInvalidException("Nomor barang kurang dari daftar diatas");
+            } else {
+                itemCode = shopPtr->getItemCodeFromIndex(buySelection);
+                if (itemType(&itemCode) != "Building"){
+                    valid = true;
+                } else {
+                    throw IllegalActionException("Walikota tidak boleh membeli Bangunan");
                 }
-
             }
-        } catch (PositionCodeInvalidException e){
-            cout << e.what() << endl;
-        } catch (exception e){
-            cout << "Pilihan tidak tersedia" << endl;
+        } catch(InputInvalidException e){
+            e.what();
         }
     }
+
+    // Validate quantity input
+    valid = false;
+    while (!valid){
+        try{
+            cout << "Kuantitas : ";
+            cin >> buyQuantity;
+            if (buyQuantity < 1 || buyQuantity > shopPtr->getItemQuantity(itemCode)){
+                throw InputInvalidException("Kuantitas tidak sesuai dengan banyak stok di toko");
+            } else {
+                payment = shopPtr->getPriceFromCode(itemCode) * buyQuantity;
+                if (buyQuantity > availableSlot){
+                    throw NotEnoughSlotException("Penyimpanan mu tidak cukup untuk memebeli barang sebanyak ini! Silahkan kurangi kuantitas");
+                } else {
+                    if (payment > wealth){
+                        throw NotEnoughMoneyException();
+                    } else {
+                        if (!shopPtr->isInfinite(itemCode)){
+                            shopPtr->decreaseQty(itemCode, buyQuantity);
+                        }
+                        wealth -= payment;
+                        string itemName = shopPtr->getNameFromCode(itemCode);
+                        cout << "Selamat Anda berhasil membeli " << buyQuantity <<" " << itemName <<". Uang Anda tersisa " << wealth << " gulden." << endl;
+                        valid = true;
+                    }
+                }
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        } catch(NotEnoughMoneyException e){
+            e.what();
+        } catch(NotEnoughSlotException e){
+            e.what();
+        }
+    }
+
+    // Simpan barang
+    cout << "Pilih slot untuk menyimpan barang yang Anda beli!" << endl;
+    ItemStorage.printStorage();
+    
+    // Validasi input slot penyimpanan
+    string inputSlots;
+    valid = false;
+    vector<string> slotVector;
+    while (!valid){
+        try{
+            cout << "Petak slot: ";
+            getline(cin, inputSlots);
+            cout << endl;
+            istringstream iss(inputSlots);
+            string slotToken;
+            while (getline(iss, slotToken, ',')){
+                slotVector.push_back(slotToken);
+            }
+            if (slotVector.size() == buyQuantity){
+                for (int i=0; i<slotVector.size(); i++){
+                    if (ItemStorage.isEmpty(slotVector[i])){
+                        ItemStorage.insertElmtAtPosition(slotVector[i], itemCode);
+                    } else {
+                        throw StorageSlotException("Slot sudah terisi, pilih slot lain yang kosong");
+                    }
+                }
+                valid = true;
+            } else {
+                throw InputInvalidException("Banyaknya slot yang diinputkan tidak sesuai dengan banyak barang yang dibeli");
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        }
+        catch(PositionCodeInvalidException e){
+            e.what();
+        }catch(StorageSlotException e){
+            e.what();
+        }
+    }
+    cout << itemCode << " berhasil disimpan dalam penyimpanan!" << endl;
 }
 
 void Mayor::sell(Shop* shopPtr){
+    // Interface
+    cout << "Berikut merupakan penyimpanan Anda" << endl;
+    ItemStorage.printStorage();
+    cout << endl;
+    cout << "Silahkan pilih petak yang ingin Anda jual!";
+    bool valid = false;
+    string inputSlots;
+    string* itemCodePtr, itemCode;
+    vector<string> slotVector;
+    while (!valid){
+        try{
+            cout << "Petak slot: ";
+            getline(cin, inputSlots);
+            cout << endl;
+            istringstream iss(inputSlots);
+            string slotToken;
+            while (getline(iss, slotToken, ',')){
+                slotVector.push_back(slotToken);
+            }
+            if (slotVector.size() > 0){
+                for (int i=0; i<slotVector.size(); i++){
+                    if (!ItemStorage.isEmpty(slotVector[i])){
+                        itemCodePtr = ItemStorage.getElmt(slotVector[i]);
+                        itemCode = *itemCodePtr;
+                        valid = true;
+                    } else {
+                        throw StorageSlotException("Slot yang dimasukkan kosong, Silahkan masukkan slot yang telah terisi");
+                    }
+                }
+            } else {
+                throw InputInvalidException("Tidak ada slot yang diinputkan");
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        }
+        catch(PositionCodeInvalidException e){
+            e.what();
+        }catch(StorageSlotException e){
+            e.what();
+        }catch(IllegalActionException e){
+            e.what();
+        }
+    }
 
+    // Input already valid, do transaction
+    int profit=0;
+    for (int i=0; i<slotVector.size(); i++){
+        itemCodePtr = ItemStorage.getElmt(slotVector[i]);
+        itemCode = *itemCodePtr;
+        ItemStorage.deleteElmtAtPosition(slotVector[i]);
+        profit += shopPtr->getPriceFromCode(itemCode);
+        shopPtr->increaseQty(itemCode, 1);
+    }
+    wealth += profit;
+    cout << "Barang Anda berhasil dijual! Uang Anda bertambah " << profit << " gulden!" << endl;
 }

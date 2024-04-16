@@ -9,6 +9,8 @@
 #include "shop.hpp"
 #include "product.hpp"
 #include "storage.hpp"
+#include "playerException.hpp"
+
 using namespace std;
 
 class Farmer : public Player {

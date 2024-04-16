@@ -560,7 +560,7 @@ int Game::readConfig(){
         cout << "Reading Configuration Succesfull\n" << endl;
 
         //setup shop
-        // shop->SetShopItems(shop->setupPlantAnimalItems());
+        shop->setupPlantAnimalItems();
         resetTextColor();
         return 0;
         
