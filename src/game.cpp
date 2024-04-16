@@ -96,7 +96,8 @@ int Game::playerCommandIO(){
         
         } else if(input == "pungut_pajak" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
-                // TODO: Pungut Pajak
+                Mayor* mayorPtr = dynamic_cast<Mayor*>(getCurrentPlayer());
+                mayorPtr->pungutPajak(&farmers, &cattlemans);
             } else{
                 throw CommandWrongRole("PUNGUT_PAJAK hanya dapat dilakukan oleh Walikota.");
             }
@@ -174,7 +175,15 @@ int Game::playerCommandIO(){
                 }
             }
         
-        } else{
+        } else if (input == "tambah_pemain") {
+            if(getCurrentPlayer()->getUsername() != mayor->getUsername()) {
+                throw CommandWrongRole("TAMBAH PEMAIN tidak dapat dilakukan oleh Anda.");
+            } else {
+                Mayor* mayorPtr = dynamic_cast<Mayor*>(getCurrentPlayer());
+                mayorPtr->tambahPemain(&farmers, &cattlemans);
+            }
+        }
+        else{
             startTextRed();
             cout << "Command: " << input << " tidak dikenal. Gunakan 'HELP' untuk menunjukan semua Perintah." << endl;
             resetTextColor();

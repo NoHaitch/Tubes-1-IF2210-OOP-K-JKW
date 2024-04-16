@@ -6,7 +6,6 @@
 #include "farmer.hpp"
 #include "cattleman.hpp"
 #include "product.hpp"
-#include "game.hpp"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -18,9 +17,9 @@ public:
     Mayor(string _username);
     Mayor(string _username, int _wealth, int _currWeight);
     ~Mayor();
-    void pungutPajak();
+    void pungutPajak(vector<Farmer>* farmers, vector<Cattleman>* cattlemans);
     void bangunBangunan();
-    void tambahPemain();
+    void tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattlemans);
     void buy() override;
     void sell() override;
     int calculateKKP() override;
