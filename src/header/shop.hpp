@@ -151,7 +151,7 @@ public:
     virtual void showShopTitle(bool isBuy);
 
     /* OTHER METHODS */
-    map<string, int> setupPlantAnimalItems();
+    void setupPlantAnimalItems();
 
     string getItemCodeFromIndex(int idx);
 

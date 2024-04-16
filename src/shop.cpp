@@ -164,18 +164,14 @@ void Shop::showShopTitle(bool isBuy){
     cout << endl;
 }
     
-map<string, int> Shop:: setupPlantAnimalItems(){
-    map<string, int> ret;
+void Shop:: setupPlantAnimalItems(){
     vector<string> AV = Animal::getAnimalCodeConfig();
     vector<string> PV = Plant::getPlantCodeListConfig();
     for (int i=0; i<AV.size(); i++){
         this->ShopItems[AV[i]] = INFINITEQUANTITY;
-        // cout << i;
     }for (int i=0; i<PV.size(); i++){
         this->ShopItems[PV[i]] = INFINITEQUANTITY;
-        // cout << i;
     }
-    return ret;
 }
 
 int Shop::numItemQuantityPositive(){
