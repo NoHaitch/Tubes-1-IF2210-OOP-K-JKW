@@ -9,9 +9,13 @@
 
 using namespace std;
 
-Shop::Shop(){
-    this->setupPlantAnimalItems();
-}
+map<string, int> Shop::ShopItems;
+map<string, int> Shop::ShopBuildings;
+vector<string> Shop::ShopConfigCode;
+map<string, int> Shop::ShopConfigItemsQty;
+map<string, int> Shop::ShopConfigBuildingsQty;
+
+Shop::Shop(){}
 
 Shop::Shop(map<string, int> _ShopItems, map<string, int> _ShopBuildings){
     ShopItems = _ShopItems;
@@ -36,11 +40,17 @@ int Shop::getItemQuantity (string _itemCode){
     }
 }
 
-static vector<string> getShopConfigCode();
+vector<string> Shop::getShopConfigCode(){
+    return Shop::ShopConfigCode;
+}
     
-static map<string, int > getShopConfigItemsQty();
+map<string, int> Shop::getShopConfigItemsQty(){
+    return Shop::ShopConfigItemsQty;
+}
 
-static map<string, int > getShopConfigBuildingsQty();
+map<string, int> Shop::getShopConfigBuildingsQty(){
+    return Shop::ShopConfigBuildingsQty;
+}
 
 void Shop::SetShopItems(map<string, int> _ShopItems){
     ShopItems = _ShopItems;
@@ -119,6 +129,7 @@ void Shop::showShopNonBuildings(){
         }
         ++it;
     }
+    // cout << i << endl;
 }
 
 void Shop::showShopBuildings(int prevNumber){
@@ -153,14 +164,18 @@ void Shop::showShopTitle(bool isBuy){
     cout << endl;
 }
     
-void Shop:: setupPlantAnimalItems(){
+map<string, int> Shop:: setupPlantAnimalItems(){
+    map<string, int> ret;
     vector<string> AV = Animal::getAnimalCodeConfig();
     vector<string> PV = Plant::getPlantCodeListConfig();
     for (int i=0; i<AV.size(); i++){
         this->ShopItems[AV[i]] = INFINITEQUANTITY;
+        // cout << i;
     }for (int i=0; i<PV.size(); i++){
         this->ShopItems[PV[i]] = INFINITEQUANTITY;
+        // cout << i;
     }
+    return ret;
 }
 
 int Shop::numItemQuantityPositive(){
