@@ -12,8 +12,8 @@
 using namespace std;
 
 class Mayor : public Player {
-protected :
-    vector<Building> buildingForSale;
+private :
+    vector<Building> buildingInCity;
 public:
     Mayor(string _username);
     Mayor(string _username, int _wealth, int _currWeight);
@@ -31,6 +31,12 @@ public:
     void buy() override;
     void sell() override;
     int calculateKKP() override;
+    /**
+     * @brief mencari jumlah item yang ada di storage
+     * @return map (string kode item, int banyak item)
+     */
+    map<string, int> getNumberofItemStorage();
+    void operator+(Building B);
 };
 
 

@@ -45,7 +45,7 @@ void Building::addBuildingConfig(int _id, string _code, string _name, int _price
 }
 
 void Building::addMaterials(string _code, string material, int quantity){
-    configMaterial[_code][material] = quantity;
+    configMaterial[_code][convertItemNameToCode(material)] = quantity;
 }
 
 int Building::getID() const{
@@ -75,11 +75,14 @@ map<string, int> Building::getBuildingPriceMapConfig(){
 
 void Building::displayBuilding(){
     cout << "Resep bangunan yang ada adalah sebagai berikut." << endl;
-    for (int i=0; i<configCode.size(); i++){
-        cout << "   " << configID[configCode[i]] << ". " << configName[configCode[i]] << " (" << configPrice[configCode[i]] << " gulden, ";
-        for (map<string, int>::iterator it = configMaterial[configCode[i]].begin(); it != configMaterial[configCode[i]].end(); ++it){
-            cout << it->first << " " << it->second;
-            if (it != configMaterial[configCode[i]].end()){
+    for (int i=0; i<Building::getBuildingCodeListConfig().size(); i++){
+        cout << i+1 << ". " << Building::getBuildingNameConfig()[Building::getBuildingCodeListConfig()[i]] << " (";
+        // Iterasi bahan bangunan
+        // <nama material, quantity>
+        map<string, int> materials = Building::getCertainBuildingMaterialConfig(Building::getBuildingCodeListConfig()[i]);
+        for (map<string, int>::iterator it = materials.begin(); it != materials.end(); it++){
+            cout << convertItemCodeToName(it->first) << " " << it->second;
+            if (next(it) != materials.end()){
                 cout << ", ";
             }
             else {
@@ -97,7 +100,7 @@ map<string, map<string, int>> Building::getBuildingMaterialConfig(){
     return configMaterial;
 }
 
-map<string, int> Building::getBuildingMaterialMapConfig(string nameBuilding) {
-    string codeBuilding = convertItemNameToCode(nameBuilding);
+map<string, int> Building::getCertainBuildingMaterialConfig(string codeBuilding) {
     return configMaterial[codeBuilding];
 }
+
