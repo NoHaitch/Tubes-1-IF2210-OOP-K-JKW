@@ -21,9 +21,9 @@ int Mayor::calculateKKP(){
     return 0;
 }
 
-void Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattlemans){
+string Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattlemans){
     if (wealth<50){
-        cout << "Uang tidak cukup!" << endl;
+        throw NotEnoughMoney("Uang tidak cukup untuk menambah pemain!");
     }
     else {
         string playerType, plName;
@@ -43,6 +43,13 @@ void Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattlemans)
         while (true) {
             cout << "Masukkan nama pemain: ";
             cin >> plName;
+            if (plName == username) {
+                cout << "Nama pemain sudah ada!" << endl;
+                continue;
+            } else if (plName.empty()) {
+                cout << "Nama pemain tidak valid!" << endl;
+                continue;
+            }
             // cek di farmers
             for (int i = 0; i < farmers->size(); i++) {
                 if (plName == farmers->at(i).getUsername()) {
@@ -69,6 +76,7 @@ void Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattlemans)
             farmers->push_back(petani);
         }
         wealth -= 50;
+        return plName;
     }
 }
 

@@ -179,8 +179,13 @@ int Game::playerCommandIO(){
             if(getCurrentPlayer()->getUsername() != mayor->getUsername()) {
                 throw CommandWrongRole("TAMBAH PEMAIN tidak dapat dilakukan oleh Anda.");
             } else {
-                Mayor* mayorPtr = dynamic_cast<Mayor*>(getCurrentPlayer());
-                mayorPtr->tambahPemain(&farmers, &cattlemans);
+                try {
+                    Mayor *mayorPtr = dynamic_cast<Mayor *>(getCurrentPlayer());
+                    string newPlayer = mayorPtr->tambahPemain(&farmers, &cattlemans);
+                    addPlayerToTurnOrder(newPlayer);
+                } catch (NotEnoughMoney e) {
+                    cout << e.what() << endl;
+                }
             }
         }
         else{
