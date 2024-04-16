@@ -3,7 +3,8 @@
 using namespace std;
 
 Game::Game(){
-    // shop = new Shop();
+    shop = new Shop();
+    blackMarket = new BlackMarket();
     mayor = nullptr;
     farmers = vector<Farmer>();
     cattlemans = vector<Cattleman>();
@@ -26,7 +27,8 @@ Game::~Game(){
         delete mayor;
     }
 
-    // delete shop;
+    delete shop;
+    delete blackMarket;
 
     cout << endl;
     cout << setfill('=') << setw(50)  << "" << endl << setfill(' ');
@@ -158,28 +160,67 @@ int Game::playerCommandIO(){
             }
 
         } else if(input == "beli" ){
-            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
-                mayor->buy();
-            } else{
-                Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
-                if (farmerPtr) {
-                    farmerPtr->buy();
-                } else {
-                    Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
-                    cattlemanPtr->buy();
+            if(day % 3 == 2){
+                if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                    throw CommandWrongRole("Pak Walikota? Anda tidak diperbolehkan masuk Black Market!");
+                } else{
+                    blackMarket->showShopTitle(true);
+                    blackMarket->showShopNonBuildings();
+                    blackMarket->showShopBuildings(shop->numItemQuantityPositive());
+                    Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                    if (farmerPtr) {
+                        farmerPtr->buy(blackMarket);
+                    } else {
+                        Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                        cattlemanPtr->buy(blackMarket);
+                    }
+                }
+            } else {
+                shop->showShopTitle(true);
+                shop->showShopNonBuildings();
+                if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                    mayor->buy(shop);
+                } else{
+                    shop->showShopBuildings(shop->numItemQuantityPositive());
+                    Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                    if (farmerPtr) {
+                        farmerPtr->buy(shop);
+                    } else {
+                        Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                        cattlemanPtr->buy(shop);
+                    }
                 }
             }
-        
         } else if(input == "jual" ){
-            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
-                mayor->sell();
-            } else{
-                Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
-                if (farmerPtr) {
-                    farmerPtr->sell();
-                } else {
-                    Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
-                    cattlemanPtr->sell();
+            if (day % 3 == 2){
+                if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                    throw CommandWrongRole("Pak Walikota? Anda tidak diperbolehkan masuk Black Market!");
+                } else{
+                    blackMarket->showShopTitle(false);
+                    blackMarket->showShopNonBuildings();
+                    blackMarket->showShopBuildings(shop->numItemQuantityPositive());
+                    Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                    if (farmerPtr) {
+                        farmerPtr->sell(blackMarket);
+                    } else {
+                        Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                        cattlemanPtr->sell(blackMarket);
+                    }
+                }
+            } else {
+                shop->showShopTitle(false);
+                shop->showShopNonBuildings();
+                if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                    mayor->sell(shop);
+                } else{
+                    shop->showShopBuildings(shop->numItemQuantityPositive());
+                    Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                    if (farmerPtr) {
+                        farmerPtr->sell(shop);
+                    } else {
+                        Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                        cattlemanPtr->sell(shop);
+                    }
                 }
             }
         
@@ -517,6 +558,9 @@ int Game::readConfig(){
 
         startTextBlue();
         cout << "Reading Configuration Succesfull\n" << endl;
+
+        //setup shop
+        // shop->SetShopItems(shop->setupPlantAnimalItems());
         resetTextColor();
         return 0;
         

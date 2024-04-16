@@ -208,7 +208,7 @@ void Mayor::bangunBangunan(){
     }
 }
 
-void Mayor::buy(){
+void Mayor::buy(Shop* shopPtr){
     int emptySlot = (this->ItemStorage.getNumCol()*this->ItemStorage.getNumRow()) - this->ItemStorage.getNumElmt();
     if (emptySlot == 0){
         cout << "Tidak bisa membeli barang! Penyimpanan sudah penuh" << endl;
@@ -250,6 +250,6 @@ void Mayor::buy(){
     }
 }
 
-void Mayor::sell(){
+void Mayor::sell(Shop* shopPtr){
 
 }

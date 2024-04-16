@@ -29,8 +29,8 @@ public:
      * @return string username of new player added
      */
     string tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattlemans);
-    void buy() override;
-    void sell() override;
+    void buy(Shop* shopPtr) override;
+    void sell(Shop* shopPtr) override;
     int calculateKKP() override;
 
     void operator+(Building B);

@@ -36,7 +36,8 @@ class Mayor; // For compiler reason. This makes the compiler think that Mayor ex
 
 class Game{
     private:
-        // Shop *shop;                     // Shop
+        Shop *shop;                     // Shop
+        BlackMarket *blackMarket;       // Black Market
         int currTurn = -1;              // current Turn, -1 means the game just started
         vector<string> playerOrder;     // Player Username sorted lexicographicly
 
