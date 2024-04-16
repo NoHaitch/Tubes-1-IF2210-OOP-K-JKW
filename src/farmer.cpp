@@ -463,10 +463,14 @@ void Farmer::sell(Shop* shopPtr) {
         ItemStorage.deleteElmtAtPosition(slotVector[i]);
         if (isBlackMarket){
             profit += BMPtr->getPriceBlackMarket(itemCode, false);
-            BMPtr->increaseQty(itemCode, 1);
+            if (!shopPtr->isInfinite(itemCode)){
+                BMPtr->increaseQty(itemCode, 1);
+            }
         } else {
             profit += shopPtr->getPriceFromCode(itemCode);
-            shopPtr->increaseQty(itemCode, 1);
+            if (!shopPtr->isInfinite(itemCode)){
+                shopPtr->increaseQty(itemCode, 1);
+            }
         }
     }
     wealth += profit;

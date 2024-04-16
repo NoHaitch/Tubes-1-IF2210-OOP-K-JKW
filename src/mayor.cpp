@@ -392,7 +392,9 @@ void Mayor::sell(Shop* shopPtr){
         itemCode = *itemCodePtr;
         ItemStorage.deleteElmtAtPosition(slotVector[i]);
         profit += shopPtr->getPriceFromCode(itemCode);
-        shopPtr->increaseQty(itemCode, 1);
+        if (!shopPtr->isInfinite(itemCode)){
+            shopPtr->increaseQty(itemCode, 1);
+        }
     }
     wealth += profit;
     cout << "Barang Anda berhasil dijual! Uang Anda bertambah " << profit << " gulden!" << endl;
