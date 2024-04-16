@@ -191,7 +191,17 @@ class Player{
         */
         virtual int calculateKKP() = 0;
 
+        /**
+         * @brief menambahkan item ke dalam Item Storage
+         * @param itemCode kode item yang akan dimasukkan ke dalam item storage
+         */
         void insertItem(string itemCode);
+
+        /**
+         * @brief mencari jumlah item yang ada di storage
+         * @return map (string kode item, int banyak item)
+         */
+        map<string, int> getNumberofItemStorage();
 };
 
 #endif 

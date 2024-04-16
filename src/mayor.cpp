@@ -131,22 +131,6 @@ string Mayor::tambahPemain(vector<Farmer>* farmers, vector<Cattleman>* cattleman
     }
 }
 
-map<string, int> Mayor::getNumberofItemStorage() {
-    map<string, int> temp;
-    for (int i = 0; i < ItemStorage.getNumRow(); i++) {
-        for (int j = 0; j < ItemStorage.getNumCol(); j++) {
-            if (ItemStorage.getElmt(i, j) != nullptr) {
-                string *code = ItemStorage.getElmt(i, j);
-                if (temp.find(*code) == temp.end()) {
-                    temp[*code] = 1;
-                } else {
-                    temp[*code]++;
-                }
-            }
-        }
-    }
-    return temp;
-}
 
 void Mayor::operator+(Building B) {
     buildingInCity.push_back(B);
@@ -193,7 +177,7 @@ void Mayor::bangunBangunan(){
         if (!isEnough) {
             cout << "Kamu tidak punya sumber daya yang cukup! Masih memerlukan ";
             for (map<string, int>::iterator it = kurangItem.begin(); it != kurangItem.end(); it++){
-                cout << it->second << " " << it->first;
+                cout << it->second << " " << convertItemCodeToName(it->first);
                 if (next(it) != kurangItem.end()){
                     cout << ", ";
                 }

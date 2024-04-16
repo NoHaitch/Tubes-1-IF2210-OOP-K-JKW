@@ -61,6 +61,28 @@ void Player::printItemStorage(){
 }
 
 void Player::eatFromStorage(){
+    // Validasi apakah ada makanan di penyimpanan
+    if (ItemStorage.isStorageEmpty()){
+        cout << "Penyimpanan kamu kosong. Kamu tidak bisa makan apa-apa" << endl << endl;
+        return;
+    }
+    map<string, int> numberItemStorage = getNumberofItemStorage();
+    int edible = 0;
+    for (int i = 0; i < ItemStorage.getNumRow(); i++) {
+        for (int j = 0; j < ItemStorage.getNumCol(); j++) {
+            if (itemTypeAtIndex(i, j) == "Product") {
+                Product P = Product(*ItemStorage.getElmt(i, j));
+                if (Product::isEdible(P)) {
+                    edible++;
+                }
+            }
+        }
+    }
+    if (edible < 1) {
+        cout << "Tidak ada makanan yang bisa dimakan dari penyimpanan!" << endl << endl;
+        return;
+    }
+
     cout << "Pilih makanan dari penyimpanan" << endl;
     cout << endl;
     printItemStorage();
@@ -162,4 +184,21 @@ int Player::calculateKKP(){return 0;}
 
 void Player::insertItem(std::string itemCode) {
     ItemStorage.insertElmtAtEmptySlot(itemCode);
+}
+
+map<string, int> Player::getNumberofItemStorage() {
+    map<string, int> temp;
+    for (int i = 0; i < ItemStorage.getNumRow(); i++) {
+        for (int j = 0; j < ItemStorage.getNumCol(); j++) {
+            if (ItemStorage.getElmt(i, j) != nullptr) {
+                string *code = ItemStorage.getElmt(i, j);
+                if (temp.find(*code) == temp.end()) {
+                    temp[*code] = 1;
+                } else {
+                    temp[*code]++;
+                }
+            }
+        }
+    }
+    return temp;
 }

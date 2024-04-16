@@ -158,10 +158,30 @@ int Game::playerCommandIO(){
             }
 
         } else if(input == "beli" ){
-            getCurrentPlayer()->buy();
+            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                mayor->buy();
+            } else{
+                Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                if (farmerPtr) {
+                    farmerPtr->buy();
+                } else {
+                    Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                    cattlemanPtr->buy();
+                }
+            }
         
         } else if(input == "jual" ){
-            getCurrentPlayer()->sell();
+            if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
+                mayor->sell();
+            } else{
+                Farmer* farmerPtr = dynamic_cast<Farmer*>(getCurrentPlayer());
+                if (farmerPtr) {
+                    farmerPtr->sell();
+                } else {
+                    Cattleman* cattlemanPtr = dynamic_cast<Cattleman*>(getCurrentPlayer());
+                    cattlemanPtr->sell();
+                }
+            }
         
         } else if(input == "panen" ){
             if(getCurrentPlayer()->getUsername() == mayor->getUsername()){
@@ -222,7 +242,8 @@ void Game::printCommands(){
     cout << " - KASIH_MAKAN" << endl;
     cout << " - BELI" << endl;
     cout << " - JUAL" << endl;
-    cout << " - PANEN\n" << endl;
+    cout << " - PANEN" << endl;
+    cout << " - TAMBAH_PEMAIN\n" << endl;
 }
 
 Player* Game::getPlayer(string playerUsername){
@@ -305,6 +326,7 @@ void Game::getGameStateIO(){
                 cout << "Berkas tidak ditemukan, pastikan lokasi benar!" << endl;
                 resetTextColor();
             } catch( FileReadingFailedException e){
+                resetGameState();
                 startTextRed();
                 cout << "Gagal membaca berkas, pastikan isi berkas benar!" << endl;
                 resetTextColor();
@@ -863,4 +885,16 @@ string Game::getPlayerRole(Player* player){
             return "Peternak";
         }
     }
+}
+
+void Game::resetGameState(){
+    playerOrder = vector<string>();
+
+    if(mayor != nullptr){
+        delete mayor;
+    }
+
+    mayor = nullptr;
+    farmers = vector<Farmer>();
+    cattlemans = vector<Cattleman>();
 }
