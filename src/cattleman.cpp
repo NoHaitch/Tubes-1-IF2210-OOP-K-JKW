@@ -135,11 +135,7 @@ void Cattleman::buy(Shop* shopPtr){
             cout << "Petak slot: ";
             getline(cin, inputSlots);
             cout << endl;
-            istringstream iss(inputSlots);
-            string slotToken;
-            while (getline(iss, slotToken, ',')){
-                slotVector.push_back(slotToken);
-            }
+            slotVector = parseSlot(inputSlots);
             if (slotVector.size() == buyQuantity){
                 for (int i=0; i<slotVector.size(); i++){
                     if (ItemStorage.isEmpty(slotVector[i])){
@@ -188,11 +184,7 @@ void Cattleman::sell(Shop* shopPtr){
             cout << "Petak slot: ";
             getline(cin, inputSlots);
             cout << endl;
-            istringstream iss(inputSlots);
-            string slotToken;
-            while (getline(iss, slotToken, ',')){
-                slotVector.push_back(slotToken);
-            }
+            slotVector = parseSlot(inputSlots);
             if (slotVector.size() > 0){
                 for (int i=0; i<slotVector.size(); i++){
                     if (!ItemStorage.isEmpty(slotVector[i])){

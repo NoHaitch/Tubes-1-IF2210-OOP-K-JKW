@@ -202,3 +202,22 @@ map<string, int> Player::getNumberofItemStorage() {
     }
     return temp;
 }
+
+vector<string> Player::parseSlot(string input){
+    vector<string> vec;
+    string temp="";
+    int i = 0;
+    int sz = input.size();
+    while (i < sz){
+        if (input[i]==','){
+            vec.push_back(temp);
+            i+=1;
+            temp = "";
+        } else {
+            temp = temp + input[i];
+        }
+        i++;
+    }
+    vec.push_back(temp);
+    return vec;
+}
