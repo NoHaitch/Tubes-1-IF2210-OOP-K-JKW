@@ -360,6 +360,7 @@ void Farmer::buy(Shop* shopPtr) {
     while (!valid){
         try{
             cout << "Petak slot: ";
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, inputSlots);
             cout << endl;
             slotVector = parseSlot(inputSlots);
@@ -415,6 +416,7 @@ void Farmer::sell(Shop* shopPtr) {
     while (!valid){
         try{
             cout << "Petak slot: ";
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, inputSlots);
             cout << endl;
             slotVector = parseSlot(inputSlots);
@@ -449,9 +451,7 @@ void Farmer::sell(Shop* shopPtr) {
             cout << e.what() << endl;
             resetTextColor();
         }catch(IllegalActionException e){
-            startTextRed();
             cout << e.what() << endl;
-            resetTextColor();
         }
     }
 

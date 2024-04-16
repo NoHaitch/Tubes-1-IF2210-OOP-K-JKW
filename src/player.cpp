@@ -1,7 +1,9 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <limits>
 #include <cmath>
+#include <sstream>
 
 #include "header/utils.hpp"
 #include "header/player.hpp"
