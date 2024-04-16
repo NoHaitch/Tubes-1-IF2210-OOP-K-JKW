@@ -31,10 +31,214 @@ int Cattleman::calculateKKP(){
     return res;
 }
 
-// TODO: buy() and sell()
-void Cattleman::buy(){}
+void Cattleman::buy(Shop* shopPtr){
+    // check if storage full, cancel this command
+    if (ItemStorage.isStorageFull()){
+        throw CommandCannotBeDoneException("Penyimpanan sudah penuh! tidak bisa membeli barang baru!");
+    }
 
-void Cattleman::sell(){}
+    // check if shopPtr is a black market object
+    bool isBlackMarket;
+    BlackMarket* BMPtr = dynamic_cast<BlackMarket*>(shopPtr);
+    if(BMPtr == nullptr){
+        isBlackMarket = false;
+    } else {
+        isBlackMarket = true;
+    }
+
+    cout << "Uang anda : " << wealth << endl;
+    int availableSlot = ItemStorage.getNumRow() * ItemStorage.getNumCol() - ItemStorage.getNumElmt();
+    cout << "Slot penyimpanan tersedia : " << availableSlot << endl;
+    cout << endl;
+
+    // Validate variables
+    bool valid;
+    int buySelection, buyQuantity, payment;
+    string itemCode;
+
+    // Validate selection input
+    valid = false;
+    while (!valid){
+        try{
+            cout << "Barang ingin dibeli : ";
+            cin >> buySelection;
+            if (buySelection < 1){
+                throw InputInvalidException("Nomor barang kurang dari daftar diatas");
+            } else {
+                itemCode = shopPtr->getItemCodeFromIndex(buySelection);
+                valid = true;
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        }
+    }
+
+    // Validate quantity input
+    valid = false;
+    while (!valid){
+        try{
+            cout << "Kuantitas : ";
+            cin >> buyQuantity;
+            if (buyQuantity < 1 || buyQuantity > shopPtr->getItemQuantity(itemCode)){
+                throw InputInvalidException("Kuantitas tidak sesuai dengan banyak stok di toko");
+            } else {
+                if (isBlackMarket){
+                    payment = BMPtr->getPriceBlackMarket(itemCode, true) * buyQuantity;
+                } else {
+                    payment = shopPtr->getPriceFromCode(itemCode) * buyQuantity;
+                }
+                if (buyQuantity > availableSlot){
+                    throw NotEnoughSlotException("Penyimpanan mu tidak cukup untuk memebeli barang sebanyak ini! Silahkan kurangi kuantitas");
+                } else {
+                    if (payment > wealth){
+                        if (isBlackMarket){
+                            throw NotEnoughMoneyException("Kamu tidak cukup kaya untuk berada di Black Market ini! Cepat keluar dari sini!");
+                        } else {
+                            throw NotEnoughMoneyException();
+                        }
+                    } else {
+                        if (isBlackMarket){
+                            if (!BMPtr->isInfinite(itemCode)){
+                                BMPtr->decreaseQty(itemCode, buyQuantity);
+                            }
+                        } else {
+                            if (!shopPtr->isInfinite(itemCode)){
+                                shopPtr->decreaseQty(itemCode, buyQuantity);
+                            }
+                        }
+                        wealth -= payment;
+                        string itemName = shopPtr->getNameFromCode(itemCode);
+                        cout << "Selamat Anda berhasil membeli " << buyQuantity <<" " << itemName <<". Uang Anda tersisa " << wealth << " gulden." << endl;
+                        valid = true;
+                    }
+                }
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        } catch(NotEnoughMoneyException e){
+            e.what();
+        } catch(NotEnoughSlotException e){
+            e.what();
+        }
+    }
+
+    // Simpan barang
+    cout << "Pilih slot untuk menyimpan barang yang Anda beli!" << endl;
+    ItemStorage.printStorage();
+    
+    // Validasi input slot penyimpanan
+    string inputSlots;
+    valid = false;
+    vector<string> slotVector;
+    while (!valid){
+        try{
+            cout << "Petak slot: ";
+            getline(cin, inputSlots);
+            cout << endl;
+            istringstream iss(inputSlots);
+            string slotToken;
+            while (getline(iss, slotToken, ',')){
+                slotVector.push_back(slotToken);
+            }
+            if (slotVector.size() == buyQuantity){
+                for (int i=0; i<slotVector.size(); i++){
+                    if (ItemStorage.isEmpty(slotVector[i])){
+                        ItemStorage.insertElmtAtPosition(slotVector[i], itemCode);
+                    } else {
+                        throw StorageSlotException("Slot sudah terisi, pilih slot lain yang kosong");
+                    }
+                }
+                valid = true;
+            } else {
+                throw InputInvalidException("Banyaknya slot yang diinputkan tidak sesuai dengan banyak barang yang dibeli");
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        }
+        catch(PositionCodeInvalidException e){
+            e.what();
+        }catch(StorageSlotException e){
+            e.what();
+        }
+    }
+    cout << itemCode << " berhasil disimpan dalam penyimpanan!" << endl;
+}
+
+void Cattleman::sell(Shop* shopPtr){
+    // Check if shopPtr is a black market object
+    bool isBlackMarket;
+    BlackMarket* BMPtr = dynamic_cast<BlackMarket*>(shopPtr);
+    if(BMPtr == nullptr){
+        isBlackMarket = false;
+    } else {
+        isBlackMarket = true;
+    }
+
+    // Interface
+    cout << "Berikut merupakan penyimpanan Anda" << endl;
+    ItemStorage.printStorage();
+    cout << endl;
+    cout << "Silahkan pilih petak yang ingin Anda jual!";
+    bool valid = false;
+    string inputSlots;
+    string* itemCodePtr, itemCode;
+    vector<string> slotVector;
+    while (!valid){
+        try{
+            cout << "Petak slot: ";
+            getline(cin, inputSlots);
+            cout << endl;
+            istringstream iss(inputSlots);
+            string slotToken;
+            while (getline(iss, slotToken, ',')){
+                slotVector.push_back(slotToken);
+            }
+            if (slotVector.size() > 0){
+                for (int i=0; i<slotVector.size(); i++){
+                    if (!ItemStorage.isEmpty(slotVector[i])){
+                        itemCodePtr = ItemStorage.getElmt(slotVector[i]);
+                        itemCode = *itemCodePtr;
+                        if (itemType(itemCodePtr)=="Building"){
+                            throw IllegalActionException("Peternak tidak boleh menjual bangunan!");
+                        } else {
+                            valid = true;
+                        }
+                    } else {
+                        throw StorageSlotException("Slot yang dimasukkan kosong, Silahkan masukkan slot yang telah terisi");
+                    }
+                }
+            } else {
+                throw InputInvalidException("Tidak ada slot yang diinputkan");
+            }
+        } catch(InputInvalidException e){
+            e.what();
+        }
+        catch(PositionCodeInvalidException e){
+            e.what();
+        }catch(StorageSlotException e){
+            e.what();
+        }catch(IllegalActionException e){
+            e.what();
+        }
+    }
+
+    // Input already valid, do transaction
+    int profit=0;
+    for (int i=0; i<slotVector.size(); i++){
+        itemCodePtr = ItemStorage.getElmt(slotVector[i]);
+        itemCode = *itemCodePtr;
+        ItemStorage.deleteElmtAtPosition(slotVector[i]);
+        if (isBlackMarket){
+            profit += BMPtr->getPriceBlackMarket(itemCode, false);
+            BMPtr->increaseQty(itemCode, 1);
+        } else {
+            profit += shopPtr->getPriceFromCode(itemCode);
+            shopPtr->increaseQty(itemCode, 1);
+        }
+    }
+    wealth += profit;
+    cout << "Barang Anda berhasil dijual! Uang Anda bertambah " << profit << " gulden!" << endl;
+}
 
 void Cattleman::farming(){
     // Check if Farm is full

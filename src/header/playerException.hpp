@@ -77,6 +77,30 @@ class NotHarvestableException : public exception {
         }
 };
 
+class NotEnoughMoneyException : public exception {
+    private:
+        string message;
+    
+    public:
+        NotEnoughMoneyException() : message("Uang tidak cukup untuk melakukan transaksi"){}
+        NotEnoughMoneyException(string msg) : message(msg) {}
+        string what (){
+            return message;
+        }
+};
+
+class IllegalActionException : public exception {
+    private:
+        string message;
+    
+    public:
+        IllegalActionException() : message("Aksi ini tidak boleh dilakukan oleh pemain!"){}
+        IllegalActionException(string msg) : message(msg) {}
+        string what (){
+            return message;
+        }
+};
+
 class CommandCannotBeDoneException : public exception {
     private:
         string message;

@@ -78,8 +78,18 @@ bool Animal::isReadyToHarvest(){
     return currWeight >= weightToHarvest;
 }
 
-bool Animal::canEat(string productType){
-    return false;
+bool Animal::canEat(string productCode){
+    string productType = Product::getProductTypeMapConfig()[productCode];
+    if(productType == "PRODUCT_MATERIAL_PLANT"){
+        return false;
+    } else if(foodType == DefaultAnimalFoodTypeOmnivore){
+        return true;
+    } else if(foodType == DefaultAnimalFoodTypeCarnivore && productType == "PRODUCT_ANIMAL"){
+        return true;
+    } else if(foodType == DefaultAnimalFoodTypeHerbivore && productType == "PRODUCT_FRUIT_PLANT"){
+        return true;
+    }
+    return false;   
 }
 
 bool Animal::empty(){
@@ -168,8 +178,8 @@ Herbivore::Herbivore(const Herbivore& other)
 
 Herbivore::~Herbivore(){}
 
-bool Herbivore::canEat(string productType){
-    return productType == "PRODUCT_FRUIT_PLANT";
+bool Herbivore::canEat(string productCode){
+    return Product::getProductTypeMapConfig()[productCode] == "PRODUCT_FRUIT_PLANT";
 }
 
 void Herbivore::printInfo(){
@@ -194,8 +204,8 @@ Carnivore::Carnivore(const Carnivore& other)
 
 Carnivore::~Carnivore(){}
 
-bool Carnivore::canEat(string productType){
-    return productType == "PRODUCT_ANIMAL";
+bool Carnivore::canEat(string productCode){
+    return Product::getProductTypeMapConfig()[productCode] == "PRODUCT_ANIMAL";
 }
 
 void Carnivore::printInfo(){
@@ -220,8 +230,8 @@ Omnivore::Omnivore(const Omnivore& other)
 
 Omnivore::~Omnivore(){}
 
-bool Omnivore::canEat(string productType){
-    return productType == "PRODUCT_ANIMAL" || productType == "PRODUCT_FRUIT_PLANT";
+bool Omnivore::canEat(string productCode){
+    return Product::getProductTypeMapConfig()[productCode] == "PRODUCT_ANIMAL" || Product::getProductTypeMapConfig()[productCode] == "PRODUCT_FRUIT_PLANT";
 }
 
 void Omnivore::printInfo(){

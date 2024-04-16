@@ -73,7 +73,7 @@ class Animal{
         /**
          * @brief dtor
         */
-        ~Animal();
+        virtual ~Animal();
 
         /**
          * @brief Get animal id
@@ -157,9 +157,9 @@ class Animal{
         /**
          * @brief Check if food can be eaten
          * 
-         * @param string product type 
+         * @param string product code 
         */
-        virtual bool canEat(string productType);
+        virtual bool canEat(string productCode);
 
         /**
          * @brief check if animal is empty
@@ -272,9 +272,9 @@ class Herbivore : public Animal{
         /**
          * @brief Check if food can be eaten
          * 
-         * @param string product type 
+         * @param string product code 
         */
-        bool canEat(string productType) override;
+        bool canEat(string productCode) override;
 
         /**
          * @brief Debuging tool, shows all variables.
@@ -313,9 +313,9 @@ class Carnivore : public Animal{
         /**
          * @brief Check if food can be eaten
          * 
-         * @param string product type 
+         * @param string product code 
         */
-        bool canEat(string productType) override;
+        bool canEat(string productCode) override;
 
         /**
          * @brief Debuging tool, shows all variables.
@@ -354,9 +354,9 @@ class Omnivore : public Animal{
         /**
          * @brief Check if food can be eaten
          * 
-         * @param string product type 
+         * @param string product code 
         */
-        bool canEat(string productType) override;
+        bool canEat(string productCode) override;
 
         /**
          * @brief Debuging tool, shows all variables.

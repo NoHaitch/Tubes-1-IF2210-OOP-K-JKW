@@ -1,10 +1,10 @@
 #include "header/shop.hpp"
 #include "header/player.hpp"
 #include "header/printColor.hpp"
+#include "header/playerException.hpp"
 
 #include <iostream>
 #include <string>
-#include <random>
 
 
 using namespace std;
@@ -35,6 +35,12 @@ int Shop::getItemQuantity (string _itemCode){
         return ShopItems[_itemCode];
     }
 }
+
+static vector<string> getShopConfigCode();
+    
+static map<string, int > getShopConfigItemsQty();
+
+static map<string, int > getShopConfigBuildingsQty();
 
 void Shop::SetShopItems(map<string, int> _ShopItems){
     ShopItems = _ShopItems;
@@ -138,11 +144,12 @@ void Shop::showShopBuildings(int prevNumber){
         }
         ++it;
     }
+    cout << endl;
 }
 
-void Shop::showShopTitle(){
+void Shop::showShopTitle(bool isBuy){
     cout << "Selamat datang di toko!!" << endl;
-    cout << "Berikut merupakan hal yang dapat Anda Beli" << endl;
+    cout << "Silahkan pilih barang yang akan Anda jual" << endl;
     cout << endl;
 }
     
@@ -159,14 +166,54 @@ void Shop:: setupPlantAnimalItems(){
 int Shop::numItemQuantityPositive(){
     int ans = 0;
     map<string, int>::iterator iterat;
-    iterat = ShopBuildings.begin();
-     while (iterat != ShopBuildings.end()){
+    iterat = ShopItems.begin();
+     while (iterat != ShopItems.end()){
         if (iterat->second > 0){
             ans++;
         }
         ++iterat;
     }
     return ans;
+}
+
+string Shop::getItemCodeFromIndex(int idx){
+    int numItem = numItemQuantityPositive();
+    if (idx > numItem){
+        // Building
+        idx -= numItem;
+        map<string, int>::iterator iterat;
+        iterat = ShopBuildings.begin();
+        while (iterat != ShopBuildings.end()){
+            if (iterat->second > 0){
+                idx--;
+                if (idx==0){
+                    return iterat->first;
+                }
+            }
+            ++iterat;
+        }
+        if (idx > 0){
+            throw InputInvalidException("Nomor barang melebihi daftar diatas");
+            return "";
+        }
+    } else { 
+        // Non Building
+        map<string, int>::iterator iterat;
+        iterat = ShopItems.begin();
+        while (iterat != ShopItems.end()){
+            if (iterat->second > 0){
+                idx--;
+                if (idx==0){
+                    return iterat->first;
+                }
+            }
+            ++iterat;
+        }
+    }
+}
+
+bool Shop::isInfinite(string itemCode){
+    return getItemQuantity(itemCode)==INFINITEQUANTITY;
 }
 
 BlackMarket::BlackMarket() : Shop(){}
@@ -235,23 +282,29 @@ void BlackMarket::showShopBuildings(int prevNumber){
         }
         ++it;
     }
+    cout << endl;
 }
 
-void BlackMarket::showShopTitle(){
+void BlackMarket::showShopTitle(bool isBuy){
     startTextBlue();
     cout << "     .-.      ___ _         _     __  __          _       _   " << endl;
     cout << "    (0.0)    | _ ) |__ _ __| |__ |  \\/  |__ _ _ _| |_____| |_ " << endl;
     cout << "  '=.|m|.='  | _ \\ / _` / _| / / | |\\/| / _` | '_| / / -_)  _|" << endl;
     cout << "  .='`\"``=.  |___/_\\__,_\\__|_\\_\\ |_|  |_\\__,_|_| |_\\_\\___|\\__|" << endl;
-    if (this->numItemQuantityPositive() % 4 == 0){
+    if (rng(0, 3) == 0){
         cout << " Selamat Datang di Black Market... Jangan sampai pak walikota tau tentang kami!" << endl;
-    } else if (this->numItemQuantityPositive() % 4 == 1) {
+    } else if (rng(0, 3) == 1) {
         cout << " Selamat Datang di Black Market... Pastikan kamu tidak diikuti pak walikota" << endl;
-    } else if (this->numItemQuantityPositive() % 4 == 2){
+    } else if (rng(0, 3) == 2){
         cout << " Selamat Datang di Black Market... Mari turunkan rezim pak walikota dengan menghancurkan ekonomi!" << endl;
     } else {
         cout << " Selamat Datang di Black Market... You are my sunshine... My only sunshine..." << endl;
     }
-    cout << " Pilih barang yang mau anda beli... Cepat! waktu kami tidak banyak" << endl;
+    if (isBuy){
+        cout << " Pilih barang yang mau anda beli... Cepat! waktu kami tidak banyak" << endl;
+    } else {
+        cout << " Apa yang bisa anda tawarkan kepada kami... Cepat! waktu kami tidak banyak" << endl;
+    }
     cout << endl;
+    resetTextColor();
 }

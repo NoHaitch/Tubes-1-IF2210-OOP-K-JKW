@@ -1,4 +1,5 @@
 #include <vector>
+#include <random>
 
 #include "header/utils.hpp"
 #include "header/printColor.hpp"
@@ -92,6 +93,12 @@ string convertItemNameToCode(string itemName) {
     }
 
     return "";
+}
+
+int rng(int min, int max){
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> distribution(min, max);
 }
 
 string convertItemCodeToName(string itemCode) {

@@ -26,13 +26,13 @@ class Shop{
 protected:
 
     /* ATTRIBUTES */
-    map<string, int> ShopItems; // <itemCode, quantity>
-    map<string, int> ShopBuildings; // <itemCode, buildings>
+    static map<string, int> ShopItems; // <itemCode, quantity>
+    static map<string, int> ShopBuildings; // <itemCode, buildings>
 
     /* CONFIG ATTRIBUTES */
-    vector<string> ShopConfigCode;
-    map<string, int > ShopConfigItemsQty;
-    map<string, int > ShopConfigBuildingsQty;
+    static vector<string> ShopConfigCode;
+    static map<string, int> ShopConfigItemsQty;
+    static map<string, int> ShopConfigBuildingsQty;
     
     /* CONSTANT */
     static const int INFINITEQUANTITY = 9999;
@@ -57,7 +57,7 @@ public:
     /**
      * @brief Shop dtor
     */
-    ~Shop();
+    virtual ~Shop();
 
     /* GETTER */
 
@@ -77,6 +77,27 @@ public:
      * @param _itemCode string code for item
      */
     int getItemQuantity (string _itemCode);
+
+    /**
+     * @brief Get all the item codes from config for Shop
+     * 
+     * @return vector<string> all codes for item
+     */
+    static vector<string> getShopConfigCode();
+    
+    /**
+     * @brief Get config map of ShopItems quantity
+     * 
+     * @return map<string, int> map of ShopItem config
+     */
+    static map<string, int> getShopConfigItemsQty();
+
+    /**
+     * @brief Get config map of ShopBuildings quantity
+     * 
+     * @return map<string, int> map of ShopBuildings config
+     */
+    static map<string, int> getShopConfigBuildingsQty();
 
     /* SETTER */
     /**
@@ -127,16 +148,20 @@ public:
     /**
      * @brief Show Shop Inventory title
      */
-    virtual void showShopTitle();
+    virtual void showShopTitle(bool isBuy);
 
     /* OTHER METHODS */
     void setupPlantAnimalItems();
+
+    string getItemCodeFromIndex(int idx);
 
     string getNameFromCode(string itemCode);
 
     int getPriceFromCode(string itemCode);
 
     int numItemQuantityPositive();
+
+    bool isInfinite(string itemCode);
 };
 
 
@@ -180,7 +205,7 @@ class BlackMarket: public Shop{
         /**
          * @brief Show Black Market Inventory title
          */
-        void showShopTitle() override;
+        void showShopTitle(bool isBuy) override;
 };
 
 

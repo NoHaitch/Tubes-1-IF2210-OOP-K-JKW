@@ -118,9 +118,9 @@ void Player::eatFromStorage(){
     }
 }
 
-void Player::buy(){}
+void Player::buy(Shop* shopPtr){}
 
-void Player::sell(){}
+void Player::sell(Shop* shopPtr){}
 
 string Player::itemTypeAtIndex(string positionCode) {
     return itemType(ItemStorage.getElmt(positionCode));
