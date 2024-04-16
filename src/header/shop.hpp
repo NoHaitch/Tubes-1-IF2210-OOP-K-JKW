@@ -169,7 +169,7 @@ public:
 
 class BlackMarket: public Shop{
     protected:
-        static constexpr float BMPRICECHANGEPERCENTAGE = 0.3;
+        static constexpr float e = 0.3;
 
     public:
         /**
