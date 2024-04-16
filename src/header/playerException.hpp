@@ -88,4 +88,14 @@ class CommandCannotBeDoneException : public exception {
             return message;
         }
 };
+
+class NotEnoughMoney : public exception {
+    private: string message;
+    public:
+        NotEnoughMoney() : message("Uang tidak mencukupi untuk melakukan operasi ini!") {};
+        NotEnoughMoney(string msg) : message(msg) {};
+        string what() {
+            return message;
+        }
+};
 #endif
