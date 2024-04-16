@@ -237,6 +237,12 @@ class Game{
         */
         void readConfigMisc();
 
+        /**
+         * @brief Reset Game State
+         * 
+         */
+        void resetGameState();
+
 };
 
 #endif
