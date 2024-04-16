@@ -53,7 +53,7 @@ void Cattleman::buy(Shop* shopPtr){
 
     // Validate variables
     bool valid;
-    int buySelection, buyQuantity, payment;
+    int buySelection = -1, buyQuantity = -1, payment;
     string itemCode;
 
     // Validate selection input
@@ -144,9 +144,19 @@ void Cattleman::buy(Shop* shopPtr){
             getline(cin, inputSlots);
             cout << endl;
             slotVector = parseSlot(inputSlots);
+            bool isPositionValid = true;
             if (slotVector.size() == buyQuantity){
                 for (int i=0; i<slotVector.size(); i++){
+                    cout << "TEST FARHAN1" << endl;
+                    try {
+                        pair<int, int>temp = ItemStorage.translatePositionCode(slotVector[i]);
+                    } catch (PositionCodeInvalidException e) {
+                        cout << e.what() << endl << endl;
+                        isPositionValid = false;
+                        break;
+                    }
                     if (ItemStorage.isEmpty(slotVector[i])){
+                        cout << "TEST FARHAN2" << endl;
                         ItemStorage.insertElmtAtPosition(slotVector[i], itemCode);
                     } else {
                         throw StorageSlotException("Slot sudah terisi, pilih slot lain yang kosong");
