@@ -240,7 +240,13 @@ void Mayor::buy(Shop* shopPtr){
                 }
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
+        } catch (IllegalActionException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -271,11 +277,17 @@ void Mayor::buy(Shop* shopPtr){
                 }
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         } catch(NotEnoughMoneyException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         } catch(NotEnoughSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
@@ -306,12 +318,17 @@ void Mayor::buy(Shop* shopPtr){
                 throw InputInvalidException("Banyaknya slot yang diinputkan tidak sesuai dengan banyak barang yang dibeli");
             }
         } catch(InputInvalidException e){
-            e.what();
-        }
-        catch(PositionCodeInvalidException e){
-            e.what();
-        }catch(StorageSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
+        } catch(PositionCodeInvalidException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
+        } catch(StorageSlotException e){
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
     cout << itemCode << " berhasil disimpan dalam penyimpanan!" << endl;
@@ -347,14 +364,22 @@ void Mayor::sell(Shop* shopPtr){
                 throw InputInvalidException("Tidak ada slot yang diinputkan");
             }
         } catch(InputInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
         catch(PositionCodeInvalidException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(StorageSlotException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }catch(IllegalActionException e){
-            e.what();
+            startTextRed();
+            cout << e.what() << endl;
+            resetTextColor();
         }
     }
 
