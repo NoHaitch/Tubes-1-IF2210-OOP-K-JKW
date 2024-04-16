@@ -220,7 +220,7 @@ void Mayor::buy(Shop* shopPtr){
 
     // Validate variables
     bool valid;
-    int buySelection, buyQuantity, payment;
+    int buySelection = -1, buyQuantity = -1, payment;
     string itemCode;
 
     // Validate selection input
@@ -305,7 +305,11 @@ void Mayor::buy(Shop* shopPtr){
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
             getline(cin, inputSlots);
             cout << endl;
-            slotVector = parseSlot(inputSlots);
+            if (buyQuantity != 1) {
+                slotVector = parseSlot(inputSlots);
+            } else {
+                slotVector.push_back(inputSlots);
+            }
             if (slotVector.size() == buyQuantity){
                 for (int i=0; i<slotVector.size(); i++){
                     if (ItemStorage.isEmpty(slotVector[i])){

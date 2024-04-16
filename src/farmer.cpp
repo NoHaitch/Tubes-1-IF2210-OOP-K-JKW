@@ -272,7 +272,7 @@ void Farmer::buy(Shop* shopPtr) {
 
     // Validate variables
     bool valid;
-    int buySelection, buyQuantity, payment;
+    int buySelection = -1, buyQuantity = -1, payment;
     string itemCode;
 
     // Validate selection input
