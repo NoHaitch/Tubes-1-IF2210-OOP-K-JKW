@@ -522,155 +522,127 @@ void Cattleman::printLegend(){
 }
 
 void Cattleman::harvestAnimal(){
-    bool found;
-
-    // Check if Storage is full
-    if (ItemStorage.isStorageFull()){
-        throw CommandCannotBeDoneException("Command tidak dapat dijalankan karena storage sudah penuh");
+    string positionCode;
+    // Validasi apakah ada tanaman di Farm
+    if (Farm.getNumElmt() == 0) {
+        cout << "Tidak ada tanaman pada Farm. Tidak dapat melakukan panen\n" << endl;
         return;
     }
 
-    // Check if farm is empty 
-    found = false;
-    for (int i=0; i<Farm.getNumRow(); i++){
-        for (int j=0; j<Farm.getNumCol(); j++){
-            if (!Farm.isEmpty(i, j)){ 
-                found = true;
-                break;
+    map<string, int> plantReadyToHarvest; // <plant code, number of plants>
+    for (int i = 0; i < Animal::getAnimalCodeConfig().size(); i++) {
+        plantReadyToHarvest[Animal::getAnimalCodeConfig()[i]] = 0;
+    }
+    // Validasi apakah ada tanaman di Farm yang siap panen
+    int readyForHarvest = 0;
+    for (int i = 0; i < Farm.getNumRow(); i++) {
+        for (int j = 0; j < Farm.getNumCol(); j++) {
+            if (!Farm.isEmpty(i, j)) {
+                cout << Farm.getElmt(i, j)->getCode() << endl;
+                cout << Farm.getElmt(i, j)->getCurrWeight() << endl;
+                cout << Farm.getElmt(i, j)->getWeightToHarvest() << endl;
+                if ((*Farm.getElmt(i, j)).getCurrWeight() >= (*Farm.getElmt(i, j)).getWeightToHarvest()) {
+                    readyForHarvest++;
+                    plantReadyToHarvest[(*Farm.getElmt(i, j)).getCode()]++;
+                }
             }
         }
-        if (found){
-            break;
-        }
     }
-    if (!found){
-        throw CommandCannotBeDoneException("Command tidak dapat dijalankan karena kamu tidak memiliki hewan di peternakan");
+    // Validasi minimal ada tanaman yang bisa dipanen
+    if (readyForHarvest == 0) {
+        cout << "Tidak ada hewan yang siap dipanen" << endl;
         return;
     }
 
-    // Print farm
-    cout << endl;
     Farm.printStorage();
-    printLegend();
-
-    // Print Harvestable Animal List
-    cout << "Pilih hewan siap panen yang kamu miliki" << endl;
-    map<string, pair<int,int>> numMap = countAnimalsAndHarvestable();
-    map<string, pair<int,int>>::iterator it = numMap.begin();
-    int idx = 1;
-    vector<string> harvestableCodes;
-    harvestableCodes.push_back("");
-    while (it != numMap.end()){
-        if (it->second.second > 0){
-            harvestableCodes.push_back(it->first);
-            cout << "    " << idx << ". " << it->first << " (" << it->second.second << " petak siap panen)" << endl;
-            idx++;
+    int num = 0;
+    cout << "Pilih tanaman siap panen yang kamu miliki: " << endl;
+    map<int, string> penomoran;
+    for (map<string, int>::iterator it = plantReadyToHarvest.begin(); it != plantReadyToHarvest.end(); it++) {
+        if (it->second > 0) {
+            penomoran[num + 1] = it->first;
+            cout << " " << num + 1 << ". " << it->first << " (" << it->second << " petak siap panen)" << endl;
+            num++;
         }
-        ++it;
-    }
-    cout << endl;
+    } cout << endl;
 
-    // Validation variables
-    bool valid;
-    int indexInput, numToHarvestInput, numHarvestable;
-    string animalCode;
-
-    // Validate index number
-    valid = false;
-    while (!valid){
-        try {
-            cout << "Nomor hewan yang ingin dipanen: ";
-            cin >> indexInput;
-            cout << endl;
-            if (indexInput >= 1 && indexInput <= idx){
-                animalCode = harvestableCodes[indexInput];
-                numHarvestable = numMap[animalCode].second;
-                valid = true;
-            } else {
-                throw InputInvalidException("Nomor hewan tidak sesuai daftar diatas");
-            }
-        } catch (InputInvalidException e){
-            startTextRed();
-            cout << e.what() << endl;
-            resetTextColor();
+    int choosenPlant = -1, numOfPlantChoosen = -1;
+    while (true) {
+        cout << "Nomor hewan yang ingin dipanen: ";
+        cin >> choosenPlant;
+        if(choosenPlant <= 0 || choosenPlant > num){
+            cout << "Jumlah tidak valid\n" << endl;
+            continue;
         }
+
+        cout << "Berapa petak yang ingin dipanen: ";
+        cin >> numOfPlantChoosen;
+
+        if(numOfPlantChoosen <= 0){
+            cout << "Jumlah petak tidak valid\n" << endl;
+            continue;
+        }
+
+        // Cek apakah jumlah tanaman yang dipilih valid
+        if (numOfPlantChoosen > plantReadyToHarvest[penomoran[choosenPlant]]) {
+            cout << "Jumlah tanaman yang dipilih melebihi tanaman yang bisa dipanen!" << endl;
+            continue;
+        }
+        // Cek apakah storage cukup untuk menyimpan hasil panen
+        if (ItemStorage.getNumElmt() + numOfPlantChoosen > ItemStorage.getNumRow() * ItemStorage.getNumCol()) {
+            cout << "Jumlah penyimpanan tidak cukup!" << endl;
+            continue;
+        }
+
+        break;
     }
 
-    // Validate index number
-    valid = false;
-    while (!valid){
-        try {
-            cout << "Berapa petak yang ingin dipanen: ";
-            cin >> numToHarvestInput;
-            cout << endl;
-            if (numToHarvestInput >= 1 && numToHarvestInput <= numHarvestable){
-                if (ItemStorage.getNumElmt() + numToHarvestInput <= ItemStorage.getNumRow() * ItemStorage.getNumCol()){
-                    valid = true;
-                } else {
-                    ItemStorage.printStorage();
-                    throw NotEnoughSlotException("Jumlah penyimpanan tidak cukup!");
-                }
-            } else {
-                throw InputInvalidException("Banyak petak yang ingin dipanen tidak sesuai dengan banyaknya hewan yang bisa dipanen");
-            }
-        } catch (NotEnoughSlotException e){
-            startTextRed();
-            cout << e.what() << endl;
-            resetTextColor();
-        } catch (InputInvalidException e){
-            startTextRed();
-            cout << e.what() << endl;
-            resetTextColor();
-        }
-    }
-
-    // Validate & Harvest postionCode
-    int doneHarvested = 1;
-    string farmPositionCode;
-    vector<string> selectionList;
-    cout << "Pilih petak yang ingin dipanen: " << endl;
-    while (doneHarvested <= numToHarvestInput){
-        valid = false;
-        while (!valid){
+    // Semua validasi sudah selesai
+    string pos;
+    vector <string> choosenPosition;
+    cout << "Pilih petak yang ingin dipanen:" << endl;
+    for (int i = 0; i < numOfPlantChoosen; i++) {
+        while (true) {
+            cout << " - Petak ke-" << i + 1 << ": ";
+            cin >> pos;
             try {
-                cout << "Petak ke-" << doneHarvested << ": ";
-                cin >> farmPositionCode;
-                cout << endl;
-                if ((*Farm.getElmt(farmPositionCode)).getCode() == animalCode){
-                    if ((*Farm.getElmt(farmPositionCode)).isReadyToHarvest()){
+                pair<int, int> position = Farm.translatePositionCode(pos);
+            } catch (PositionCodeInvalidException &e) {
+                cout << "Petak tidak valid!\n" << endl;
+                continue;
+            }
+            if(Farm.isEmpty(pos)){
+                cout << "Petak yang dipilih kosong!\n" << endl;
+                continue;
+            }
 
-                        // Inputs are valid, Do Harvesting process
-                        vector <string> convertedProductCodes = Product::convertToProductCode(animalCode);
-                        for (int i = 0; i < convertedProductCodes.size(); i++) {
-                            Product newProduct = Product(convertedProductCodes[i]);
-                            ItemStorage + newProduct.getCode();
-                            Farm.deleteElmtAtPosition(farmPositionCode);
-                            selectionList.push_back(farmPositionCode);
-                        }
-                    } else {
-                        throw NotHarvestableException("Binatang pada kode posisi tersebut tidak dapat dipanen");
-                    }
-                } else {
-                    throw InputInvalidException("Binatang pada kode posisi tersebut berbeda dari jenis yang dipilih");
+            if ((*Farm.getElmt(pos)).getCode() == penomoran[choosenPlant]) {
+                cout << "masuk" << endl;
+                vector <string> convertedProductCodes = Product::convertToProductCode((*Farm.getElmt(pos)).getName());
+                cout << convertedProductCodes.size() << endl;
+                for (int j = 0; j < convertedProductCodes.size(); j++) {
+                    Product P = Product(convertedProductCodes[j]);
+                    cout << "convert" << endl;
+                    ItemStorage + P.getCode();
+                    cout << "add" << endl;
+                    Farm.deleteElmtAtPosition(pos);
+                    cout << "delete" << endl;
+                    choosenPosition.push_back(pos);
                 }
-                valid = true;
-            } catch (NotHarvestableException e){
-                startTextRed();
-                cout << e.what() << endl;
-                resetTextColor();
-            } catch (InputInvalidException e){
-                startTextRed();
-                cout << e.what() << endl;
-                resetTextColor();
+                break;
+            } else {
+                cout << "Tanaman yang dipilih tidak sesuai" << endl;
             }
         }
-        doneHarvested++;
     }
-    cout << numToHarvestInput << " petak hewan " << animalCode << " pada petak ";
-    cout << selectionList[0];
-    for (int i=1; i<numToHarvestInput; i++){
-        cout << ", " << selectionList[i];
+
+    cout << endl << numOfPlantChoosen << " petak tanaman " << penomoran[choosenPlant] << " pada petak ";
+    for (int i = 0; i < choosenPosition.size(); i++) {
+        cout << choosenPosition[i];
+        if (i != choosenPosition.size() - 1) {
+            cout << ", ";
+        }
     }
     cout << " telah dipanen!" << endl;
-    return;
+
 }
