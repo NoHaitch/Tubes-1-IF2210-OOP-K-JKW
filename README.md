@@ -36,10 +36,6 @@
         <td>Nama</td>
       </tr>
       <tr>
-        <td>10023359</td>
-        <td>Adam Dharma Sakti</td>
-      </tr>
-      <tr>
         <td>13522037</td>
         <td>Farhan Nafis Rayhan</td>
       </tr>
