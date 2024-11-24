@@ -4,9 +4,9 @@
 
 <br />
 <div align="center">
-  <h1 align="center">Tugas Besar 1 IF2210 OOP</h1>
+  <h1 align="center">DPR Kingdom</h1>
   <p align="center">
-    <h3>DPR Kerajaan</h3>
+    <h3>a real life simulation of the kingdom of DPR</h3>
     <h4>Object-Oriented Based CLI Application</h4>
     <br/>
     <!-- IMAGE OR LOGO -->
